@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+    
+<!DOCTYPE tiles-definitions PUBLIC 
+"-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" 
+"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+ 
+  <!-- Proveedores -->
+  <definition name="explorerBaseDistribuidores" template="/WEB-INF/pages/tiles/layout.jsp">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="header" value="/WEB-INF/pages/tiles/headerDistribuidor.jsp"/>
+    <put-attribute name="panelMenu" value="/WEB-INF/pages/tiles/panelMenuDistribuidor.jsp"/>
+  </definition>
+  
+  <definition name="catalogos" extends="explorerBaseDistribuidores">
+    <put-attribute name="title" value="Titulo.Catalogo"/>
+    <put-attribute name="main" value="/WEB-INF/pages/catalogo.jsp"/>
+  </definition>
+  
+  <definition name="producto" extends="explorerBaseDistribuidores">
+    <put-attribute name="title" value="Titulo.Producto"/>
+    <put-attribute name="main" value="/WEB-INF/pages/producto.jsp"/>
+  </definition>
+  
+  <definition name="carrito" extends="explorerBaseDistribuidores">
+    <put-attribute name="title" value="Titulo.Carrito"/>
+    <put-attribute name="main" value="/WEB-INF/pages/carrito.jsp"/>
+  </definition>
+  
+  <definition name="confirmar" extends="explorerBaseDistribuidores">
+    <put-attribute name="title" value="Titulo.Confirmar"/>
+    <put-attribute name="main" value="/WEB-INF/pages/confirmar.jsp"/>
+  </definition>
+  
+  <!-- Administracion -->
+  <definition name="explorerBaseAdministracion" template="/WEB-INF/pages/tiles/layout.jsp">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="header" value="/WEB-INF/pages/tiles/headerAdministracion.jsp"/>
+    <put-attribute name="panelMenu" value="/WEB-INF/pages/tiles/panelMenuAdministracion.jsp"/>
+  </definition>
+  
+  <definition name="proveedores" extends="explorerBaseAdministracion">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="header" value="/WEB-INF/pages/tiles/headerListaDeProveedore.jsp"/>
+    <put-attribute name="main" value="/WEB-INF/pages/proveedores.jsp"/>
+  </definition>
+  
+  <definition name="mostrarCuentas" extends="explorerBaseAdministracion">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="main" value="/WEB-INF/pages/mostrarCuentas.jsp"/>
+  </definition>
+  
+  <definition name="configurarCuentas" extends="explorerBaseAdministracion">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="main" value="/WEB-INF/pages/configurarCuenta.jsp"/>
+  </definition>
+  
+  <definition name="nuevaCuenta" extends="explorerBaseAdministracion">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="main" value="/WEB-INF/pages/nuevaCuenta.jsp"/>
+  </definition>
+  
+  <definition name="miPerfil" extends="explorerBaseAdministracion">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="main" value="/WEB-INF/pages/miPerfil.jsp"/>
+  </definition>
+  
+  <definition name="editarComercio" extends="explorerBaseAdministracion">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="header" value="/WEB-INF/pages/tiles/headerInformacionComercio.jsp"/>
+    <put-attribute name="main" value="/WEB-INF/pages/editarComercio.jsp"/>
+  </definition>  
+  
+  <definition name="cuentasPorPagar" extends="explorerBaseAdministracion">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="header" value="/WEB-INF/pages/tiles/headerCuentasPorPagar.jsp"/>
+    <put-attribute name="main" value="/WEB-INF/pages/cuentasPorPagar.jsp"/>
+  </definition>
+  
+   <definition name="mostrarCuentasPorPagar" extends="explorerBaseAdministracion">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="header" value="/WEB-INF/pages/tiles/headerCuentasPorPagar.jsp"/>
+    <put-attribute name="main" value="/WEB-INF/pages/mostrarCuentasPorPagar.jsp"/>
+  </definition>
+  
+  <definition name="detalleDeCuentaPorPagar" extends="explorerBaseAdministracion">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="header" value="/WEB-INF/pages/tiles/headerCuentasPorPagar.jsp"/>
+    <put-attribute name="main" value="/WEB-INF/pages/detalleDeCuentaPorPagar.jsp"/>
+  </definition>
+  
+  <definition name="pedidos" extends="explorerBaseAdministracion">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="main" value="/WEB-INF/pages/pedidos.jsp"/>
+  </definition>
+  
+  <definition name="pedido" extends="explorerBaseAdministracion">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="main" value="/WEB-INF/pages/pedido.jsp"/>
+  </definition>
+  
+  <definition name="detalleDelPedido" extends="explorerBaseAdministracion">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="main" value="/WEB-INF/pages/detalleDelPedido.jsp"/>
+  </definition>
+  
+  <definition name="tarjetaDeCredito" extends="explorerBaseAdministracion">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="main" value="/WEB-INF/pages/tarjetaDeCredito.jsp"/>
+  </definition> 
+  
+   <definition name="cuentasPorPagarFormaDePago" extends="explorerBaseAdministracion">
+    <put-attribute name="title" value=""/>
+    <put-attribute name="main" value="/WEB-INF/pages/cuentasPorPagarFormaDePago.jsp"/>
+  </definition>
+</tiles-definitions>
+

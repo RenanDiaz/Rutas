@@ -1,0 +1,33 @@
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+	xmlns:beans="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/security
+		http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+
+	<http auto-config="true">
+		<intercept-url access="IS_AUTHENTICATED_ANONYMOUSLY" pattern="/**" />
+		<intercept-url pattern="/*/Proveedores/**" access="ROLE_PEDIDOS_EMPLEADO" />
+		<intercept-url pattern="/*/MiPerfil/**" access="ROLE_PEDIDOS_EMPLEADO" />
+		<intercept-url pattern="/*/Pedidos/**" access="ROLE_PEDIDOS_EMPLEADO" />
+		<intercept-url pattern="/*/Consultar/**" access="ROLE_PEDIDOS_EMPLEADO" />
+		<intercept-url pattern="/**" access="ROLE_PEDIDOS_ADMINISTRADOR" />
+		<form-login login-processing-url="/pedidos/login"
+			login-page="http://backoffice.ncubo:8080/BackOffice/Tiendas/Acceso"
+			username-parameter="username" password-parameter="password"
+			authentication-success-handler-ref="authenticationSuccessHandler"
+			authentication-failure-url="/pedidos/pedidos/loginPage?auth=fail" />
+		<logout logout-url="/logout" logout-success-url="http://backoffice.ncubo:8080/BackOffice/Tiendas/Acceso" />
+		<access-denied-handler error-page="/403" />
+	</http>
+
+	<beans:bean id="proveedorDeAutenticacion"
+		class="com.ts.configuracion.ProveedorDeAutenticacion" />
+
+	<beans:bean id="authenticationSuccessHandler" class="com.ts.configuracion.SimpleUrlAuthenticationSuccessHandler" />
+
+	<authentication-manager alias="authenticationManager">
+		<authentication-provider ref="proveedorDeAutenticacion" />
+	</authentication-manager>
+
+</beans:beans>
