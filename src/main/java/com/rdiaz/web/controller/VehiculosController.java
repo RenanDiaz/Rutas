@@ -14,17 +14,25 @@ import com.rdiaz.model.Bus;
 public class VehiculosController extends BaseController
 {
     @RequestMapping(value = "/bus/{placa}", method = RequestMethod.GET)
-    public String vehiculo(ModelMap model, @PathVariable("placa") String placa)
+    public String bus(ModelMap model, @PathVariable("placa") String placa)
     {
         model.addAttribute("vehiculo", vehiculos.get(placa));
+        model.addAttribute("marcas", marcas.lista());
         return "vehiculo";
     }
     
-    @RequestMapping(value = "/bus/agregar/", method = RequestMethod.POST)
-    @ResponseBody public String agregarVehiculo(@RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "marca", required = true) String marca, @RequestParam(value = "modelo", required = true) String modelo, @RequestParam(value = "anno", required = true) int anno)
+    @RequestMapping(value = "/bus/agregar", method = RequestMethod.POST)
+    @ResponseBody public String agregarBus(@RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "marca", required = true) int marca, @RequestParam(value = "modelo", required = true) String modelo, @RequestParam(value = "anno", required = true) int anno)
     {
         Bus bus = new Bus(placa, marca, modelo, anno);
         vehiculos.add(bus);
         return "";
+    }
+    
+    @RequestMapping(value = "/bus/agregar/", method = RequestMethod.GET)
+    public String nuevoBus(ModelMap model, @PathVariable("placa") String placa)
+    {
+        model.addAttribute("marcas", marcas.lista());
+        return "vehiculo";
     }
 }

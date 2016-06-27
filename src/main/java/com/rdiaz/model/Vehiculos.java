@@ -20,13 +20,13 @@ public class Vehiculos
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
             Statement stmt = con.createStatement();
             
-            ResultSet rs = stmt.executeQuery("select * from vehiculos");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM vehiculos");
             clear();
             
             while (rs.next())
             {
                 String placa = rs.getString(1);
-                String marca = String.valueOf(rs.getInt(2));
+                int marca = rs.getInt(2);
                 String modelo = rs.getString(3);
                 int anno = rs.getInt(4);
                 Bus bus = new Bus(placa, marca, modelo, anno);
