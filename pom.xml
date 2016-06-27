@@ -9,6 +9,7 @@
     <jdk.version>1.8</jdk.version>
     <spring.version>3.2.13.RELEASE</spring.version>
     <jstl.version>1.2</jstl.version>
+    <mysql.version>5.1.6</mysql.version>
   </properties>
 
   <dependencies>
@@ -25,6 +26,11 @@
       <version>${jstl.version}</version>
     </dependency>
 
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
