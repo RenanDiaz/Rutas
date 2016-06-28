@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rdiaz.model.Bus;
+import com.rdiaz.model.Marca;
 
 @Controller
 public class VehiculosController extends BaseController
@@ -22,17 +23,29 @@ public class VehiculosController extends BaseController
     }
     
     @RequestMapping(value = "/bus/agregar", method = RequestMethod.POST)
-    @ResponseBody public String agregarBus(@RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "marca", required = true) int marca, @RequestParam(value = "modelo", required = true) String modelo, @RequestParam(value = "anno", required = true) int anno)
+    @ResponseBody public String agregarBus(@RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "marca", required = true) int marca, @RequestParam(value = "nombreMarca", required = false) String nombreMarca, @RequestParam(value = "modelo", required = true) String modelo, @RequestParam(value = "anno", required = true) int anno)
     {
+        if(nombreMarca != null)
+        {
+            Marca nuevaMarca = new Marca(nombreMarca);
+            marca = nuevaMarca.id();
+        }
         Bus bus = new Bus(placa, marca, modelo, anno);
         vehiculos.add(bus);
         return "";
     }
     
-    @RequestMapping(value = "/bus/agregar/", method = RequestMethod.GET)
-    public String nuevoBus(ModelMap model, @PathVariable("placa") String placa)
+    @RequestMapping(value = "/bus/nuevo", method = RequestMethod.GET)
+    public String nuevoBus(ModelMap model)
     {
         model.addAttribute("marcas", marcas.lista());
         return "vehiculo";
+    }
+    
+    @RequestMapping(value = "/buses", method = RequestMethod.GET)
+    public String buses(ModelMap model)
+    {
+        model.addAttribute("vehiculos", vehiculos);
+        return "vehiculos";
     }
 }

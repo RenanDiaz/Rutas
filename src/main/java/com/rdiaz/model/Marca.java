@@ -10,6 +10,30 @@ public class Marca
     private int _id;
     private String _nombre;
     
+    public Marca(String nombre)
+    {
+        _nombre = nombre;
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
+            Statement stmt = conexion.createStatement();
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM marcas WHERE nombre = '%s';", nombre));
+            if(!rs.next())
+            {
+                stmt.execute(String.format("INSERT INTO marcas (nombre) VALUES ('%s');", nombre));
+                rs = stmt.executeQuery(String.format("SELECT * FROM marcas WHERE nombre = '%s';", nombre));
+                rs.next();
+            }
+            _id = rs.getInt(1);
+            conexion.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
     Marca(int id, String nombre)
     {
         id(id);

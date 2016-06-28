@@ -41,33 +41,14 @@
 
   <div class="row">
     <div class="col-md-4">
-      <h2>Heading</h2>
-      <p>ABC</p>
-      <p>
-        <a class="btn btn-default" href="#" role="button">View details</a>
-      </p>
-    </div>
-    <div class="col-md-4">
-      <h2>Heading</h2>
-      <p>ABC</p>
-      <p>
-        <a class="btn btn-default" href="#" role="button">View details</a>
-      </p>
-    </div>
-    <div class="col-md-4">
-      <h2>Heading</h2>
-      <p>ABC</p>
-      <p>
-        <a class="btn btn-default" href="#" role="button">View details</a>
-      </p>
+    <ul>
+      <li><a href="bus/nuevo">Agregar</a></li>
+      <li><a href="bus/">Listado</a></li>
+    </ul>
     </div>
   </div>
 
 
-  <hr>
-  <footer>
-    <p>&copy; Mkyong.com 2015</p>
-  </footer>
 </div>
 
 <spring:url value="/resources/core/css/hello.js" var="coreJs" />
