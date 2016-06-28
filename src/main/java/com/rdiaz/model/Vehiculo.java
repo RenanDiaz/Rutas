@@ -8,18 +8,35 @@ import java.sql.Statement;
 public abstract class Vehiculo
 {
     private String _placa;
-    private String _marca;
+    private int _marca;
     private String _modelo;
     private int _anno;
     private TipoDeVehiculo _tipo;
     
-    public Vehiculo(String placa, String marca, String modelo, int anno, TipoDeVehiculo tipo)
+    public Vehiculo(String placa, int marca, String modelo, int anno, TipoDeVehiculo tipo)
     {
-        placa(placa);
-        marca(marca);
-        modelo(modelo);
-        anno(anno);
-        tipo(tipo);
+        _placa = placa;
+        _marca = marca;
+        _modelo = modelo;
+        _anno = anno;
+        _tipo = tipo;
+
+        try
+        {
+            Class.forName("com.mysql.jdbc.Driver");
+            
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
+            Statement stmt = conexion.createStatement();
+            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM vehiculos WHERE placa = '%s';", placa));
+            if(!rs.next())
+            {
+                stmt.execute(String.format("INSERT INTO vehiculos (placa, marca, modelo, anno, tipo) VALUES ('%s', %d, '%s', %d, %d);", placa, marca, modelo, anno, tipo.ordinal()));
+            }
+            conexion.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     
     public String placa()
@@ -37,7 +54,7 @@ public abstract class Vehiculo
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
             Statement stmt = conexion.createStatement();
             
-            stmt.execute(String.format("INSERT INTO vehiculos (placa) VALUES (%s);", placa));
+            stmt.execute(String.format("INSERT INTO vehiculos (placa) VALUES ('%s');", placa));
             conexion.close();
         } catch (Exception e)
         {
@@ -47,10 +64,10 @@ public abstract class Vehiculo
     
     public String marca()
     {
-        return _marca;
+        return Marca.getNombre(_marca);
     }
     
-    public void marca(String marca)
+    public void marca(int marca)
     {
         _marca = marca;
         try
@@ -60,18 +77,7 @@ public abstract class Vehiculo
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
             Statement stmt = conexion.createStatement();
             
-            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM marcas WHERE nombre = '%s';", marca));
-            if(rs.next())
-            {
-                stmt.execute(String.format("INSERT INTO marcas (nombre) VALUES (%s);", marca));
-                rs = stmt.executeQuery(String.format("SELECT * FROM marcas WHERE nombre = '%s';", marca));
-            }
-            else rs.first();
-            while(rs.next())
-            {
-                int id = rs.getInt(1);
-                stmt.execute(String.format("UPDATE vehiculos SET marca = %d WHERE placa = '%s';", id, placa()));
-            }
+            stmt.execute(String.format("UPDATE vehiculos SET marca = %d WHERE placa = '%s';", marca, placa()));
             conexion.close();
         } catch (Exception e)
         {

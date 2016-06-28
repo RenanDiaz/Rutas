@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,13 +21,13 @@ public class Vehiculos
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
             Statement stmt = con.createStatement();
             
-            ResultSet rs = stmt.executeQuery("select * from vehiculos");
+            ResultSet rs = stmt.executeQuery("SELECT * FROM vehiculos");
             clear();
             
             while (rs.next())
             {
                 String placa = rs.getString(1);
-                String marca = String.valueOf(rs.getInt(2));
+                int marca = rs.getInt(2);
                 String modelo = rs.getString(3);
                 int anno = rs.getInt(4);
                 Bus bus = new Bus(placa, marca, modelo, anno);
@@ -63,5 +64,15 @@ public class Vehiculos
     private void clear()
     {
         _vehiculos.clear();
+    }
+    
+    public ArrayList<Vehiculo> lista()
+    {
+        ArrayList<Vehiculo> vehiculos = new ArrayList<Vehiculo>();
+        for(Map.Entry<String, Vehiculo> vehiculo : _vehiculos.entrySet())
+        {
+            vehiculos.add(vehiculo.getValue());
+        }
+        return vehiculos;
     }
 }

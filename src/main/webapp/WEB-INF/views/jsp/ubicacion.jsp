@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<title>Rutas - Vehiculo</title>
+<title>Rutas - Ubicaci&oacute;n</title>
 
 <spring:url value="/resources/core/css/hello.css" var="coreCss" />
 <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
@@ -28,47 +28,57 @@
   <div class="container">
     <h1>${title}</h1>
     <p>
-      <c:if test="${not empty vehiculo}">
-      ${vehiculo.marca()} ${vehiculo.modelo()} de ${vehiculo.anno()}
+      <c:if test="${not empty ubicacion.vehiculo()}">
+      ${ubicacion.vehiculo().marca()} ${ubicacion.vehiculo().modelo()} de ${ubicacion.vehiculo().anno()}
     </c:if>
 
-      <c:if test="${empty vehiculo}">
-      Nuevo veh&iacute;culo
+      <c:if test="${empty ubicacion.vehiculo()}">
+      No encontrado
     </c:if>
     </p>
   </div>
 </div>
 
-<c:if test="${not empty marcas}">
+<c:if test="${not empty ubicacion}">
   <div class="container">
-    <div class="row">
-      <div class="col-md-3">
-        <div class="form-group">
-          <label>Placa</label> <input name="placa" id="placa" class="form-control" type="text" required>
-        </div>
-        <div class="form-group">
-          <label>Marca</label> <select name="marca" id="marca" class="form-control">
-            <c:forEach items="${marcas}" var="marca">
-              <option value="${marca.id()}">${marca.nombre()}</option>
-            </c:forEach>
-            <option value="0">Otra</option>
-          </select>
-          <div id="oculto" class="hidden">
-            <br>
-            <input name="nombreMarca" id="nombreMarca" class="form-control">
-          </div>
-        </div>
-        <div class="form-group">
-          <label>Modelo</label> <input name="modelo" id="modelo" class="form-control" type="text" required>
-        </div>
-        <div class="form-group">
-          <label>A&ntilde;o</label> <input name="anno" id="anno" class="form-control" type="number" max="2017" min="1918" required>
-        </div>
-        <input type="submit" id="enviar" class="btn btn-primary">
-      </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Fecha y hora</th>
+            <th>Ruta</th>
+            <th>Latitud</th>
+            <th>Longitud</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>${ubicacion.fechahora()}</td>
+            <td>${ubicacion.ruta()}</td>
+            <td>${ubicacion.latitud()}</td>
+            <td>${ubicacion.longitud()}</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </c:if>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        <label>Placa</label> <input name="placa" id="placa" class="form-control" type="text" required>
+      </div>
+      <div class="form-group">
+        <label>Latitud</label> <input name="latitud" id="latitud" class="form-control" type="text" required>
+      </div>
+      <div class="form-group">
+        <label>Longitud</label> <input name="longitud" id="longitud" class="form-control" type="text" required>
+      </div>
+      <input type="submit" id="enviar" class="btn btn-primary">
+    </div>
+  </div>
+</div>
 
 <spring:url value="/resources/core/css/hello.js" var="coreJs" />
 <spring:url value="/resources/core/css/bootstrap.min.js" var="bootstrapJs" />
@@ -79,14 +89,11 @@
 <script type="text/javascript">
 $("#enviar").click(function() {
   $.ajax({
-    url : "${pageContext.request.contextPath}/bus/agregar",
+    url : "${pageContext.request.contextPath}/ubicacion/guardar/" + $("#placa").val(),
     method : "POST",
     data : {
-      placa : $("#placa").val(),
-      marca : $("#marca").val(),
-      nombreMarca : $("#nombreMarca").val(),
-      modelo : $("#modelo").val(),
-      anno : $("#anno").val()
+      latitud : $("#latitud").val(),
+      longitud : $("#longitud").val()
     },
     success: function() {
     	console.log("success");
