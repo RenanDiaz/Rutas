@@ -131,9 +131,9 @@ public abstract class Vehiculo
         }
     }
     
-    public TipoDeVehiculo tipo()
+    public String tipo()
     {
-        return _tipo;
+        return _tipo.toString();
     }
     
     public void tipo(TipoDeVehiculo tipo)
@@ -152,5 +152,10 @@ public abstract class Vehiculo
         {
             e.printStackTrace();
         }
+    }
+    
+    public String nombre()
+    {
+        return String.format("%s %s %s de %d con placa %s", tipo(), marca(), modelo(), anno(), placa());
     }
 }

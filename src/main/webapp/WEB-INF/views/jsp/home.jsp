@@ -29,8 +29,8 @@
   <div class="row">
     <div class="col-md-2">
       <ul class="nav nav-stacked">
-        <li><a href="buses">Buses <span class="badge">0</span></a></li>
-        <li><a href="ubicacion">Ubicaciones <span class="badge">0</span></a></li>
+        <li><a href="buses">Buses <span class="badge">${vehiculos}</span></a></li>
+        <li><a href="ubicacion">Ubicaciones <span class="badge">${ubicaciones}</span></a></li>
       </ul>
     </div>
   </div>

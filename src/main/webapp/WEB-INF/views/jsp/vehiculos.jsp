@@ -111,7 +111,7 @@ $("table").DataTable();
 
 $("#enviar").click(function() {
   $.ajax({
-    url: "${pageContext.request.contextPath}/bus/agregar",
+    url: "${pageContext.request.contextPath}/buses/agregar",
     method: "POST",
     data: {
       placa: $("#placa").val(),
@@ -121,7 +121,7 @@ $("#enviar").click(function() {
       anno: $("#anno").val()
     },
     success: function() {
-    	console.log("success");
+      location.reload();
     }
   });
 });

@@ -16,7 +16,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Rutas</a>
+      <a class="navbar-brand" href="/Rutas/">Rutas</a>
     </div>
   </div>
 </nav>
@@ -45,7 +45,7 @@
         </thead>
         <tbody>
           <c:forEach items="${ubicaciones}" var="ubicacion">
-            <tr class="link" id="${ubicacion.id()}">
+            <tr class="link" id="${ubicacion.vehiculo().placa()}">
               <td>${ubicacion.fechahora()}</td>
               <td>${ubicacion.ruta()}</td>
               <td>${ubicacion.vehiculo().placa()}</td>
@@ -64,7 +64,7 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Agregar ubicacion</h4>
+        <h4 class="modal-title">Agregar ubicaci&oacute;n</h4>
       </div>
       <div class="modal-body" id="mensaje">
         <c:if test="${not empty vehiculos}">
@@ -113,7 +113,7 @@ $("#enviar").click(function() {
       longitud : $("#longitud").val()
     },
     success: function() {
-      console.log("success");
+      location.reload();
     }
   });
 });

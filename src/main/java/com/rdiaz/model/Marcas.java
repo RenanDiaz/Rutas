@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -71,6 +72,7 @@ public class Marcas
         {
             marcas.add(marca.getValue());
         }
+        marcas.sort(Comparator.comparing(Marca::nombre));
         return marcas;
     }
 }

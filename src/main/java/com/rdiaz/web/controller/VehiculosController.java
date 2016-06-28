@@ -25,14 +25,28 @@ public class VehiculosController extends BaseController
     @RequestMapping(value = "/buses/agregar", method = RequestMethod.POST)
     @ResponseBody public String agregarBus(@RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "marca", required = true) int marca, @RequestParam(value = "nombreMarca", required = false) String nombreMarca, @RequestParam(value = "modelo", required = true) String modelo, @RequestParam(value = "anno", required = true) int anno)
     {
-        if(nombreMarca != null)
+        if(nombreMarca != null && marca == 0)
         {
             Marca nuevaMarca = new Marca(nombreMarca);
             marca = nuevaMarca.id();
         }
         Bus bus = new Bus(placa, marca, modelo, anno);
         vehiculos.add(bus);
-        return "";
+        return "success";
+    }
+    
+    //FIXME editar
+    @RequestMapping(value = "/buses/editar", method = RequestMethod.POST)
+    @ResponseBody public String editarBus(@RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "marca", required = true) int marca, @RequestParam(value = "nombreMarca", required = false) String nombreMarca, @RequestParam(value = "modelo", required = true) String modelo, @RequestParam(value = "anno", required = true) int anno)
+    {
+        if(nombreMarca != null && marca == 0)
+        {
+            Marca nuevaMarca = new Marca(nombreMarca);
+            marca = nuevaMarca.id();
+        }
+        Bus bus = new Bus(placa, marca, modelo, anno);
+        vehiculos.add(bus);
+        return "success";
     }
     
     @RequestMapping(value = "/buses/nuevo", method = RequestMethod.GET)

@@ -17,24 +17,27 @@
 </head>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
+  <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Veh&iacute;culo</a>
+      <a class="navbar-brand" href="/Rutas/">Rutas</a>
     </div>
   </div>
 </nav>
-
-<div class="jumbotron">
-  <div class="container">
-    <h1>${title}</h1>
-    <p>
-      <c:if test="${not empty vehiculo}">
-        ${vehiculo.marca()} ${vehiculo.modelo()} de ${vehiculo.anno()}
-      </c:if>
-    </p>
-  </div>
+<br><br><br>
+<div class="container">
+  <h2>
+    <a href="/Rutas/buses" class="btn btn-info">
+      <span class="glyphicon glyphicon-menu-left"></span>
+    </a>
+    <c:if test="${not empty vehiculo}">
+      ${vehiculo.nombre()}
+    </c:if>
+    <c:if test="${empty vehiculo}">
+      No encontrado
+    </c:if>
+  </h2>
 </div>
-
+<br>
 <c:if test="${not empty vehiculo}">
   <div class="container">
     <div class="table-responsive">
@@ -59,8 +62,53 @@
         </tbody>
       </table>
     </div>
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeConfirmacion">Editar</button>
   </div>
 </c:if>
+<div id="popUpDeConfirmacion" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Editar veh&iacute;culo</h4>
+      </div>
+      <div class="modal-body" id="mensaje">
+        <c:if test="${not empty marcas}">
+          <div class="form-group">
+            <label>Placa</label> <input name="placa" id="placa" class="form-control" type="text" disabled value="${vehiculo.placa()}">
+          </div>
+          <div class="form-group">
+            <label>Marca</label> <select name="marca" id="marca" class="form-control">
+              <c:forEach items="${marcas}" var="marca">
+                <c:if test="${marca.nombre() == vehiculo.marca()}">
+                  <option value="${marca.id()}" selected>${marca.nombre()}</option>
+                </c:if>
+                <c:if test="${marca.nombre() != vehiculo.marca()}">
+                  <option value="${marca.id()}">${marca.nombre()}</option>
+                </c:if>
+              </c:forEach>
+              <option value="0">Otra</option>
+            </select>
+            <div id="oculto" class="hidden">
+              <br>
+              <input name="nombreMarca" id="nombreMarca" class="form-control">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Modelo</label> <input name="modelo" id="modelo" class="form-control" type="text" required value="${vehiculo.modelo()}">
+          </div>
+          <div class="form-group">
+            <label>A&ntilde;o</label> <input name="anno" id="anno" class="form-control" type="number" max="2017" min="1918" required value="${vehiculo.anno()}">
+          </div>
+        </c:if>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="enviar">Enviar</button>
+        <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
 <spring:url value="/resources/core/js/common.js" var="coreJs" />
@@ -69,5 +117,31 @@
 <script src="${jquery}"></script>
 <script src="${coreJs}"></script>
 <script src="${bootstrapJs}"></script>
+<script type="text/javascript">
+$("#enviar").click(function() {
+  $.ajax({
+    url: "${pageContext.request.contextPath}/buses/editar",
+    method: "POST",
+    data: {
+      placa: $("#placa").val(),
+      marca: $("#marca").val(),
+      nombreMarca: $("#nombreMarca").val(),
+      modelo: $("#modelo").val(),
+      anno: $("#anno").val()
+    },
+    success: function() {
+      location.href = "/Rutas/ubicacion/" + $("#placa").val();
+    }
+  });
+});
+
+$("#marca").change(function() {
+  if ($(this).val() == 0) {
+    $("#oculto").removeClass("hidden");
+  } else {
+    $("#oculto").addClass("hidden");
+  }
+});
+</script>
 </body>
 </html>

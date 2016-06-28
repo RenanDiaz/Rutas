@@ -15,17 +15,27 @@ import com.rdiaz.model.Vehiculo;
 public class UbicacionController extends BaseController
 {
     @RequestMapping(value = "/ubicacion/guardar/{placa}", method = RequestMethod.POST)
-    @ResponseBody public String agregarBus(@PathVariable String placa, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
+    @ResponseBody public String agregarUbicacion(@PathVariable String placa, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
     {
         Vehiculo vehiculo = vehiculos.get(placa);
         Ubicacion.nueva(1, vehiculo, latitud, longitud);
-        return "";
+        return "sucess";
+    }
+
+    //FIXME editar con id
+    @RequestMapping(value = "/ubicacion/editar/{placa}", method = RequestMethod.POST)
+    @ResponseBody public String editarUbicacion(@PathVariable String placa, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
+    {
+        Vehiculo vehiculo = vehiculos.get(placa);
+        Ubicacion.nueva(1, vehiculo, latitud, longitud);
+        return "success";
     }
     
     @RequestMapping(value = "/ubicacion/{placa}", method = RequestMethod.GET)
     public String ubicacion(ModelMap model, @PathVariable("placa") String placa)
     {
         model.addAttribute("ubicacion", Ubicacion.de(vehiculos.get(placa)));
+        model.addAttribute("vehiculos", vehiculos.lista());
         return "ubicacion";
     }
     
