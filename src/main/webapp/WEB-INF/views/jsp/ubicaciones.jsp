@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<title>Rutas - Vehiculos</title>
+<title>Rutas - Ubicaciones</title>
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
 <spring:url value="/resources/core/css/hello.css" var="coreCss" />
@@ -17,32 +17,34 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Veh&iacute;culos</a>
+      <a class="navbar-brand" href="#">Ubicaciones</a>
     </div>
   </div>
 </nav>
 
 <div class="jumbotron"></div>
 
-<c:if test="${not empty vehiculos}">
+<c:if test="${not empty ubicaciones}">
   <div class="container">
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
           <tr>
-            <th>Placa</th>
-            <th>Marca</th>
-            <th>Modelo</th>
-            <th>A&ntilde;o</th>
+            <th>Fecha y hora</th>
+            <th>Ruta</th>
+            <th>Vehiculo</th>
+            <th>Latitud</th>
+            <th>Longitud</th>
           </tr>
         </thead>
         <tbody>
-          <c:forEach items="${vehiculos}" var="vehiculo">
+          <c:forEach items="${ubicaciones}" var="ubicacion">
             <tr>
-              <td>${vehiculo.placa()}</td>
-              <td>${vehiculo.marca()}</td>
-              <td>${vehiculo.modelo()}</td>
-              <td>${vehiculo.anno()}</td>
+              <td>${ubicacion.fechahora()}</td>
+              <td>${ubicacion.ruta()}</td>
+              <td>${ubicacion.vehiculo().placa()}</td>
+              <td>${ubicacion.latitud()}</td>
+              <td>${ubicacion.longitud()}</td>
             </tr>
           </c:forEach>
         </tbody>
@@ -56,30 +58,23 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Agregar veh&iacute;culo</h4>
+        <h4 class="modal-title">Agregar ubicacion</h4>
       </div>
       <div class="modal-body" id="mensaje">
-        <c:if test="${not empty marcas}">
+        <c:if test="${not empty vehiculos}">
           <div class="form-group">
-            <label>Placa</label> <input name="placa" id="placa" class="form-control" type="text" required>
-          </div>
-          <div class="form-group">
-            <label>Marca</label> <select name="marca" id="marca" class="form-control">
-              <c:forEach items="${marcas}" var="marca">
-                <option value="${marca.id()}">${marca.nombre()}</option>
+            <label>Veh&iacute;culo</label>
+            <select name="placa" id="placa" class="form-control">
+              <c:forEach items="${vehiculos}" var="vehiculo">
+                <option value="${vehiculo.placa()}">${vehiculo.modelo()}</option>
               </c:forEach>
-              <option value="0">Otra</option>
             </select>
-            <div id="oculto" class="hidden">
-              <br>
-              <input name="nombreMarca" id="nombreMarca" class="form-control">
-            </div>
           </div>
           <div class="form-group">
-            <label>Modelo</label> <input name="modelo" id="modelo" class="form-control" type="text" required>
+            <label>Latitud</label> <input name="latitud" id="latitud" class="form-control" type="text" required>
           </div>
           <div class="form-group">
-            <label>A&ntilde;o</label> <input name="anno" id="anno" class="form-control" type="number" max="2017" min="1918" required>
+            <label>Longitud</label> <input name="longitud" id="longitud" class="form-control" type="text" required>
           </div>
         </c:if>
       </div>
@@ -103,27 +98,16 @@
 <script type="text/javascript">
 $("#enviar").click(function() {
   $.ajax({
-    url: "${pageContext.request.contextPath}/bus/agregar",
-    method: "POST",
-    data: {
-      placa: $("#placa").val(),
-      marca: $("#marca").val(),
-      nombreMarca: $("#nombreMarca").val(),
-      modelo: $("#modelo").val(),
-      anno: $("#anno").val()
+    url : "${pageContext.request.contextPath}/ubicacion/guardar/" + $("#placa").val(),
+    method : "POST",
+    data : {
+      latitud : $("#latitud").val(),
+      longitud : $("#longitud").val()
     },
     success: function() {
-    	console.log("success");
+      console.log("success");
     }
   });
-});
-
-$("#marca").change(function() {
-  if ($(this).val() == 0) {
-    $("#oculto").removeClass("hidden");
-  } else {
-    $("#oculto").addClass("hidden");
-  }
 });
 
 $("table").DataTable();

@@ -6,6 +6,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Ubicacion
@@ -127,5 +128,25 @@ public class Ubicacion
             e.printStackTrace();
         }
         return new Ubicacion(id);
+    }
+    
+    public static ArrayList<Ubicacion> todas()
+    {
+        ArrayList<Ubicacion> ubicaciones = new ArrayList<Ubicacion>();
+        try
+        {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
+            Statement stmt = conexion.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id FROM ubicacion;");
+            while(rs.next())
+            {
+                ubicaciones.add(new Ubicacion(rs.getInt(1)));
+            }
+            conexion.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return ubicaciones;
     }
 }

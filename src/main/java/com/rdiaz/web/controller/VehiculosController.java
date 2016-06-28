@@ -45,7 +45,8 @@ public class VehiculosController extends BaseController
     @RequestMapping(value = "/buses", method = RequestMethod.GET)
     public String buses(ModelMap model)
     {
-        model.addAttribute("vehiculos", vehiculos);
+        model.addAttribute("marcas", marcas.lista());
+        model.addAttribute("vehiculos", vehiculos.lista());
         return "vehiculos";
     }
 }

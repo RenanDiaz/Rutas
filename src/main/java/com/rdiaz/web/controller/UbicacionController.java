@@ -23,9 +23,17 @@ public class UbicacionController extends BaseController
     }
     
     @RequestMapping(value = "/ubicacion/{placa}", method = RequestMethod.GET)
-    public String bus(ModelMap model, @PathVariable("placa") String placa)
+    public String ubicacion(ModelMap model, @PathVariable("placa") String placa)
     {
         model.addAttribute("ubicacion", Ubicacion.de(vehiculos.get(placa)));
         return "ubicacion";
+    }
+    
+    @RequestMapping(value = "/ubicacion", method = RequestMethod.GET)
+    public String ubicaciones(ModelMap model)
+    {
+        model.addAttribute("ubicaciones", Ubicacion.todas());
+        model.addAttribute("vehiculos", vehiculos.lista());
+        return "ubicaciones";
     }
 }

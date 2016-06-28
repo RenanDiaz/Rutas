@@ -4,16 +4,12 @@
 <html lang="es">
 <head>
 <title>Rutas - Ubicaci&oacute;n</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
 
 <spring:url value="/resources/core/css/hello.css" var="coreCss" />
 <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
 <link href="${bootstrapCss}" rel="stylesheet" />
 <link href="${coreCss}" rel="stylesheet" />
-<style type="text/css">
-.hidden {
-  display: none;
-}
-</style>
 </head>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -63,55 +59,13 @@
     </div>
   </div>
 </c:if>
-<div class="container">
-  <div class="row">
-    <div class="col-md-3">
-      <div class="form-group">
-        <label>Placa</label> <input name="placa" id="placa" class="form-control" type="text" required>
-      </div>
-      <div class="form-group">
-        <label>Latitud</label> <input name="latitud" id="latitud" class="form-control" type="text" required>
-      </div>
-      <div class="form-group">
-        <label>Longitud</label> <input name="longitud" id="longitud" class="form-control" type="text" required>
-      </div>
-      <input type="submit" id="enviar" class="btn btn-primary">
-    </div>
-  </div>
-</div>
 
-<spring:url value="/resources/core/css/hello.js" var="coreJs" />
-<spring:url value="/resources/core/css/bootstrap.min.js" var="bootstrapJs" />
+<spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
+<spring:url value="/resources/core/js/hello.js" var="coreJs" />
+<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
 
+<script src="${jquery}"></script>
 <script src="${coreJs}"></script>
 <script src="${bootstrapJs}"></script>
-<script type="text/javascript" src="${pageContext.request.contextPath}/resources/core/js/jquery-3.0.0.js"></script>
-<script type="text/javascript">
-$("#enviar").click(function() {
-  $.ajax({
-    url : "${pageContext.request.contextPath}/ubicacion/guardar/" + $("#placa").val(),
-    method : "POST",
-    data : {
-      latitud : $("#latitud").val(),
-      longitud : $("#longitud").val()
-    },
-    success: function() {
-    	console.log("success");
-    }
-  });
-});
-evaluarSelect();
-function evaluarSelect() {
-  if ($("#marca").val() == 0) {
-    $("#oculto").removeClass("hidden");
-  } else {
-    $("#oculto").addClass("hidden");
-  }
-}
-
-$("#marca").change(function() {
-  evaluarSelect();
-});
-</script>
 </body>
 </html>
