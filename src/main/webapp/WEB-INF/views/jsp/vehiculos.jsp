@@ -4,30 +4,36 @@
 <html lang="es">
 <head>
 <title>Rutas - Vehiculos</title>
-
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
-<spring:url value="/resources/core/css/hello.css" var="coreCss" />
 <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
+<spring:url value="/resources/core/css/common.css" var="commonCss" />
 <spring:url value="/resources/core/DataTables/datatables.min.css" var="datatablesCss" />
 <link href="${bootstrapCss}" rel="stylesheet" />
-<link href="${coreCss}" rel="stylesheet" />
+<link href="${commonCss}" rel="stylesheet" />
 <link href="${datatablesCss}" rel="stylesheet" />
 </head>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
+  <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Veh&iacute;culos</a>
+      <a class="navbar-brand" href="/Rutas/">Rutas</a>
     </div>
   </div>
 </nav>
-
-<div class="jumbotron"></div>
-
+<br><br><br>
+<div class="container">
+  <h2>
+    <a href="/Rutas/" class="btn btn-info">
+      <span class="glyphicon glyphicon-menu-left"></span>
+    </a>
+    Veh&iacute;culos
+  </h2>
+</div>
+<br>
 <c:if test="${not empty vehiculos}">
   <div class="container">
     <div class="table-responsive">
-      <table class="table table-striped">
+      <table class="table table-striped table-hover">
         <thead>
           <tr>
             <th>Placa</th>
@@ -38,7 +44,7 @@
         </thead>
         <tbody>
           <c:forEach items="${vehiculos}" var="vehiculo">
-            <tr>
+            <tr class="link" id="${vehiculo.placa()}">
               <td>${vehiculo.placa()}</td>
               <td>${vehiculo.marca()}</td>
               <td>${vehiculo.modelo()}</td>
@@ -92,7 +98,7 @@
 </div>
 
 <spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
-<spring:url value="/resources/core/js/hello.js" var="coreJs" />
+<spring:url value="/resources/core/js/common.js" var="coreJs" />
 <spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
 <spring:url value="/resources/core/DataTables/datatables.min.js" var="datatablesJs" />
 
@@ -101,6 +107,8 @@
 <script src="${bootstrapJs}"></script>
 <script src="${datatablesJs}"></script>
 <script type="text/javascript">
+$("table").DataTable();
+
 $("#enviar").click(function() {
   $.ajax({
     url: "${pageContext.request.contextPath}/bus/agregar",
@@ -118,6 +126,10 @@ $("#enviar").click(function() {
   });
 });
 
+$("#regresar").click(function() {
+  window.location.href = "/Rutas/";
+});
+
 $("#marca").change(function() {
   if ($(this).val() == 0) {
     $("#oculto").removeClass("hidden");
@@ -126,7 +138,10 @@ $("#marca").change(function() {
   }
 });
 
-$("table").DataTable();
+$(".link").click(function() {
+  var id = $(this).prop('id');
+  window.location.href = "/Rutas/buses/" + id;
+});
 </script>
 </body>
 </html>

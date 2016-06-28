@@ -4,11 +4,11 @@
 <html lang="es">
 <head>
 <title>Rutas - Vehiculo</title>
-
-<spring:url value="/resources/core/css/hello.css" var="coreCss" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
 <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
+<spring:url value="/resources/core/css/common.css" var="commonCss" />
 <link href="${bootstrapCss}" rel="stylesheet" />
-<link href="${coreCss}" rel="stylesheet" />
+<link href="${commonCss}" rel="stylesheet" />
 <style type="text/css">
 .hidden {
   display: none;
@@ -63,7 +63,7 @@
 </c:if>
 
 <spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
-<spring:url value="/resources/core/js/hello.js" var="coreJs" />
+<spring:url value="/resources/core/js/common.js" var="coreJs" />
 <spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
 
 <script src="${jquery}"></script>

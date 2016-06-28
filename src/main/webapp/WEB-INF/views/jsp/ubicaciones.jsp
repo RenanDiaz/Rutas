@@ -4,26 +4,32 @@
 <html lang="es">
 <head>
 <title>Rutas - Ubicaciones</title>
-
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
-<spring:url value="/resources/core/css/hello.css" var="coreCss" />
 <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
+<spring:url value="/resources/core/css/common.css" var="commonCss" />
 <spring:url value="/resources/core/DataTables/datatables.min.css" var="datatablesCss" />
 <link href="${bootstrapCss}" rel="stylesheet" />
-<link href="${coreCss}" rel="stylesheet" />
+<link href="${commonCss}" rel="stylesheet" />
 <link href="${datatablesCss}" rel="stylesheet" />
 </head>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
-  <div class="container">
+  <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Ubicaciones</a>
+      <a class="navbar-brand" href="#">Rutas</a>
     </div>
   </div>
 </nav>
-
-<div class="jumbotron"></div>
-
+<br><br><br>
+<div class="container">
+  <h2>
+    <a href="/Rutas/" class="btn btn-info">
+      <span class="glyphicon glyphicon-menu-left"></span>
+    </a>
+    Ubicaciones
+  </h2>
+</div>
+<br>
 <c:if test="${not empty ubicaciones}">
   <div class="container">
     <div class="table-responsive">
@@ -39,7 +45,7 @@
         </thead>
         <tbody>
           <c:forEach items="${ubicaciones}" var="ubicacion">
-            <tr>
+            <tr class="link" id="${ubicacion.id()}">
               <td>${ubicacion.fechahora()}</td>
               <td>${ubicacion.ruta()}</td>
               <td>${ubicacion.vehiculo().placa()}</td>
@@ -87,7 +93,7 @@
 </div>
 
 <spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
-<spring:url value="/resources/core/js/hello.js" var="coreJs" />
+<spring:url value="/resources/core/js/common.js" var="coreJs" />
 <spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
 <spring:url value="/resources/core/DataTables/datatables.min.js" var="datatablesJs" />
 
@@ -96,6 +102,8 @@
 <script src="${bootstrapJs}"></script>
 <script src="${datatablesJs}"></script>
 <script type="text/javascript">
+$("table").DataTable();
+
 $("#enviar").click(function() {
   $.ajax({
     url : "${pageContext.request.contextPath}/ubicacion/guardar/" + $("#placa").val(),
@@ -110,7 +118,10 @@ $("#enviar").click(function() {
   });
 });
 
-$("table").DataTable();
+$(".link").click(function() {
+  var id = $(this).prop('id');
+  window.location.href = "/Rutas/ubicacion/" + id;
+});
 </script>
 </body>
 </html>

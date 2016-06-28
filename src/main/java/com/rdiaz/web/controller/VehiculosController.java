@@ -14,7 +14,7 @@ import com.rdiaz.model.Marca;
 @Controller
 public class VehiculosController extends BaseController
 {
-    @RequestMapping(value = "/bus/{placa}", method = RequestMethod.GET)
+    @RequestMapping(value = "/buses/{placa}", method = RequestMethod.GET)
     public String bus(ModelMap model, @PathVariable("placa") String placa)
     {
         model.addAttribute("vehiculo", vehiculos.get(placa));
@@ -22,7 +22,7 @@ public class VehiculosController extends BaseController
         return "vehiculo";
     }
     
-    @RequestMapping(value = "/bus/agregar", method = RequestMethod.POST)
+    @RequestMapping(value = "/buses/agregar", method = RequestMethod.POST)
     @ResponseBody public String agregarBus(@RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "marca", required = true) int marca, @RequestParam(value = "nombreMarca", required = false) String nombreMarca, @RequestParam(value = "modelo", required = true) String modelo, @RequestParam(value = "anno", required = true) int anno)
     {
         if(nombreMarca != null)
@@ -35,7 +35,7 @@ public class VehiculosController extends BaseController
         return "";
     }
     
-    @RequestMapping(value = "/bus/nuevo", method = RequestMethod.GET)
+    @RequestMapping(value = "/buses/nuevo", method = RequestMethod.GET)
     public String nuevoBus(ModelMap model)
     {
         model.addAttribute("marcas", marcas.lista());

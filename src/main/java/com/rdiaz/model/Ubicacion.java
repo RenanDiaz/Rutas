@@ -11,6 +11,7 @@ import java.util.Date;
 
 public class Ubicacion
 {
+    private int _id;
     private Timestamp _fechahora;
     private int _ruta;
     private Vehiculo _vehiculo;
@@ -19,6 +20,7 @@ public class Ubicacion
     
     Ubicacion(int id)
     {
+        id(id);
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
@@ -26,11 +28,11 @@ public class Ubicacion
             ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM ubicacion WHERE id = %d;", id));
             if(rs.last())
             {
-                _fechahora = rs.getTimestamp(2);
-                _ruta = rs.getInt(3);
-                _vehiculo = Bus.conPlaca(rs.getString(4));
-                _latitud = rs.getString(5);
-                _longitud = rs.getString(6);
+                fechahora(rs.getTimestamp(2));
+                ruta(rs.getInt(3));
+                vehiculo(rs.getString(4));
+                latitud(rs.getString(5));
+                longitud(rs.getString(6));
             }
             conexion.close();
         } catch (Exception e)
@@ -39,6 +41,15 @@ public class Ubicacion
         }
     }
     
+    public int id()
+    {
+        return _id;
+    }
+    
+    public void id(int id)
+    {
+        _id = id;
+    }
     public Timestamp fechahora()
     {
         return _fechahora;
