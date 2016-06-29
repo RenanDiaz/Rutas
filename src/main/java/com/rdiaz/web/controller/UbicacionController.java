@@ -19,6 +19,7 @@ public class UbicacionController extends BaseController
     {
         Vehiculo vehiculo = vehiculos.get(placa);
         Ubicacion.nueva(1, vehiculo, latitud, longitud);
+        System.out.println(String.format("Nueva ubicacion: %s, %s %s", placa, latitud, longitud));
         return "sucess";
     }
 
