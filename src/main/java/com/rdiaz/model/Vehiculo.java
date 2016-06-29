@@ -2,6 +2,7 @@ package com.rdiaz.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
@@ -157,5 +158,42 @@ public abstract class Vehiculo
     public String nombre()
     {
         return String.format("%s %s %s de %d con placa %s", tipo(), marca(), modelo(), anno(), placa());
+    }
+    
+    public static Vehiculo conPlaca(String placa)
+    {
+        int marca = 0;
+        String modelo = "";
+        int anno = 0;
+        int tipo = 0;
+        
+        try
+        {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
+            PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM vehiculos WHERE placa = ?;");
+            stmt.setString(1, placa);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.next())
+            {
+                marca = rs.getInt(2);
+                modelo = rs.getString(3);
+                anno = rs.getInt(4);
+                tipo = rs.getInt(5);
+            }
+            conexion.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        switch (tipo)
+        {
+        case 0:
+            return new Bus(placa, marca, modelo, anno);
+        case 1:
+            return new Taxi(placa, marca, modelo, anno);
+        case 2:
+            return new Particular(placa, marca, modelo, anno);
+        }
+        return null;
     }
 }

@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<title>Rutas - Vehiculos</title>
+<title>Rutas - ${titulo}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
 <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
 <spring:url value="/resources/core/css/common.css" var="commonCss" />
@@ -26,7 +26,7 @@
     <a href="/Rutas/" class="btn btn-info">
       <span class="glyphicon glyphicon-menu-left"></span>
     </a>
-    Veh&iacute;culos
+    ${titulo}
   </h2>
 </div>
 <br>
@@ -109,9 +109,11 @@
 <script type="text/javascript">
 $("table").DataTable();
 
+var tipo = "${titulo}".toLowerCase();
+
 $("#enviar").click(function() {
   $.ajax({
-    url: "${pageContext.request.contextPath}/buses/agregar",
+    url: "${pageContext.request.contextPath}/" + tipo + "/agregar",
     method: "POST",
     data: {
       placa: $("#placa").val(),
@@ -140,7 +142,7 @@ $("#marca").change(function() {
 
 $(".link").click(function() {
   var id = $(this).prop('id');
-  window.location.href = "/Rutas/buses/" + id;
+  window.location.href = "/Rutas/" + tipo + "/" + id;
 });
 </script>
 </body>

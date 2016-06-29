@@ -77,7 +77,7 @@ public class Ubicacion
     
     public void vehiculo(String placa)
     {
-        _vehiculo = Bus.conPlaca(placa);
+        _vehiculo = Vehiculo.conPlaca(placa);
     }
     
     public String latitud()

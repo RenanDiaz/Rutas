@@ -31,8 +31,22 @@ public class Vehiculos
                 int marca = rs.getInt(2);
                 String modelo = rs.getString(3);
                 int anno = rs.getInt(4);
-                Bus bus = new Bus(placa, marca, modelo, anno);
-                add(bus);
+                
+                switch(rs.getInt(5))
+                {
+                case 0:
+                    Bus bus = new Bus(placa, marca, modelo, anno);
+                    add(bus);
+                    break;
+                case 1:
+                    Taxi taxi = new Taxi(placa, marca, modelo, anno);
+                    add(taxi);
+                    break;
+                case 2:
+                    Particular particular = new Particular(placa, marca, modelo, anno);
+                    add(particular);
+                    break;
+                }
             }
             con.close();
             
@@ -76,5 +90,53 @@ public class Vehiculos
         }
         vehiculos.sort(Comparator.comparing(Vehiculo::placa));
         return vehiculos;
+    }
+
+    public ArrayList<Bus> buses()
+    {
+        ArrayList<Bus> buses = new ArrayList<Bus>();
+        for(Map.Entry<String, Vehiculo> vehiculoPorPlaca : _vehiculos.entrySet())
+        {
+            Vehiculo vehiculo = vehiculoPorPlaca.getValue();
+            if(vehiculo instanceof Bus)
+            {
+                Bus bus = (Bus) vehiculo;
+                buses.add(bus);
+            }
+        }
+        buses.sort(Comparator.comparing(Bus::placa));
+        return buses;
+    }
+
+    public ArrayList<Taxi> taxis()
+    {
+        ArrayList<Taxi> taxis = new ArrayList<Taxi>();
+        for(Map.Entry<String, Vehiculo> vehiculoPorPlaca : _vehiculos.entrySet())
+        {
+            Vehiculo vehiculo = vehiculoPorPlaca.getValue();
+            if(vehiculo instanceof Taxi)
+            {
+                Taxi taxi = (Taxi) vehiculo;
+                taxis.add(taxi);
+            }
+        }
+        taxis.sort(Comparator.comparing(Taxi::placa));
+        return taxis;
+    }
+
+    public ArrayList<Particular> particulares()
+    {
+        ArrayList<Particular> particulares = new ArrayList<Particular>();
+        for(Map.Entry<String, Vehiculo> vehiculoPorPlaca : _vehiculos.entrySet())
+        {
+            Vehiculo vehiculo = vehiculoPorPlaca.getValue();
+            if(vehiculo instanceof Particular)
+            {
+                Particular particular = (Particular) vehiculo;
+                particulares.add(particular);
+            }
+        }
+        particulares.sort(Comparator.comparing(Particular::placa));
+        return particulares;
     }
 }
