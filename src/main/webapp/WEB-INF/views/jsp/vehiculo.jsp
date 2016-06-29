@@ -26,7 +26,7 @@
 <br><br><br>
 <div class="container">
   <h2>
-    <a href="/Rutas/buses" class="btn btn-info">
+    <a href="/Rutas/${tipo}" class="btn btn-info">
       <span class="glyphicon glyphicon-menu-left"></span>
     </a>
     <c:if test="${not empty vehiculo}">
@@ -120,7 +120,7 @@
 <script type="text/javascript">
 $("#enviar").click(function() {
   $.ajax({
-    url: "${pageContext.request.contextPath}/buses/editar",
+    url: "${pageContext.request.contextPath}/${tipo}/editar",
     method: "POST",
     data: {
       placa: $("#placa").val(),
@@ -130,7 +130,7 @@ $("#enviar").click(function() {
       anno: $("#anno").val()
     },
     success: function() {
-      location.href = "/Rutas/ubicacion/" + $("#placa").val();
+      location.reload();
     }
   });
 });

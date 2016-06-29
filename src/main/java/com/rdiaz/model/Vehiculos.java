@@ -139,4 +139,9 @@ public class Vehiculos
         particulares.sort(Comparator.comparing(Particular::placa));
         return particulares;
     }
+
+    public void editar(String placa, int marca, String modelo, int anno)
+    {
+        get(placa).editar(marca, modelo, anno);
+    }
 }

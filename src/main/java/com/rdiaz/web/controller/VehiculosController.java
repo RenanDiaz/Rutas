@@ -1,6 +1,7 @@
 package com.rdiaz.web.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,6 +16,15 @@ import com.rdiaz.model.Taxi;
 @Controller
 public class VehiculosController extends BaseController
 {
+    @RequestMapping(value = "/{tipo}/{placa}", method = RequestMethod.GET)
+    public String particular(ModelMap model, @PathVariable("tipo") String tipo, @PathVariable("placa") String placa)
+    {
+        model.addAttribute("vehiculo", vehiculos.get(placa));
+        model.addAttribute("tipo", tipo);
+        model.addAttribute("marcas", marcas.lista());
+        return "vehiculo";
+    }
+    
     @RequestMapping(value = "/{tipo}/agregar", method = RequestMethod.POST)
     @ResponseBody public String agregarBus(@PathVariable String tipo, @RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "marca", required = true) int marca, @RequestParam(value = "nombreMarca", required = false) String nombreMarca, @RequestParam(value = "modelo", required = true) String modelo, @RequestParam(value = "anno", required = true) int anno)
     {
@@ -23,6 +33,7 @@ public class VehiculosController extends BaseController
             Marca nuevaMarca = new Marca(nombreMarca);
             marca = nuevaMarca.id();
         }
+        
         switch(tipo)
         {
         case "buses":
@@ -38,10 +49,10 @@ public class VehiculosController extends BaseController
             vehiculos.add(particular);
             break;
         }
+        
         return "success";
     }
     
-    //FIXME editar
     @RequestMapping(value = "/{tipo}/editar", method = RequestMethod.POST)
     @ResponseBody public String editarBus(@PathVariable String tipo, @RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "marca", required = true) int marca, @RequestParam(value = "nombreMarca", required = false) String nombreMarca, @RequestParam(value = "modelo", required = true) String modelo, @RequestParam(value = "anno", required = true) int anno)
     {
@@ -50,8 +61,8 @@ public class VehiculosController extends BaseController
             Marca nuevaMarca = new Marca(nombreMarca);
             marca = nuevaMarca.id();
         }
-        Bus bus = new Bus(placa, marca, modelo, anno);
-        vehiculos.add(bus);
+        
+        vehiculos.editar(placa, marca, modelo, anno);
         return "success";
     }
 }

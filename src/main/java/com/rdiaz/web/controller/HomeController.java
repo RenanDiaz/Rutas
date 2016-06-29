@@ -11,7 +11,7 @@ import com.rdiaz.model.Ubicacion;
 public class HomeController extends BaseController
 {
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String printWelcome(ModelMap model)
+    public String inicio(ModelMap model)
     {
         model.addAttribute("buses", vehiculos.buses().size());
         model.addAttribute("taxis", vehiculos.taxis().size());

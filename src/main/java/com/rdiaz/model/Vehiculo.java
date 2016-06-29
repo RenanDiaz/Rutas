@@ -73,8 +73,6 @@ public abstract class Vehiculo
         _marca = marca;
         try
         {
-            Class.forName("com.mysql.jdbc.Driver");
-            
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
             Statement stmt = conexion.createStatement();
             
@@ -96,8 +94,6 @@ public abstract class Vehiculo
         _modelo = modelo;
         try
         {
-            Class.forName("com.mysql.jdbc.Driver");
-            
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
             Statement stmt = conexion.createStatement();
             
@@ -119,8 +115,6 @@ public abstract class Vehiculo
         _anno = anno;
         try
         {
-            Class.forName("com.mysql.jdbc.Driver");
-            
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
             Statement stmt = conexion.createStatement();
             
@@ -142,8 +136,6 @@ public abstract class Vehiculo
         _tipo = tipo;
         try
         {
-            Class.forName("com.mysql.jdbc.Driver");
-            
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
             Statement stmt = conexion.createStatement();
             
@@ -185,6 +177,7 @@ public abstract class Vehiculo
         {
             e.printStackTrace();
         }
+        
         switch (tipo)
         {
         case 0:
@@ -195,5 +188,12 @@ public abstract class Vehiculo
             return new Particular(placa, marca, modelo, anno);
         }
         return null;
+    }
+
+    public void editar(int marca, String modelo, int anno)
+    {
+        marca(marca);
+        modelo(modelo);
+        anno(anno);
     }
 }
