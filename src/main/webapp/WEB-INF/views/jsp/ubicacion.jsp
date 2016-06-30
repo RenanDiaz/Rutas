@@ -25,7 +25,7 @@
       <span class="glyphicon glyphicon-menu-left"></span>
     </a>
     <c:if test="${not empty ubicacion.vehiculo()}">
-      ${ubicacion.vehiculo().nombre()}
+      ${ubicacion.vehiculo().nombreCorto()}
     </c:if>
     <c:if test="${empty ubicacion.vehiculo()}">
       No encontrado
@@ -48,7 +48,7 @@
         <tbody>
           <tr>
             <td>${ubicacion.fechahora()}</td>
-            <td>${ubicacion.ruta()}</td>
+            <td>${ubicacion.ruta().descripcion()}</td>
             <td>${ubicacion.latitud()}</td>
             <td>${ubicacion.longitud()}</td>
           </tr>
@@ -81,6 +81,19 @@
             </select>
           </div>
           <div class="form-group">
+            <label>Ruta</label>
+            <select name="ruta" id="ruta" class="form-control">
+              <c:forEach items="${rutas}" var="ruta">
+                <c:if test="${ruta.id() == ubicacion.ruta().id()}">
+                  <option value="${ruta.id()}" selected>${ruta.descripcion()}</option>
+                </c:if>
+                <c:if test="${ruta.id() != ubicacion.ruta().id()}">
+                  <option value="${ruta.id()}">${ruta.descripcion()}</option>
+                </c:if>
+              </c:forEach>
+            </select>
+          </div>
+          <div class="form-group">
             <label>Latitud</label> <input name="latitud" id="latitud" class="form-control" type="text" required value="${ubicacion.latitud()}">
           </div>
           <div class="form-group">
@@ -103,5 +116,22 @@
 <script src="${jquery}"></script>
 <script src="${coreJs}"></script>
 <script src="${bootstrapJs}"></script>
+<script type="text/javascript">
+$("#enviar").click(function() {
+  $.ajax({
+    url: "${pageContext.request.contextPath}/ubicacion/editar/" + $("#placa").val(),
+    method: "POST",
+    data: {
+      id: "${ubicacion.id()}",
+      ruta: $("#ruta").val(),
+      latitud: $("#latitud").val(),
+      longitud: $("#longitud").val()
+    },
+    success: function() {
+      location.reload();
+    }
+  });
+});
+</script>
 </body>
 </html>

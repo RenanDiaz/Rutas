@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.rdiaz.model.Ruta;
 import com.rdiaz.model.Ubicacion;
-import com.rdiaz.model.Vehiculo;
 
 @Controller
 public class UbicacionController extends BaseController
@@ -17,26 +17,26 @@ public class UbicacionController extends BaseController
     @RequestMapping(value = "/ubicacion/guardar/{placa}", method = RequestMethod.POST)
     @ResponseBody public String agregarUbicacion(@PathVariable String placa, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
     {
-        Vehiculo vehiculo = vehiculos.get(placa);
-        Ubicacion.nueva(1, vehiculo, latitud, longitud);
+        Ubicacion.nueva(1, placa, latitud, longitud);
         System.out.println(String.format("Nueva ubicacion: %s, %s %s", placa, latitud, longitud));
         return "sucess";
     }
 
-    //FIXME editar con id
     @RequestMapping(value = "/ubicacion/editar/{placa}", method = RequestMethod.POST)
-    @ResponseBody public String editarUbicacion(@PathVariable String placa, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
+    @ResponseBody public String editarUbicacion(@PathVariable String placa, @RequestParam(value = "id", required = true) int id, @RequestParam(value = "ruta", required = true) int ruta, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
     {
-        Vehiculo vehiculo = vehiculos.get(placa);
-        Ubicacion.nueva(1, vehiculo, latitud, longitud);
+        Ubicacion ubicacion = new Ubicacion(id);
+        ubicacion.editar(ruta, placa, latitud, longitud);
         return "success";
     }
     
-    @RequestMapping(value = "/ubicacion/{placa}", method = RequestMethod.GET)
-    public String ubicacion(ModelMap model, @PathVariable("placa") String placa)
+    @RequestMapping(value = "/ubicacion/{id}", method = RequestMethod.GET)
+    public String ubicacion(ModelMap model, @PathVariable("id") int id)
     {
-        model.addAttribute("ubicacion", Ubicacion.de(vehiculos.get(placa)));
+        Ubicacion ubicacion = new Ubicacion(id);
+        model.addAttribute("ubicacion", ubicacion);
         model.addAttribute("vehiculos", vehiculos.lista());
+        model.addAttribute("rutas", Ruta.todas());
         return "ubicacion";
     }
     
@@ -45,6 +45,7 @@ public class UbicacionController extends BaseController
     {
         model.addAttribute("ubicaciones", Ubicacion.todas());
         model.addAttribute("vehiculos", vehiculos.lista());
+        model.addAttribute("rutas", Ruta.todas());
         return "ubicaciones";
     }
 }

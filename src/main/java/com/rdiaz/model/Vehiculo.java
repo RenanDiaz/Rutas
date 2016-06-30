@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 
 public abstract class Vehiculo
 {
@@ -27,11 +26,18 @@ public abstract class Vehiculo
             Class.forName("com.mysql.jdbc.Driver");
             
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            Statement stmt = conexion.createStatement();
-            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM vehiculos WHERE placa = '%s';", placa));
+            PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM vehiculos WHERE placa = ?;");
+            stmt.setString(1, placa);
+            ResultSet rs = stmt.executeQuery();
             if(!rs.next())
             {
-                stmt.execute(String.format("INSERT INTO vehiculos (placa, marca, modelo, anno, tipo) VALUES ('%s', %d, '%s', %d, %d);", placa, marca, modelo, anno, tipo.ordinal()));
+                stmt = conexion.prepareStatement("INSERT INTO vehiculos (placa, marca, modelo, anno, tipo) VALUES (?, ?, ?, ?, ?);");
+                stmt.setString(1, placa);
+                stmt.setInt(2, marca);
+                stmt.setString(3, modelo);
+                stmt.setInt(4, anno);
+                stmt.setInt(5, tipo.ordinal());
+                stmt.execute();
             }
             conexion.close();
         } catch (Exception e)
@@ -50,12 +56,10 @@ public abstract class Vehiculo
         _placa = placa;
         try
         {
-            Class.forName("com.mysql.jdbc.Driver");
-            
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            Statement stmt = conexion.createStatement();
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO vehiculos (placa) VALUES (?);");
+            stmt.setString(1, placa());
             
-            stmt.execute(String.format("INSERT INTO vehiculos (placa) VALUES ('%s');", placa));
             conexion.close();
         } catch (Exception e)
         {
@@ -74,9 +78,10 @@ public abstract class Vehiculo
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            Statement stmt = conexion.createStatement();
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE vehiculos SET marca = ? WHERE placa = ?;");
+            stmt.setInt(1, marca);
+            stmt.setString(2, placa());
             
-            stmt.execute(String.format("UPDATE vehiculos SET marca = %d WHERE placa = '%s';", marca, placa()));
             conexion.close();
         } catch (Exception e)
         {
@@ -95,9 +100,10 @@ public abstract class Vehiculo
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            Statement stmt = conexion.createStatement();
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE vehiculos SET modelo = ? WHERE placa = ?;");
+            stmt.setString(1, modelo);
+            stmt.setString(2, placa());
             
-            stmt.execute(String.format("UPDATE vehiculos SET modelo = '%s' WHERE placa = '%s';", modelo, placa()));
             conexion.close();
         } catch (Exception e)
         {
@@ -116,9 +122,10 @@ public abstract class Vehiculo
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            Statement stmt = conexion.createStatement();
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE vehiculos SET anno = ? WHERE placa = ?;");
+            stmt.setInt(1, anno);
+            stmt.setString(2, placa());
             
-            stmt.execute(String.format("UPDATE vehiculos SET anno = %d WHERE placa = '%s';", anno, placa()));
             conexion.close();
         } catch (Exception e)
         {
@@ -137,9 +144,10 @@ public abstract class Vehiculo
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            Statement stmt = conexion.createStatement();
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE vehiculos SET tipo = ? WHERE placa = ?;");
+            stmt.setInt(1, tipo.ordinal());
+            stmt.setString(2, placa());
             
-            stmt.execute(String.format("UPDATE vehiculos SET tipo = %d WHERE placa = '%s';", tipo.ordinal(), placa()));
             conexion.close();
         } catch (Exception e)
         {
@@ -150,6 +158,11 @@ public abstract class Vehiculo
     public String nombre()
     {
         return String.format("%s %s %s de %d con placa %s", tipo(), marca(), modelo(), anno(), placa());
+    }
+    
+    public String nombreCorto()
+    {
+        return String.format("%s %s placa %s", marca(), modelo(), placa());
     }
     
     public static Vehiculo conPlaca(String placa)

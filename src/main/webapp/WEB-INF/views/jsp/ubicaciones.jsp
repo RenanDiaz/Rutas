@@ -45,10 +45,10 @@
         </thead>
         <tbody>
           <c:forEach items="${ubicaciones}" var="ubicacion">
-            <tr class="link" id="${ubicacion.vehiculo().placa()}">
+            <tr class="link" id="${ubicacion.id()}">
               <td>${ubicacion.fechahora()}</td>
-              <td>${ubicacion.ruta()}</td>
-              <td>${ubicacion.vehiculo().placa()}</td>
+              <td>${ubicacion.ruta().descripcion()}</td>
+              <td>${ubicacion.vehiculo().nombreCorto()}</td>
               <td>${ubicacion.latitud()}</td>
               <td>${ubicacion.longitud()}</td>
             </tr>
@@ -73,6 +73,14 @@
             <select name="placa" id="placa" class="form-control">
               <c:forEach items="${vehiculos}" var="vehiculo">
                 <option value="${vehiculo.placa()}">${vehiculo.modelo()}</option>
+              </c:forEach>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Ruta</label>
+            <select name="ruta" id="ruta" class="form-control">
+              <c:forEach items="${rutas}" var="ruta">
+                <option value="${ruta.id()}">${ruta.descripcion()}</option>
               </c:forEach>
             </select>
           </div>
@@ -102,15 +110,18 @@
 <script src="${bootstrapJs}"></script>
 <script src="${datatablesJs}"></script>
 <script type="text/javascript">
-$("table").DataTable();
+$("table").DataTable({
+	"order": [[ 0, "desc" ]]
+});
 
 $("#enviar").click(function() {
   $.ajax({
-    url : "${pageContext.request.contextPath}/ubicacion/guardar/" + $("#placa").val(),
-    method : "POST",
-    data : {
-      latitud : $("#latitud").val(),
-      longitud : $("#longitud").val()
+    url: "${pageContext.request.contextPath}/ubicacion/guardar/" + $("#placa").val(),
+    method: "POST",
+    data: {
+      ruta: $("#ruta").val(),
+      latitud: $("#latitud").val(),
+      longitud: $("#longitud").val()
     },
     success: function() {
       location.reload();
@@ -118,8 +129,9 @@ $("#enviar").click(function() {
   });
 });
 
-$(".link").click(function() {
-  var id = $(this).prop('id');
+$('body').delegate(".link", "click", function() {
+  var id = $(this).prop("id");
+  console.log(id);
   window.location.href = "/Rutas/ubicacion/" + id;
 });
 </script>

@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -13,19 +12,20 @@ public class Ubicacion
 {
     private int _id;
     private Timestamp _fechahora;
-    private int _ruta;
+    private Ruta _ruta;
     private Vehiculo _vehiculo;
     private String _latitud;
     private String _longitud;
     
-    Ubicacion(int id)
+    public Ubicacion(int id)
     {
         id(id);
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            Statement stmt = conexion.createStatement();
-            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM ubicacion WHERE id = %d;", id));
+            PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM ubicacion WHERE id = ?;");
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
             if(rs.last())
             {
                 fechahora(rs.getTimestamp(2));
@@ -60,14 +60,27 @@ public class Ubicacion
         _fechahora = fechahora;
     }
     
-    public int ruta()
+    public Ruta ruta()
     {
         return _ruta;
     }
     
     public void ruta(int ruta)
     {
-        _ruta = ruta;
+        _ruta = new Ruta(ruta);
+        try
+        {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE ubicacion SET ruta = ? WHERE id = ?;");
+            stmt.setInt(1, ruta);
+            stmt.setInt(2, id());
+            stmt.executeUpdate();
+            
+            conexion.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     
     public Vehiculo vehiculo()
@@ -78,6 +91,19 @@ public class Ubicacion
     public void vehiculo(String placa)
     {
         _vehiculo = Vehiculo.conPlaca(placa);
+        try
+        {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE ubicacion SET vehiculo = ? WHERE id = ?;");
+            stmt.setString(1, placa);
+            stmt.setInt(2, id());
+            stmt.executeUpdate();
+            
+            conexion.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     
     public String latitud()
@@ -88,6 +114,19 @@ public class Ubicacion
     public void latitud(String latitud)
     {
         _latitud = latitud;
+        try
+        {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE ubicacion SET latitud = ? WHERE id = ?;");
+            stmt.setString(1, latitud);
+            stmt.setInt(2, id());
+            stmt.executeUpdate();
+            
+            conexion.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     
     public String longitud()
@@ -98,9 +137,22 @@ public class Ubicacion
     public void longitud(String longitud)
     {
         _longitud = longitud;
+        try
+        {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE ubicacion SET longitud = ? WHERE id = ?;");
+            stmt.setString(1, longitud);
+            stmt.setInt(2, id());
+            stmt.executeUpdate();
+            
+            conexion.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
     }
     
-    public static void nueva(int ruta, Vehiculo vehiculo, String latitud, String longitud)
+    public static void nueva(int ruta, String placa, String latitud, String longitud)
     {
         Date date = new Date();
         Timestamp fechahora = new Timestamp(date.getTime());
@@ -110,7 +162,7 @@ public class Ubicacion
             PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ubicacion (fechahora, ruta, vehiculo, latitud, longitud) VALUES (?, ?, ?, ?, ?);");
             stmt.setTimestamp(1, fechahora);
             stmt.setInt(2, ruta);
-            stmt.setString(3, vehiculo.placa());
+            stmt.setString(3, placa);
             stmt.setString(4, latitud);
             stmt.setString(5, longitud);
             stmt.executeUpdate();
@@ -121,14 +173,23 @@ public class Ubicacion
         }
     }
     
+    public void editar(int ruta, String placa, String latitud, String longitud)
+    {
+        ruta(ruta);
+        vehiculo(placa);
+        latitud(latitud);
+        longitud(longitud);
+    }
+    
     public static Ubicacion de(Vehiculo vehiculo)
     {
         int id = 0;
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            Statement stmt = conexion.createStatement();
-            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM ubicacion WHERE vehiculo = '%s';", vehiculo.placa()));
+            PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM ubicacion WHERE vehiculo = ?;");
+            stmt.setString(1, vehiculo.placa());
+            ResultSet rs = stmt.executeQuery();
             if(rs.last())
             {
                 id = rs.getInt(1);
@@ -147,8 +208,8 @@ public class Ubicacion
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            Statement stmt = conexion.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT id FROM ubicacion;");
+            PreparedStatement stmt = conexion.prepareStatement("SELECT id FROM ubicacion;");
+            ResultSet rs = stmt.executeQuery();
             while(rs.next())
             {
                 ubicaciones.add(new Ubicacion(rs.getInt(1)));
