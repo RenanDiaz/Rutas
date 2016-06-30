@@ -10,6 +10,7 @@
     <spring.version>3.2.13.RELEASE</spring.version>
     <jstl.version>1.2</jstl.version>
     <mysql.version>5.1.6</mysql.version>
+    <atmosphere.version>2.4.4</atmosphere.version>
   </properties>
 
   <dependencies>
@@ -35,6 +36,11 @@
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20131018</version>
+    </dependency>
+    <dependency>
+      <groupId>org.atmosphere</groupId>
+      <artifactId>atmosphere-runtime</artifactId>
+      <version>${atmosphere.version}</version>
     </dependency>
   </dependencies>
 

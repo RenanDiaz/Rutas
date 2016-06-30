@@ -32,7 +32,7 @@
         <li><a href="buses">Buses<span class="badge">${buses}</span></a></li>
         <li><a href="taxis">Taxis<span class="badge">${taxis}</span></a></li>
         <li><a href="particulares">Particulares<span class="badge">${particulares}</span></a></li>
-        <li><a href="ubicacion">Ubicaciones<span class="badge">${ubicaciones}</span></a></li>
+        <li><a href="ubicacion">Ubicaciones<span class="badge" id="ubicaciones">${ubicaciones}</span></a></li>
       </ul>
     </div>
   </div>
@@ -41,9 +41,11 @@
 <spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
 <spring:url value="/resources/core/js/common.js" var="coreJs" />
 <spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
+<spring:url value="/resources/core/js/ubicacionAtmosphere.js" var="atmosphereJs" />
 
 <script src="${jquery}"></script>
 <script src="${coreJs}"></script>
 <script src="${bootstrapJs}"></script>
+<script src="${atmosphereJs}"></script>
 </body>
 </html>
