@@ -111,6 +111,13 @@
   </div>
 </div>
 
+<div class="container">
+  <hr>
+  <footer>
+    <p>&copy; Ren&aacute;n D&iacute;az Reyes 2016</p>
+  </footer>
+</div>
+
 <spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
 <spring:url value="/resources/core/js/common.js" var="coreJs" />
 <spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />

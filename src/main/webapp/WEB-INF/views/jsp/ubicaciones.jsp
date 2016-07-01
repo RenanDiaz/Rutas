@@ -20,13 +20,13 @@
     </div>
   </div>
 </nav>
-<br><br><br>
+<br>
+<br>
+<br>
 <div class="container">
   <h2>
-    <a href="/Rutas/" class="btn btn-info">
-      <span class="glyphicon glyphicon-triangle-left"></span>
-    </a>
-    Ubicaciones
+    <a href="/Rutas/" class="btn btn-info"> <span class="glyphicon glyphicon-triangle-left"></span>
+    </a> Ubicaciones
   </h2>
 </div>
 <br>
@@ -56,9 +56,28 @@
         </tbody>
       </table>
     </div>
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpAgregar">Agregar <span class="glyphicon glyphicon-plus-sign"></span></button>
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpExportar">Exportar <span class="glyphicon glyphicon-export"></span></button>
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpCalcular">Calcular <span class="glyphicon glyphicon-road"></span></button>
+    <div class="row">
+      <div class="col-xs-12 col-sm-2">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpAgregar">
+          Agregar <span class="glyphicon glyphicon-plus-sign"></span>
+        </button>
+      </div>
+      <div class="col-xs-12 col-sm-2">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpCalcular">
+          Calcular <span class="glyphicon glyphicon-road"></span>
+        </button>
+      </div>
+      <div class="col-xs-12 col-sm-2">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpExportar">
+          Exportar <span class="glyphicon glyphicon-export"></span>
+        </button>
+      </div>
+      <div class="col-xs-12 col-sm-2">
+        <a href="${pageContext.request.contextPath}/resources/files/route.xml" download="route.xml" class="btn btn-info btn-lg" id="descargar">
+          Descargar <span class="glyphicon glyphicon-download-alt"></span>
+        </a>
+      </div>
+    </div>
   </div>
 </c:if>
 
@@ -157,6 +176,12 @@
   </div>
 </div>
 
+<div class="container">
+  <hr>
+  <footer>
+    <p>&copy; Ren&aacute;n D&iacute;az Reyes 2016</p>
+  </footer>
+</div>
 <spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
 <spring:url value="/resources/core/js/common.js" var="coreJs" />
 <spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
@@ -170,6 +195,8 @@
 $("table").DataTable({
 	"order": [[ 0, "desc" ]]
 });
+
+$("#descargar").attr("disabled", true);
 
 $("#enviar").click(function() {
   $.ajax({
@@ -199,8 +226,12 @@ $("#exportar").click(function() {
       fin: fin
     },
     success: function(data) {
+      if(data != "error")
+      {
+        $("#descargar").attr("disabled", false);
+      }
       //saveFile("${pageContext.request.contextPath}/resources/files/route.xml");
-      saveToDisk("${pageContext.request.contextPath}/resources/files/route.xml", "route.xml");
+      //saveToDisk("${pageContext.request.contextPath}/resources/files/route.xml", "route.xml");
     }
   });
 });
