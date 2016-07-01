@@ -115,7 +115,7 @@
         </c:if>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" id="enviar">Enviar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="agregar">Agregar</button>
         <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
@@ -198,11 +198,14 @@ $("table").DataTable({
 
 $("#descargar").attr("disabled", true);
 
-$("#enviar").click(function() {
+$("#agregar").click(function() {
+  var d = new Date();
+  var fecha = d.getTime();
   $.ajax({
     url: "${pageContext.request.contextPath}/ubicacion/guardar/" + $("#placa").val(),
     method: "POST",
     data: {
+      fecha: fecha,
       ruta: $("#ruta").val(),
       latitud: $("#latitud").val(),
       longitud: $("#longitud").val()

@@ -6,7 +6,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 
 public class Ubicacion
 {
@@ -152,10 +151,9 @@ public class Ubicacion
         }
     }
     
-    public static void nueva(int ruta, String placa, String latitud, String longitud)
+    public static void nueva(long fecha, int ruta, String placa, String latitud, String longitud)
     {
-        Date date = new Date();
-        Timestamp fechahora = new Timestamp(date.getTime());
+        Timestamp fechahora = new Timestamp(fecha);
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");

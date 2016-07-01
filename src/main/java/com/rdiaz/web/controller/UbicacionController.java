@@ -28,9 +28,9 @@ public class UbicacionController extends BaseController
     
     @RequestMapping(value = "/ubicacion/guardar/{placa}", method = RequestMethod.POST)
     @ResponseBody
-    public String agregarUbicacion(@PathVariable String placa, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
+    public String agregarUbicacion(@PathVariable String placa, @RequestParam(value = "fecha", required = true) long fecha, @RequestParam(value = "ruta", required = true) int ruta, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
     {
-        Ubicacion.nueva(1, placa, latitud, longitud);
+        Ubicacion.nueva(fecha, ruta, placa, latitud, longitud);
         System.out.println(String.format("Nueva ubicacion: %s, %s %s", placa, latitud, longitud));
         return "sucess";
     }
@@ -77,6 +77,7 @@ public class UbicacionController extends BaseController
         return "ubicacion";
     }
     
+    //TODO: websocket para notificaciones push
     @RequestMapping(value = "/n/ubicaciones", method = RequestMethod.GET)
     @ResponseBody
     public void ubicacionesGet(AtmosphereResource atmosphereResource, HttpSession session) throws IOException

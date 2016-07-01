@@ -104,7 +104,7 @@
         </c:if>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" id="enviar">Enviar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="guardar">Guardar</button>
         <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
@@ -126,7 +126,7 @@
 <script src="${coreJs}"></script>
 <script src="${bootstrapJs}"></script>
 <script type="text/javascript">
-$("#enviar").click(function() {
+$("#guardar").click(function() {
   $.ajax({
     url: "${pageContext.request.contextPath}/${tipo}/editar",
     method: "POST",

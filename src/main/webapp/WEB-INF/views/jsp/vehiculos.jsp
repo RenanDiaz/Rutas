@@ -54,11 +54,11 @@
         </tbody>
       </table>
     </div>
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeConfirmacion">Agregar <span class="glyphicon glyphicon-plus-sign"></span></button>
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeAgregar">Agregar <span class="glyphicon glyphicon-plus-sign"></span></button>
   </div>
 </c:if>
 
-<div id="popUpDeConfirmacion" class="modal fade" role="dialog">
+<div id="popUpDeAgregar" class="modal fade" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
@@ -91,7 +91,7 @@
         </c:if>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" id="enviar">Enviar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="agregar">Agregar</button>
         <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
@@ -119,7 +119,7 @@ $("table").DataTable();
 
 var tipo = "${titulo}".toLowerCase();
 
-$("#enviar").click(function() {
+$("#agregar").click(function() {
   $.ajax({
     url: "${pageContext.request.contextPath}/" + tipo + "/agregar",
     method: "POST",
