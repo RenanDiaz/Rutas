@@ -18,14 +18,15 @@
     </div>
   </div>
 </nav>
-<br><br><br>
+<br>
+<br>
+<br>
 <div class="container">
   <h2>
-    <a href="/Rutas/ubicacion" class="btn btn-info">
-      <span class="glyphicon glyphicon-menu-left"></span>
+    <a href="/Rutas/ubicacion" class="btn btn-info"> <span class="glyphicon glyphicon-triangle-left"></span>
     </a>
     <c:if test="${not empty ubicacion.vehiculo()}">
-      ${ubicacion.vehiculo().nombreCorto()}
+      ${ubicacion.id()} - ${ubicacion.vehiculo().nombreCorto()}
     </c:if>
     <c:if test="${empty ubicacion.vehiculo()}">
       No encontrado
@@ -35,30 +36,80 @@
 <br>
 <c:if test="${not empty ubicacion}">
   <div class="container">
-    <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Fecha y hora</th>
-            <th>Ruta</th>
-            <th>Latitud</th>
-            <th>Longitud</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>${ubicacion.fechahora()}</td>
-            <td>${ubicacion.ruta().descripcion()}</td>
-            <td>${ubicacion.latitud()}</td>
-            <td>${ubicacion.longitud()}</td>
-          </tr>
-        </tbody>
-      </table>
+    <div class="row">
+      <div class="col-sm-1">
+        <c:if test="${ubicacion.id() > 1}">
+          <h2>
+            <a href="/Rutas/ubicacion/${ubicacion.id() - 1}" class="btn btn-info"><span class="glyphicon glyphicon-menu-left"></span></a>
+          </h2>
+        </c:if>
+      </div>
+      <div class="table-responsive col-sm-10">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Fecha y hora</th>
+              <th>Ruta</th>
+              <th>Latitud</th>
+              <th>Longitud</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>${ubicacion.fechahora()}</td>
+              <td>${ubicacion.ruta().descripcion()}</td>
+              <td>${ubicacion.latitud()}</td>
+              <td>${ubicacion.longitud()}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-sm-1">
+        <c:if test="${ubicacion.id() < total}">
+          <h2>
+            <a href="/Rutas/ubicacion/${ubicacion.id() + 1}" class="btn btn-info"><span class="glyphicon glyphicon-menu-right"></span></a>
+          </h2>
+        </c:if>
+      </div>
     </div>
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeConfirmacion">Editar</button>
+    <div class="row">
+      <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeEditar">Editar <span class="glyphicon glyphicon-edit"></span></button>
+    </div>
+    <br>
+    <div class="row">
+      <label>Latitud</label>
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <input id="latitud-copy" class="form-control" type="text" disabled value="${ubicacion.latitud()}">
+        </div>
+      </div>
+      <div class="col-sm-1">
+        <button id="btn-latitud-copy" class="btn btn-info btn-copy">
+          <span class="glyphicon glyphicon-copy"></span>
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <label>Longitud</label>
+    </div>
+    <div class="row">
+      <div class="col-sm-3">
+        <div class="form-group">
+          <input id="longitud-copy" class="form-control" type="text" disabled value="${ubicacion.longitud()}">
+        </div>
+      </div>
+      <div class="col-sm-1">
+        <button id="btn-longitud-copy" class="btn btn-info btn-copy">
+          <span class="glyphicon glyphicon-copy"></span>
+        </button>
+      </div>
+    </div>
   </div>
 </c:if>
-<div id="popUpDeConfirmacion" class="modal fade" role="dialog">
+
+<div id="popUpDeEditar" class="modal fade" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
@@ -68,21 +119,19 @@
       <div class="modal-body" id="mensaje">
         <c:if test="${not empty vehiculos}">
           <div class="form-group">
-            <label>Veh&iacute;culo</label>
-            <select name="placa" id="placa" class="form-control">
+            <label>Veh&iacute;culo</label> <select name="placa" id="placa" class="form-control">
               <c:forEach items="${vehiculos}" var="vehiculo">
                 <c:if test="${vehiculo.placa() == ubicacion.vehiculo().placa()}">
-                  <option value="${vehiculo.placa()}" selected>${vehiculo.nombre()}</option>
+                  <option value="${vehiculo.placa()}" selected>${vehiculo.nombreCorto()}</option>
                 </c:if>
                 <c:if test="${vehiculo.placa() != ubicacion.vehiculo().placa()}">
-                  <option value="${vehiculo.placa()}">${vehiculo.nombre()}</option>
+                  <option value="${vehiculo.placa()}">${vehiculo.nombreCorto()}</option>
                 </c:if>
               </c:forEach>
             </select>
           </div>
           <div class="form-group">
-            <label>Ruta</label>
-            <select name="ruta" id="ruta" class="form-control">
+            <label>Ruta</label> <select name="ruta" id="ruta" class="form-control">
               <c:forEach items="${rutas}" var="ruta">
                 <c:if test="${ruta.id() == ubicacion.ruta().id()}">
                   <option value="${ruta.id()}" selected>${ruta.descripcion()}</option>
@@ -132,6 +181,21 @@ $("#enviar").click(function() {
     }
   });
 });
+
+$(".btn-copy").click(function() {
+  var nombreDelBoton = $(this).prop("id");
+  var nombreDelCampo = nombreDelBoton.replace("btn-", "#");
+  var valor = $(nombreDelCampo).val();
+  copyToClipboard(valor);
+});
+
+function copyToClipboard(element) {
+  var $temp = $("<input>")
+  $("body").append($temp);
+  $temp.val(element).select();
+  document.execCommand("copy");
+  $temp.remove();
+}
 </script>
 </body>
 </html>

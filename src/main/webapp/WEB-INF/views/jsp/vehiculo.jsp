@@ -27,7 +27,7 @@
 <div class="container">
   <h2>
     <a href="/Rutas/${tipo}" class="btn btn-info">
-      <span class="glyphicon glyphicon-menu-left"></span>
+      <span class="glyphicon glyphicon-triangle-left"></span>
     </a>
     <c:if test="${not empty vehiculo}">
       ${vehiculo.nombre()}
@@ -62,10 +62,11 @@
         </tbody>
       </table>
     </div>
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeConfirmacion">Editar</button>
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeEditar">Editar <span class="glyphicon glyphicon-edit"></span></button>
   </div>
 </c:if>
-<div id="popUpDeConfirmacion" class="modal fade" role="dialog">
+
+<div id="popUpDeEditar" class="modal fade" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">

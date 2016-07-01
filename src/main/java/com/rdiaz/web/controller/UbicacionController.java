@@ -3,6 +3,7 @@ package com.rdiaz.web.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.atmosphere.cpr.AtmosphereRequest;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rdiaz.model.Ruta;
 import com.rdiaz.model.Ubicacion;
+import com.rdiaz.utils.WriteXMLFile;
 
 @Controller
 public class UbicacionController extends BaseController
@@ -42,14 +44,16 @@ public class UbicacionController extends BaseController
         return "success";
     }
     
-    @RequestMapping(value = "/ubicacion/{id}", method = RequestMethod.GET)
-    public String ubicacion(ModelMap model, @PathVariable("id") int id)
+    @RequestMapping(value = "/ubicacion/exportar", method = RequestMethod.POST)
+    @ResponseBody public String exportarUbicaciones(HttpServletRequest request, @RequestParam(value = "inicio", required = true) int inicio, @RequestParam(value = "fin", required = true) int fin)
     {
-        Ubicacion ubicacion = new Ubicacion(id);
-        model.addAttribute("ubicacion", ubicacion);
-        model.addAttribute("vehiculos", vehiculos.lista());
-        model.addAttribute("rutas", Ruta.todas());
-        return "ubicacion";
+        return WriteXMLFile.createRouteFile(Ubicacion.rango(inicio, fin), request.getServletContext().getRealPath("/"));
+    }
+    
+    @RequestMapping(value = "/ubicacion/calcular", method = RequestMethod.POST)
+    @ResponseBody public String calcularDistancias(@RequestParam(value = "inicio", required = true) int inicio, @RequestParam(value = "fin", required = true) int fin)
+    {
+        return String.valueOf(Ubicacion.calcularDistanciaTotalEntre(inicio, fin));
     }
     
     @RequestMapping(value = "/ubicacion", method = RequestMethod.GET)
@@ -58,7 +62,19 @@ public class UbicacionController extends BaseController
         model.addAttribute("ubicaciones", Ubicacion.todas());
         model.addAttribute("vehiculos", vehiculos.lista());
         model.addAttribute("rutas", Ruta.todas());
+        model.addAttribute("total", Ubicacion.todas().size());
         return "ubicaciones";
+    }
+    
+    @RequestMapping(value = "/ubicacion/{id}", method = RequestMethod.GET)
+    public String ubicacion(ModelMap model, @PathVariable("id") int id)
+    {
+        Ubicacion ubicacion = new Ubicacion(id);
+        model.addAttribute("ubicacion", ubicacion);
+        model.addAttribute("vehiculos", vehiculos.lista());
+        model.addAttribute("rutas", Ruta.todas());
+        model.addAttribute("total", Ubicacion.todas().size());
+        return "ubicacion";
     }
     
     @RequestMapping(value = "/n/ubicaciones", method = RequestMethod.GET)

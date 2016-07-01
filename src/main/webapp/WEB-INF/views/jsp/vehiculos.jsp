@@ -24,7 +24,7 @@
 <div class="container">
   <h2>
     <a href="/Rutas/" class="btn btn-info">
-      <span class="glyphicon glyphicon-menu-left"></span>
+      <span class="glyphicon glyphicon-triangle-left"></span>
     </a>
     ${titulo}
   </h2>
@@ -54,9 +54,10 @@
         </tbody>
       </table>
     </div>
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeConfirmacion">Agregar</button>
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeConfirmacion">Agregar <span class="glyphicon glyphicon-plus-sign"></span></button>
   </div>
 </c:if>
+
 <div id="popUpDeConfirmacion" class="modal fade" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
@@ -128,10 +129,6 @@ $("#enviar").click(function() {
   });
 });
 
-$("#regresar").click(function() {
-  window.location.href = "/Rutas/";
-});
-
 $("#marca").change(function() {
   if ($(this).val() == 0) {
     $("#oculto").removeClass("hidden");
@@ -139,6 +136,11 @@ $("#marca").change(function() {
     $("#oculto").addClass("hidden");
   }
 });
+
+$('.modal').on('hidden.bs.modal', function () {
+  $(".modal input").val("");
+  $(".modal select option:first").prop("selected", true);
+})
 
 $(".link").click(function() {
   var id = $(this).prop('id');
