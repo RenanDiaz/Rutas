@@ -56,7 +56,8 @@ public class WriteXMLFile
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource source = new DOMSource(doc);
-            String filePath = String.format("%sresources/files/route.xml", path).replaceAll("/", System.getProperty("file.separator"));
+            String separador = System.getProperty("file.separator");
+            String filePath = String.format("%sresources%sfiles%sroute.xml", path, separador, separador);
             StreamResult result = new StreamResult(new File(filePath));
             
             // Output to console for testing
@@ -66,7 +67,7 @@ public class WriteXMLFile
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             transformer.transform(source, result);
             
-            response = filePath.replace(path, System.getProperty("file.separator"));
+            response = "/resources/files/route.xml";
             
         } catch (ParserConfigurationException pce)
         {

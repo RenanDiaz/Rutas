@@ -64,7 +64,7 @@
       </div>
       <div class="col-xs-12 col-sm-2">
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpCalcular">
-          Calcular <span class="glyphicon glyphicon-road"></span>
+          Distancia <span class="glyphicon glyphicon-road"></span>
         </button>
       </div>
       <div class="col-xs-12 col-sm-2">
@@ -73,7 +73,7 @@
         </button>
       </div>
       <div class="col-xs-12 col-sm-2">
-        <a href="${pageContext.request.contextPath}/resources/files/route.xml" download="route.xml" class="btn btn-info btn-lg" id="descargar">
+        <a class="btn btn-info btn-lg" id="descargar">
           Descargar <span class="glyphicon glyphicon-download-alt"></span>
         </a>
       </div>
@@ -213,6 +213,20 @@ $("#enviar").click(function() {
   });
 });
 
+$("#calcular").click(function() {
+  $.ajax({
+    url: "${pageContext.request.contextPath}/ubicacion/calcular",
+    method: "POST",
+    data: {
+      inicio: $("#inicio-calc").val(),
+      fin: $("#fin-calc").val()
+    },
+    success: function(data) {
+      alert("Distancia recorrida: " + data + "m");
+    }
+  });
+});
+
 $("#exportar").click(function() {
   var primera = ${ubicaciones.get(0).id()};
   var ultima = ${ubicaciones.get(total - 1).id()}
@@ -225,68 +239,14 @@ $("#exportar").click(function() {
       inicio: inicio,
       fin: fin
     },
-    success: function(data) {
-      if(data != "error")
+    success: function(url) {
+      if(url != "error")
       {
+        var filename = url.substring(url.lastIndexOf("/") + 1).split("?")[0];
         $("#descargar").attr("disabled", false);
+        $("#descargar").prop("download", filename);
+        $("#descargar").prop("href", "${pageContext.request.contextPath}" + url);
       }
-      //saveFile("${pageContext.request.contextPath}/resources/files/route.xml");
-      //saveToDisk("${pageContext.request.contextPath}/resources/files/route.xml", "route.xml");
-    }
-  });
-});
-
-function saveFile(url) {
-  var filename = url.substring(url.lastIndexOf("/") + 1).split("?")[0];
-  var xhr = new XMLHttpRequest();
-  xhr.responseType = 'blob';
-  xhr.onload = function() {
-    var a = document.createElement('a');
-    a.href = window.URL.createObjectURL(xhr.response); // xhr.response is a blob
-    a.download = filename; // Set the file name.
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    delete a;
-  };
-  xhr.open('GET', url);
-  xhr.send();
-}
-
-function saveToDisk(fileURL, fileName) {
-  // for non-IE
-  if (!window.ActiveXObject) {
-      var save = document.createElement('a');
-      save.href = fileURL;
-      save.target = '_blank';
-      save.download = fileName || 'unknown';
-
-      var event = document.createEvent('Event');
-      event.initEvent('click', true, true);
-      save.dispatchEvent(event);
-      (window.URL || window.webkitURL).revokeObjectURL(save.href);
-  }
-
-  // for IE
-  else if ( !! window.ActiveXObject && document.execCommand)     {
-      var _window = window.open(fileURL, '_blank');
-      _window.document.close();
-      _window.document.execCommand('SaveAs', true, fileName || fileURL)
-      _window.close();
-  }
-}
-
-$("#calcular").click(function() {
-  $.ajax({
-    url: "${pageContext.request.contextPath}/ubicacion/calcular",
-    method: "POST",
-    data: {
-      inicio: $("#inicio-calc").val(),
-      fin: $("#fin-calc").val()
-    },
-    success: function(data) {
-      alert(data);
-      location.reload();
     }
   });
 });
