@@ -66,8 +66,7 @@ public class WriteXMLFile
             transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
             transformer.transform(source, result);
             
-            System.out.println("File saved! Path: " + filePath);
-            response = filePath;
+            response = filePath.replace(path, System.getProperty("file.separator"));
             
         } catch (ParserConfigurationException pce)
         {
