@@ -2,6 +2,7 @@ package com.rdiaz.web.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,20 +23,21 @@ import com.rdiaz.model.Ubicacion;
 import com.rdiaz.utils.WriteXMLFile;
 
 @Controller
+@RequestMapping("/ubicacion")
 public class UbicacionController extends BaseController
 {
     ArrayList<HttpSession> subscribers = new ArrayList<>();
     
-    @RequestMapping(value = "/ubicacion/guardar/{placa}", method = RequestMethod.POST)
+    @RequestMapping(value = "guardar/{placa}", method = RequestMethod.POST)
     @ResponseBody
     public String agregarUbicacion(@PathVariable String placa, @RequestParam(value = "fecha", required = true) long fecha, @RequestParam(value = "ruta", required = true) int ruta, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
     {
         Ubicacion.nueva(fecha, ruta, placa, latitud, longitud);
-        System.out.println(String.format("Nueva ubicacion: %s, %s %s", placa, latitud, longitud));
+        System.out.println(String.format("Nueva ubicacion: %s\t%d\t%s\t%s\t%s", new Date(fecha), ruta, vehiculos.get(placa).nombreCorto(), latitud, longitud));
         return "sucess";
     }
     
-    @RequestMapping(value = "/ubicacion/editar/{placa}", method = RequestMethod.POST)
+    @RequestMapping(value = "editar/{placa}", method = RequestMethod.POST)
     @ResponseBody
     public String editarUbicacion(@PathVariable String placa, @RequestParam(value = "id", required = true) int id, @RequestParam(value = "ruta", required = true) int ruta, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
     {
@@ -44,19 +46,19 @@ public class UbicacionController extends BaseController
         return "success";
     }
     
-    @RequestMapping(value = "/ubicacion/exportar", method = RequestMethod.POST)
+    @RequestMapping(value = "exportar", method = RequestMethod.POST)
     @ResponseBody public String exportarUbicaciones(HttpServletRequest request, @RequestParam(value = "inicio", required = true) int inicio, @RequestParam(value = "fin", required = true) int fin)
     {
         return WriteXMLFile.createRouteFile(Ubicacion.rango(inicio, fin), request.getServletContext().getRealPath("/"));
     }
     
-    @RequestMapping(value = "/ubicacion/calcular", method = RequestMethod.POST)
+    @RequestMapping(value = "calcular", method = RequestMethod.POST)
     @ResponseBody public String calcularDistancias(@RequestParam(value = "inicio", required = true) int inicio, @RequestParam(value = "fin", required = true) int fin)
     {
         return String.valueOf(Ubicacion.calcularDistanciaTotalEntre(inicio, fin));
     }
     
-    @RequestMapping(value = "/ubicacion", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public String ubicaciones(ModelMap model)
     {
         model.addAttribute("ubicaciones", Ubicacion.todas());
@@ -66,7 +68,7 @@ public class UbicacionController extends BaseController
         return "ubicaciones";
     }
     
-    @RequestMapping(value = "/ubicacion/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public String ubicacion(ModelMap model, @PathVariable("id") int id)
     {
         Ubicacion ubicacion = new Ubicacion(id);

@@ -6,6 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 public class Ruta
 {
     private int _id;
@@ -87,5 +90,24 @@ public class Ruta
         }
         
         return rutas;
+    }
+    
+    public static JSONObject json()
+    {
+        JSONArray arreglo = new JSONArray();
+        for(Ruta ruta : todas())
+        {
+            JSONObject entrada = new JSONObject();
+            entrada.put("id", ruta.id());
+            entrada.put("partida", ruta.partida());
+            entrada.put("destino", ruta.destino());
+            arreglo.put(entrada);
+        }
+        return new JSONObject().put("rutas", arreglo);
+    }
+    
+    public static Ruta unaRuta()
+    {
+        return todas().get(0);
     }
 }
