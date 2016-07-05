@@ -106,6 +106,23 @@ public class Ruta
         return new JSONObject().put("rutas", arreglo);
     }
     
+    public static JSONObject json(String busqueda)
+    {
+        JSONArray arreglo = new JSONArray();
+        for(Ruta ruta : todas())
+        {
+            if(busqueda.isEmpty() || ruta.partida().contains(busqueda) || ruta.destino().contains(busqueda))
+            {
+                JSONObject entrada = new JSONObject();
+                entrada.put("id", ruta.id());
+                entrada.put("partida", ruta.partida());
+                entrada.put("destino", ruta.destino());
+                arreglo.put(entrada);
+            }
+        }
+        return new JSONObject().put("rutas", arreglo);
+    }
+    
     public static Ruta unaRuta()
     {
         return todas().get(0);
