@@ -11,13 +11,13 @@ import org.json.JSONObject;
 
 public class Ruta
 {
-    private int _id;
-    private String _partida;
-    private String _destino;
+    private int id;
+    private String partida;
+    private String destino;
     
     public Ruta(int id)
     {
-        id(id);
+        setId(id);
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
@@ -26,8 +26,8 @@ public class Ruta
             ResultSet rs = stmt.executeQuery();
             if(rs.last())
             {
-                partida(rs.getString(2));
-                destino(rs.getString(3));
+                setPartida(rs.getString(2));
+                setDestino(rs.getString(3));
             }
             conexion.close();
         } catch (Exception e)
@@ -36,39 +36,39 @@ public class Ruta
         }
     }
     
-    public int id()
+    public int getId()
     {
-        return _id;
+        return id;
     }
     
-    void id(int id)
+    void setId(int id)
     {
-        _id = id;
+        this.id = id;
     }
     
-    public String partida()
+    public String getPartida()
     {
-        return _partida;
+        return partida;
     }
     
-    void partida(String partida)
+    void setPartida(String partida)
     {
-        _partida = partida;
+        this.partida = partida;
     }
     
-    public String destino()
+    public String getDestino()
     {
-        return _destino;
+        return destino;
     }
     
-    void destino(String destino)
+    void setDestino(String destino)
     {
-        _destino = destino;
+        this.destino = destino;
     }
     
-    public String descripcion()
+    public String getDescripcion()
     {
-        return String.format("%s - %s", partida(), destino());
+        return String.format("%s - %s", getPartida(), getDestino());
     }
     
     public static ArrayList<Ruta> todas()
@@ -98,9 +98,9 @@ public class Ruta
         for(Ruta ruta : todas())
         {
             JSONObject entrada = new JSONObject();
-            entrada.put("id", ruta.id());
-            entrada.put("partida", ruta.partida());
-            entrada.put("destino", ruta.destino());
+            entrada.put("id", ruta.getId());
+            entrada.put("partida", ruta.getPartida());
+            entrada.put("destino", ruta.getDestino());
             arreglo.put(entrada);
         }
         return new JSONObject().put("rutas", arreglo);
@@ -111,12 +111,12 @@ public class Ruta
         JSONArray arreglo = new JSONArray();
         for(Ruta ruta : todas())
         {
-            if(busqueda.isEmpty() || ruta.partida().contains(busqueda) || ruta.destino().contains(busqueda))
+            if(busqueda.isEmpty() || ruta.getPartida().contains(busqueda) || ruta.getDestino().contains(busqueda))
             {
                 JSONObject entrada = new JSONObject();
-                entrada.put("id", ruta.id());
-                entrada.put("partida", ruta.partida());
-                entrada.put("destino", ruta.destino());
+                entrada.put("id", ruta.getId());
+                entrada.put("partida", ruta.getPartida());
+                entrada.put("destino", ruta.getDestino());
                 arreglo.put(entrada);
             }
         }
