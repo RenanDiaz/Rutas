@@ -2,7 +2,6 @@ package com.rdiaz.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -137,46 +136,5 @@ public class Vehiculos
         }
         particulares.sort(Comparator.comparing(Particular::getPlaca));
         return particulares;
-    }
-    
-    public Vehiculo nuevo(String placa, Marca marca, String modelo, int anno, TipoDeVehiculo tipo)
-    {
-        try
-        {
-            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM vehiculos WHERE placa = ?;");
-            stmt.setString(1, placa);
-            ResultSet rs = stmt.executeQuery();
-            if(!rs.next())
-            {
-                stmt = conexion.prepareStatement("INSERT INTO vehiculos (placa, marca, modelo, anno, tipo) VALUES (?, ?, ?, ?, ?);");
-                stmt.setString(1, placa);
-                stmt.setInt(2, marca.getId());
-                stmt.setString(3, modelo);
-                stmt.setInt(4, anno);
-                stmt.setInt(5, tipo.ordinal());
-                stmt.executeUpdate();
-            }
-            conexion.close();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        switch(tipo.ordinal())
-        {
-        case 0:
-            return new Bus(placa, marca, modelo, anno);
-        case 1:
-            return new Taxi(placa, marca, modelo, anno);
-        case 2:
-            return new Particular(placa, marca, modelo, anno);
-        default:
-            return null;
-        }
-    }
-
-    public void editar(String placa, Marca marca, String modelo, int anno, TipoDeVehiculo tipo)
-    {
-        get(placa).editar(marca, modelo, anno, tipo);
     }
 }

@@ -16,7 +16,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="/Rutas/">Rutas</a>
+      <a class="navbar-brand" href="${pageContext.request.contextPath}/">Rutas</a>
     </div>
   </div>
 </nav>
@@ -25,7 +25,7 @@
 <br>
 <div class="container">
   <h2>
-    <a href="/Rutas/" class="btn btn-info"> <span class="glyphicon glyphicon-triangle-left"></span>
+    <a href="${pageContext.request.contextPath}/" class="btn btn-info"> <span class="glyphicon glyphicon-triangle-left"></span>
     </a> Ubicaciones
   </h2>
 </div>
@@ -45,12 +45,12 @@
         </thead>
         <tbody>
           <c:forEach items="${ubicaciones}" var="ubicacion">
-            <tr class="link" id="${ubicacion.id()}" title="${ubicacion.id()}">
-              <td>${ubicacion.fechahora()}</td>
-              <td>${ubicacion.ruta().getDescripcion()}</td>
-              <td>${ubicacion.vehiculo().nombreCorto()}</td>
-              <td>${ubicacion.latitud()}</td>
-              <td>${ubicacion.longitud()}</td>
+            <tr class="link" id="${ubicacion.getId()}" title="${ubicacion.getId()}">
+              <td>${ubicacion.getFechahora()}</td>
+              <td>${ubicacion.getRuta().getDescripcion()}</td>
+              <td>${ubicacion.getVehiculo().getNombreCorto()}</td>
+              <td>${ubicacion.getLatitud()}</td>
+              <td>${ubicacion.getLongitud()}</td>
             </tr>
           </c:forEach>
         </tbody>
@@ -94,7 +94,7 @@
             <label>Veh&iacute;culo</label>
             <select name="placa" id="placa" class="form-control" autofocus>
               <c:forEach items="${vehiculos}" var="vehiculo">
-                <option value="${vehiculo.placa()}">${vehiculo.modelo()}</option>
+                <option value="${vehiculo.getPlaca()}">${vehiculo.getModelo()}</option>
               </c:forEach>
             </select>
           </div>
@@ -134,14 +134,14 @@
           <label>Inicio</label>
           <div class="input-group">
             <span class="input-group-addon"> <input type="checkbox" class="checkbox" id="cb-inicio" title="Si no marca esta casilla se exportará desde el primer regristro" autofocus>
-            </span> <input id="inicio" class="form-control disableable" type="number" min="${ubicaciones.get(0).id()}" max="${ubicaciones.get(total - 1).id()}" required disabled>
+            </span> <input id="inicio" class="form-control disableable" type="number" min="${ubicaciones.get(0).getId()}" max="${ubicaciones.get(total - 1).getId()}" required disabled>
           </div>
         </div>
         <div class="form-group">
           <label>Fin</label>
           <div class="input-group">
             <span class="input-group-addon"> <input type="checkbox" class="checkbox" id="cb-fin" title="Si no marca esta casilla se exportará hasta el último registro">
-            </span> <input id="fin" class="form-control disableable" type="number" min="${ubicaciones.get(0).id()}" max="${ubicaciones.get(total - 1).id()}" required disabled>
+            </span> <input id="fin" class="form-control disableable" type="number" min="${ubicaciones.get(0).getId()}" max="${ubicaciones.get(total - 1).getId()}" required disabled>
           </div>
         </div>
       </div>
@@ -162,10 +162,10 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label>Inicio</label> <input id="inicio-calc" class="form-control" type="number" min="${ubicaciones.get(0).id()}" max="${ubicaciones.get(total - 1).id()}" required autofocus>
+          <label>Inicio</label> <input id="inicio-calc" class="form-control" type="number" min="${ubicaciones.get(0).getId()}" max="${ubicaciones.get(total - 1).getId()}" required autofocus>
         </div>
         <div class="form-group">
-          <label>Fin</label> <input id="fin-calc" class="form-control" type="number" min="${ubicaciones.get(0).id()}" max="${ubicaciones.get(total - 1).id()}" required>
+          <label>Fin</label> <input id="fin-calc" class="form-control" type="number" min="${ubicaciones.get(0).getId()}" max="${ubicaciones.get(total - 1).getId()}" required>
         </div>
       </div>
       <div class="modal-footer">
@@ -202,7 +202,7 @@ $("#agregar").click(function() {
   var d = new Date();
   var fecha = d.getTime();
   $.ajax({
-    url: "${pageContext.request.contextPath}/ubicacion/guardar/" + $("#placa").val(),
+    url: "${pageContext.request.contextPath}/ubicacion/agregar/" + $("#placa").val(),
     method: "POST",
     data: {
       fecha: fecha,
@@ -231,8 +231,8 @@ $("#calcular").click(function() {
 });
 
 $("#exportar").click(function() {
-  var primera = ${ubicaciones.get(0).id()};
-  var ultima = ${ubicaciones.get(total - 1).id()}
+  var primera = ${ubicaciones.get(0).getId()};
+  var ultima = ${ubicaciones.get(total - 1).getId()}
   var inicio = $("#cb-inicio").prop("checked") ? $("#inicio").val() : primera;
   var fin = $("#cb-fin").prop("checked") ? $("#fin").val() : ultima;
   $.ajax({

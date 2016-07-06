@@ -80,6 +80,37 @@ public abstract class Vehiculo
     {
         return String.format("%s %s placa %s", getMarca().getNombre(), getModelo(), getPlaca());
     }
+    
+    public static Vehiculo nuevo(String placa, Marca marca, String modelo, int anno, TipoDeVehiculo tipo)
+    {
+        try
+        {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO vehiculos (placa, marca, modelo, anno, tipo) VALUES (?, ?, ?, ?, ?);");
+            stmt.setString(1, placa);
+            stmt.setInt(2, marca.getId());
+            stmt.setString(3, modelo);
+            stmt.setInt(4, anno);
+            stmt.setInt(5, tipo.ordinal());
+            stmt.executeUpdate();
+            
+            conexion.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        switch(tipo.ordinal())
+        {
+        case 0:
+            return new Bus(placa, marca, modelo, anno);
+        case 1:
+            return new Taxi(placa, marca, modelo, anno);
+        case 2:
+            return new Particular(placa, marca, modelo, anno);
+        default:
+            return null;
+        }
+    }
 
     public void editar(Marca marca, String modelo, int anno, TipoDeVehiculo tipo)
     {

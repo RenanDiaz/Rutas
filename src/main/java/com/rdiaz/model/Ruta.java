@@ -77,4 +77,52 @@ public class Ruta
     {
         return String.format("%s - %s", getPartida(), getDestino());
     }
+    
+    public static Ruta nueva(String partida, String destino)
+    {
+        int id = 0;
+        try
+        {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO rutas (partida, destino) VALUES (?, ?);");
+            stmt.setString(1, partida);
+            stmt.setString(2, destino);
+            stmt.executeUpdate();
+            
+            stmt = conexion.prepareStatement("SELECT id FROM rutas WHERE partida = ? AND destino = ?;");
+            stmt.setString(1, partida);
+            stmt.setString(2, destino);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.last())
+            {
+                id = rs.getInt(1);
+            }
+            
+            conexion.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        return new Ruta(id, partida, destino);
+    }
+    
+    public void editar(String partida, String destino)
+    {
+        setPartida(partida);
+        setDestino(destino);
+        try
+        {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE rutas SET partida = ?, destino = ? WHERE id = ?;");
+            stmt.setString(3, partida);
+            stmt.setString(4, destino);
+            stmt.setInt(5, getId());
+            stmt.executeUpdate();
+            
+            conexion.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
 }

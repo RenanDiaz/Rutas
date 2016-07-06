@@ -33,14 +33,13 @@ public class VehiculosController extends BaseController
             marca = nuevaMarca.getId();
             marcas.add(nuevaMarca);
         }
-        Vehiculo vehiculo = vehiculos.nuevo(placa, marcas.get(marca), modelo, anno, TipoDeVehiculo.getEnumByString(tipo));
-        vehiculos.add(vehiculo);
+        vehiculos.add(Vehiculo.nuevo(placa, marcas.get(marca), modelo, anno, TipoDeVehiculo.getEnumByString(tipo)));
         
         return "success";
     }
     
     @RequestMapping(value = "/{tipo}/editar", method = RequestMethod.POST)
-    @ResponseBody public String editarBus(@PathVariable String tipo, @RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "marca", required = true) int marca, @RequestParam(value = "nombreMarca", required = false) String nombreMarca, @RequestParam(value = "modelo", required = true) String modelo, @RequestParam(value = "anno", required = true) int anno)
+    @ResponseBody public String editarVehiculo(@PathVariable String tipo, @RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "marca", required = true) int marca, @RequestParam(value = "nombreMarca", required = false) String nombreMarca, @RequestParam(value = "modelo", required = true) String modelo, @RequestParam(value = "anno", required = true) int anno)
     {
         if(nombreMarca != null && marca == 0)
         {
@@ -49,7 +48,7 @@ public class VehiculosController extends BaseController
             marcas.add(nuevaMarca);
         }
         
-        vehiculos.editar(placa, marcas.get(marca), modelo, anno, TipoDeVehiculo.getEnumByString(tipo));
+        vehiculos.get(placa).editar(marcas.get(marca), modelo, anno, TipoDeVehiculo.getEnumByString(tipo));
         return "success";
     }
 }

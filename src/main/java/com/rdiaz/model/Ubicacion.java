@@ -3,6 +3,7 @@ package com.rdiaz.model;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Timestamp;
 
 public class Ubicacion
@@ -83,24 +84,35 @@ public class Ubicacion
         this.longitud = longitud;
     }
     
-    public static void nueva(long fecha, int ruta, String placa, String latitud, String longitud)
+    public static Ubicacion nueva(long fecha, Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
     {
         Timestamp fechahora = new Timestamp(fecha);
+        int id = 0;
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
             PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ubicacion (fechahora, ruta, vehiculo, latitud, longitud) VALUES (?, ?, ?, ?, ?);");
             stmt.setTimestamp(1, fechahora);
-            stmt.setInt(2, ruta);
-            stmt.setString(3, placa);
+            stmt.setInt(2, ruta.getId());
+            stmt.setString(3, vehiculo.getPlaca());
             stmt.setString(4, latitud);
             stmt.setString(5, longitud);
             stmt.executeUpdate();
+            
+            stmt = conexion.prepareStatement("SELECT id FROM ubicacion WHERE fechahora = ?;");
+            stmt.setTimestamp(1, fechahora);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.last())
+            {
+                id = rs.getInt(1);
+            }
+            
             conexion.close();
         } catch (Exception e)
         {
             e.printStackTrace();
         }
+        return new Ubicacion(id, fechahora, ruta, vehiculo, latitud, longitud);
     }
     
     public void editar(Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)

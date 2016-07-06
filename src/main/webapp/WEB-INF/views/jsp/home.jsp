@@ -19,7 +19,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">Rutas</a>
+      <a class="navbar-brand" href="${pageContext.request.contextPath}/">Rutas</a>
     </div>
   </div>
 </nav>
@@ -32,6 +32,7 @@
         <li><a href="buses">Buses<span class="badge">${buses}</span></a></li>
         <li><a href="taxis">Taxis<span class="badge">${taxis}</span></a></li>
         <li><a href="particulares">Particulares<span class="badge">${particulares}</span></a></li>
+        <li><a href="rutas">Rutas<span class="badge" id="rutas">${rutas}</span></a></li>
         <li><a href="ubicacion">Ubicaciones<span class="badge" id="ubicaciones">${ubicaciones}</span></a></li>
       </ul>
     </div>

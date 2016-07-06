@@ -14,7 +14,7 @@
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="/Rutas/">Rutas</a>
+      <a class="navbar-brand" href="${pageContext.request.contextPath}/">Rutas</a>
     </div>
   </div>
 </nav>
@@ -23,12 +23,12 @@
 <br>
 <div class="container">
   <h2>
-    <a href="/Rutas/ubicacion" class="btn btn-info"> <span class="glyphicon glyphicon-triangle-left"></span>
+    <a href="${pageContext.request.contextPath}/ubicacion" class="btn btn-info"> <span class="glyphicon glyphicon-triangle-left"></span>
     </a>
-    <c:if test="${not empty ubicacion.vehiculo()}">
-      ${ubicacion.id()} - ${ubicacion.vehiculo().nombreCorto()}
+    <c:if test="${not empty ubicacion.getVehiculo()}">
+      ${ubicacion.getId()} - ${ubicacion.getVehiculo().getNombreCorto()}
     </c:if>
-    <c:if test="${empty ubicacion.vehiculo()}">
+    <c:if test="${empty ubicacion.getVehiculo()}">
       No encontrado
     </c:if>
   </h2>
@@ -38,9 +38,9 @@
   <div class="container">
     <div class="row">
       <div class="col-sm-1">
-        <c:if test="${ubicacion.id() > 1}">
+        <c:if test="${ubicacion.getId() > 1}">
           <h2>
-            <a href="/Rutas/ubicacion/${ubicacion.id() - 1}" class="btn btn-info"><span class="glyphicon glyphicon-menu-left"></span></a>
+            <a href="${pageContext.request.contextPath}/ubicacion/${ubicacion.getId() - 1}" class="btn btn-info"><span class="glyphicon glyphicon-menu-left"></span></a>
           </h2>
         </c:if>
       </div>
@@ -56,18 +56,18 @@
           </thead>
           <tbody>
             <tr>
-              <td>${ubicacion.fechahora()}</td>
-              <td>${ubicacion.ruta().getDescripcion()}</td>
-              <td>${ubicacion.latitud()}</td>
-              <td>${ubicacion.longitud()}</td>
+              <td>${ubicacion.getFechahora()}</td>
+              <td>${ubicacion.getRuta().getDescripcion()}</td>
+              <td>${ubicacion.getLatitud()}</td>
+              <td>${ubicacion.getLongitud()}</td>
             </tr>
           </tbody>
         </table>
       </div>
       <div class="col-sm-1">
-        <c:if test="${ubicacion.id() < total}">
+        <c:if test="${ubicacion.getId() < total}">
           <h2>
-            <a href="/Rutas/ubicacion/${ubicacion.id() + 1}" class="btn btn-info"><span class="glyphicon glyphicon-menu-right"></span></a>
+            <a href="${pageContext.request.contextPath}/ubicacion/${ubicacion.getId() + 1}" class="btn btn-info"><span class="glyphicon glyphicon-menu-right"></span></a>
           </h2>
         </c:if>
       </div>
@@ -82,7 +82,7 @@
     <div class="row">
       <div class="col-sm-3">
         <div class="form-group">
-          <input id="latitud-copy" class="form-control" type="text" disabled value="${ubicacion.latitud()}">
+          <input id="latitud-copy" class="form-control" type="text" disabled value="${ubicacion.getLatitud()}">
         </div>
       </div>
       <div class="col-sm-1">
@@ -97,7 +97,7 @@
     <div class="row">
       <div class="col-sm-3">
         <div class="form-group">
-          <input id="longitud-copy" class="form-control" type="text" disabled value="${ubicacion.longitud()}">
+          <input id="longitud-copy" class="form-control" type="text" disabled value="${ubicacion.getLongitud()}">
         </div>
       </div>
       <div class="col-sm-1">
@@ -121,11 +121,11 @@
           <div class="form-group">
             <label>Veh&iacute;culo</label> <select name="placa" id="placa" class="form-control">
               <c:forEach items="${vehiculos}" var="vehiculo">
-                <c:if test="${vehiculo.placa() == ubicacion.vehiculo().placa()}">
-                  <option value="${vehiculo.placa()}" selected>${vehiculo.nombreCorto()}</option>
+                <c:if test="${vehiculo.getPlaca() == ubicacion.getVehiculo().getPlaca()}">
+                  <option value="${vehiculo.getPlaca()}" selected>${vehiculo.getNombreCorto()}</option>
                 </c:if>
-                <c:if test="${vehiculo.placa() != ubicacion.vehiculo().placa()}">
-                  <option value="${vehiculo.placa()}">${vehiculo.nombreCorto()}</option>
+                <c:if test="${vehiculo.getPlaca() != ubicacion.getVehiculo().getPlaca()}">
+                  <option value="${vehiculo.getPlaca()}">${vehiculo.getNombreCorto()}</option>
                 </c:if>
               </c:forEach>
             </select>
@@ -133,20 +133,20 @@
           <div class="form-group">
             <label>Ruta</label> <select name="ruta" id="ruta" class="form-control">
               <c:forEach items="${rutas}" var="ruta">
-                <c:if test="${ruta.getId() == ubicacion.ruta().getId()}">
+                <c:if test="${ruta.getId() == ubicacion.getRuta().getId()}">
                   <option value="${ruta.getId()}" selected>${ruta.getDescripcion()}</option>
                 </c:if>
-                <c:if test="${ruta.getId() != ubicacion.ruta().getId()}">
+                <c:if test="${ruta.getId() != ubicacion.getRuta().getId()}">
                   <option value="${ruta.getId()}">${ruta.getDescripcion()}</option>
                 </c:if>
               </c:forEach>
             </select>
           </div>
           <div class="form-group">
-            <label>Latitud</label> <input name="latitud" id="latitud" class="form-control" type="text" required value="${ubicacion.latitud()}">
+            <label>Latitud</label> <input name="latitud" id="latitud" class="form-control" type="text" required value="${ubicacion.getLatitud()}">
           </div>
           <div class="form-group">
-            <label>Longitud</label> <input name="longitud" id="longitud" class="form-control" type="text" required value="${ubicacion.longitud()}">
+            <label>Longitud</label> <input name="longitud" id="longitud" class="form-control" type="text" required value="${ubicacion.getLongitud()}">
           </div>
         </c:if>
       </div>
@@ -178,7 +178,7 @@ $("#guardar").click(function() {
     url: "${pageContext.request.contextPath}/ubicacion/editar/" + $("#placa").val(),
     method: "POST",
     data: {
-      id: "${ubicacion.id()}",
+      id: "${ubicacion.getId()}",
       ruta: $("#ruta").val(),
       latitud: $("#latitud").val(),
       longitud: $("#longitud").val()
