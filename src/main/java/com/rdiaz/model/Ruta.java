@@ -114,9 +114,9 @@ public class Ruta
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
             PreparedStatement stmt = conexion.prepareStatement("UPDATE rutas SET partida = ?, destino = ? WHERE id = ?;");
-            stmt.setString(3, partida);
-            stmt.setString(4, destino);
-            stmt.setInt(5, getId());
+            stmt.setString(1, partida);
+            stmt.setString(2, destino);
+            stmt.setInt(3, getId());
             stmt.executeUpdate();
             
             conexion.close();
