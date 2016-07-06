@@ -2,23 +2,23 @@ package com.rdiaz.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Vehiculos
 {
-    private Map<String, Vehiculo> _vehiculos = new HashMap<String, Vehiculo>();
+    @JsonProperty("vehiculos")
+    private ArrayList<Vehiculo> vehiculos = new ArrayList<>();
     
-    public Vehiculos()
+    public Vehiculos(Marcas marcas)
     {
         try
         {
-            Class.forName("com.mysql.jdbc.Driver");
-            
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
             Statement stmt = con.createStatement();
             
@@ -35,15 +35,15 @@ public class Vehiculos
                 switch(rs.getInt(5))
                 {
                 case 0:
-                    Bus bus = new Bus(placa, marca, modelo, anno);
+                    Bus bus = new Bus(placa, marcas.get(marca), modelo, anno);
                     add(bus);
                     break;
                 case 1:
-                    Taxi taxi = new Taxi(placa, marca, modelo, anno);
+                    Taxi taxi = new Taxi(placa, marcas.get(marca), modelo, anno);
                     add(taxi);
                     break;
                 case 2:
-                    Particular particular = new Particular(placa, marca, modelo, anno);
+                    Particular particular = new Particular(placa, marcas.get(marca), modelo, anno);
                     add(particular);
                     break;
                 }
@@ -58,90 +58,125 @@ public class Vehiculos
     
     public void add(Vehiculo vehiculo)
     {
-        _vehiculos.put(vehiculo.placa(), vehiculo);
+        vehiculos.add(vehiculo);
     }
     
     public Vehiculo get(String placa)
     {
-        return _vehiculos.get(placa);
+        for(final Vehiculo vehiculo : vehiculos)
+        {
+            if(vehiculo.getPlaca().equals(placa))
+            {
+                return vehiculo;
+            }
+        }
+        return null;
     }
     
     public int size()
     {
-        return _vehiculos.size();
+        return vehiculos.size();
     }
     
     public void remove(String placa)
     {
-        _vehiculos.remove(placa);
+        vehiculos.remove(placa);
     }
     
     private void clear()
     {
-        _vehiculos.clear();
+        vehiculos.clear();
     }
     
-    public ArrayList<Vehiculo> lista()
+    public ArrayList<Vehiculo> getVehiculos()
     {
-        ArrayList<Vehiculo> vehiculos = new ArrayList<Vehiculo>();
-        for(Map.Entry<String, Vehiculo> vehiculo : _vehiculos.entrySet())
-        {
-            vehiculos.add(vehiculo.getValue());
-        }
-        vehiculos.sort(Comparator.comparing(Vehiculo::placa));
+        vehiculos.sort(Comparator.comparing(Vehiculo::getPlaca));
         return vehiculos;
     }
 
-    public ArrayList<Bus> buses()
+    public ArrayList<Bus> getBuses()
     {
-        ArrayList<Bus> buses = new ArrayList<Bus>();
-        for(Map.Entry<String, Vehiculo> vehiculoPorPlaca : _vehiculos.entrySet())
+        ArrayList<Bus> buses = new ArrayList<>();
+        for(Vehiculo vehiculo : vehiculos)
         {
-            Vehiculo vehiculo = vehiculoPorPlaca.getValue();
             if(vehiculo instanceof Bus)
             {
                 Bus bus = (Bus) vehiculo;
                 buses.add(bus);
             }
         }
-        buses.sort(Comparator.comparing(Bus::placa));
+        buses.sort(Comparator.comparing(Bus::getPlaca));
         return buses;
     }
 
-    public ArrayList<Taxi> taxis()
+    public ArrayList<Taxi> getTaxis()
     {
-        ArrayList<Taxi> taxis = new ArrayList<Taxi>();
-        for(Map.Entry<String, Vehiculo> vehiculoPorPlaca : _vehiculos.entrySet())
+        ArrayList<Taxi> taxis = new ArrayList<>();
+        for(Vehiculo vehiculo : vehiculos)
         {
-            Vehiculo vehiculo = vehiculoPorPlaca.getValue();
             if(vehiculo instanceof Taxi)
             {
                 Taxi taxi = (Taxi) vehiculo;
                 taxis.add(taxi);
             }
         }
-        taxis.sort(Comparator.comparing(Taxi::placa));
+        taxis.sort(Comparator.comparing(Taxi::getPlaca));
         return taxis;
     }
 
-    public ArrayList<Particular> particulares()
+    public ArrayList<Particular> getParticulares()
     {
-        ArrayList<Particular> particulares = new ArrayList<Particular>();
-        for(Map.Entry<String, Vehiculo> vehiculoPorPlaca : _vehiculos.entrySet())
+        ArrayList<Particular> particulares = new ArrayList<>();
+        for(Vehiculo vehiculo : vehiculos)
         {
-            Vehiculo vehiculo = vehiculoPorPlaca.getValue();
             if(vehiculo instanceof Particular)
             {
                 Particular particular = (Particular) vehiculo;
                 particulares.add(particular);
             }
         }
-        particulares.sort(Comparator.comparing(Particular::placa));
+        particulares.sort(Comparator.comparing(Particular::getPlaca));
         return particulares;
     }
-
-    public void editar(String placa, int marca, String modelo, int anno)
+    
+    public Vehiculo nuevo(String placa, Marca marca, String modelo, int anno, TipoDeVehiculo tipo)
     {
-        get(placa).editar(marca, modelo, anno);
+        try
+        {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
+            PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM vehiculos WHERE placa = ?;");
+            stmt.setString(1, placa);
+            ResultSet rs = stmt.executeQuery();
+            if(!rs.next())
+            {
+                stmt = conexion.prepareStatement("INSERT INTO vehiculos (placa, marca, modelo, anno, tipo) VALUES (?, ?, ?, ?, ?);");
+                stmt.setString(1, placa);
+                stmt.setInt(2, marca.getId());
+                stmt.setString(3, modelo);
+                stmt.setInt(4, anno);
+                stmt.setInt(5, tipo.ordinal());
+                stmt.executeUpdate();
+            }
+            conexion.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        switch(tipo.ordinal())
+        {
+        case 0:
+            return new Bus(placa, marca, modelo, anno);
+        case 1:
+            return new Taxi(placa, marca, modelo, anno);
+        case 2:
+            return new Particular(placa, marca, modelo, anno);
+        default:
+            return null;
+        }
+    }
+
+    public void editar(String placa, Marca marca, String modelo, int anno, TipoDeVehiculo tipo)
+    {
+        get(placa).editar(marca, modelo, anno, tipo);
     }
 }

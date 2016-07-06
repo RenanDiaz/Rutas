@@ -12,8 +12,8 @@ public class ParticularesController extends BaseController
     public String particulares(ModelMap model)
     {
         model.addAttribute("titulo", "Particulares");
-        model.addAttribute("marcas", marcas.lista());
-        model.addAttribute("vehiculos", vehiculos.particulares());
+        model.addAttribute("marcas", marcas.getMarcas());
+        model.addAttribute("vehiculos", vehiculos.getParticulares());
         return "vehiculos";
     }
 }

@@ -57,7 +57,7 @@
           <tbody>
             <tr>
               <td>${ubicacion.fechahora()}</td>
-              <td>${ubicacion.ruta().descripcion()}</td>
+              <td>${ubicacion.ruta().getDescripcion()}</td>
               <td>${ubicacion.latitud()}</td>
               <td>${ubicacion.longitud()}</td>
             </tr>
@@ -133,11 +133,11 @@
           <div class="form-group">
             <label>Ruta</label> <select name="ruta" id="ruta" class="form-control">
               <c:forEach items="${rutas}" var="ruta">
-                <c:if test="${ruta.id() == ubicacion.ruta().id()}">
-                  <option value="${ruta.id()}" selected>${ruta.descripcion()}</option>
+                <c:if test="${ruta.getId() == ubicacion.ruta().getId()}">
+                  <option value="${ruta.getId()}" selected>${ruta.getDescripcion()}</option>
                 </c:if>
-                <c:if test="${ruta.id() != ubicacion.ruta().id()}">
-                  <option value="${ruta.id()}">${ruta.descripcion()}</option>
+                <c:if test="${ruta.getId() != ubicacion.ruta().getId()}">
+                  <option value="${ruta.getId()}">${ruta.getDescripcion()}</option>
                 </c:if>
               </c:forEach>
             </select>

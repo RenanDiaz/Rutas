@@ -9,15 +9,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.rdiaz.model.Ruta;
-
 @Controller
 public class RutasController extends BaseController
 {
     @RequestMapping(value = "/obtener/rutas", method = RequestMethod.GET)
     @ResponseBody public ResponseEntity<String> rutas(@RequestParam(value = "buscar", defaultValue = "") String buscar)
     {
-        String rutas = Ruta.json(buscar).toString();
+        String rutas = this.rutas.buscar(buscar).toString();
         System.out.println(rutas);
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.set("Content-Type", "application/json;charset=UTF-8");

@@ -30,7 +30,7 @@
       <span class="glyphicon glyphicon-triangle-left"></span>
     </a>
     <c:if test="${not empty vehiculo}">
-      ${vehiculo.nombre()}
+      ${vehiculo.getNombre()}
     </c:if>
     <c:if test="${empty vehiculo}">
       No encontrado
@@ -53,11 +53,11 @@
         </thead>
         <tbody>
           <tr>
-            <td>${vehiculo.placa()}</td>
-            <td>${vehiculo.marca()}</td>
-            <td>${vehiculo.modelo()}</td>
-            <td>${vehiculo.anno()}</td>
-            <td>${vehiculo.tipo()}</td>
+            <td>${vehiculo.getPlaca()}</td>
+            <td>${vehiculo.getMarca().getNombre()}</td>
+            <td>${vehiculo.getModelo()}</td>
+            <td>${vehiculo.getAnno()}</td>
+            <td>${vehiculo.getTipo()}</td>
           </tr>
         </tbody>
       </table>
@@ -76,16 +76,16 @@
       <div class="modal-body" id="mensaje">
         <c:if test="${not empty marcas}">
           <div class="form-group">
-            <label>Placa</label> <input name="placa" id="placa" class="form-control" type="text" disabled value="${vehiculo.placa()}">
+            <label>Placa</label> <input name="placa" id="placa" class="form-control" type="text" disabled value="${vehiculo.getPlaca()}">
           </div>
           <div class="form-group">
             <label>Marca</label> <select name="marca" id="marca" class="form-control">
               <c:forEach items="${marcas}" var="marca">
-                <c:if test="${marca.nombre() == vehiculo.marca()}">
-                  <option value="${marca.id()}" selected>${marca.nombre()}</option>
+                <c:if test="${marca.getNombre() == vehiculo.getMarca().getNombre()}">
+                  <option value="${marca.getId()}" selected>${marca.getNombre()}</option>
                 </c:if>
-                <c:if test="${marca.nombre() != vehiculo.marca()}">
-                  <option value="${marca.id()}">${marca.nombre()}</option>
+                <c:if test="${marca.getNombre() != vehiculo.getMarca().getNombre()}">
+                  <option value="${marca.getId()}">${marca.getNombre()}</option>
                 </c:if>
               </c:forEach>
               <option value="0">Otra</option>
@@ -96,10 +96,10 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Modelo</label> <input name="modelo" id="modelo" class="form-control" type="text" required value="${vehiculo.modelo()}">
+            <label>Modelo</label> <input name="modelo" id="modelo" class="form-control" type="text" required value="${vehiculo.getModelo()}">
           </div>
           <div class="form-group">
-            <label>A&ntilde;o</label> <input name="anno" id="anno" class="form-control" type="number" max="2017" min="1918" required value="${vehiculo.anno()}">
+            <label>A&ntilde;o</label> <input name="anno" id="anno" class="form-control" type="number" max="2017" min="1918" required value="${vehiculo.getAnno()}">
           </div>
         </c:if>
       </div>

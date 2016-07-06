@@ -2,31 +2,32 @@ package com.rdiaz.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 
 public class Marca
 {
-    private int _id;
-    private String _nombre;
+    private int id;
+    private String nombre;
     
     public Marca(String nombre)
     {
-        _nombre = nombre;
+        setNombre(nombre);
         try
         {
-            Class.forName("com.mysql.jdbc.Driver");
-            
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            Statement stmt = conexion.createStatement();
-            ResultSet rs = stmt.executeQuery(String.format("SELECT * FROM marcas WHERE nombre = '%s';", nombre));
-            if(!rs.next())
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO marcas (nombre) VALUES (?);");
+            stmt.setString(1, nombre);
+            stmt.executeUpdate();
+            
+            stmt = conexion.prepareStatement("SELECT id FROM marcas WHERE nombre = ?;");
+            stmt.setString(1, nombre);
+            ResultSet rs = stmt.executeQuery();
+            if(rs.last())
             {
-                stmt.execute(String.format("INSERT INTO marcas (nombre) VALUES ('%s');", nombre));
-                rs = stmt.executeQuery(String.format("SELECT * FROM marcas WHERE nombre = '%s';", nombre));
-                rs.next();
+                setId(rs.getInt(1));
             }
-            _id = rs.getInt(1);
             conexion.close();
         } catch (Exception e)
         {
@@ -36,28 +37,28 @@ public class Marca
     
     Marca(int id, String nombre)
     {
-        id(id);
-        nombre(nombre);
+        setId(id);
+        setNombre(nombre);
     }
     
-    public int id()
+    public int getId()
     {
-        return _id;
+        return this.id;
     }
     
-    public void id(int id)
+    public void setId(int id)
     {
-        _id = id;
+        this.id = id;
     }
     
-    public String nombre()
+    public String getNombre()
     {
-        return _nombre;
+        return this.nombre;
     }
     
-    public void nombre(String nombre)
+    public void setNombre(String nombre)
     {
-        _nombre = nombre;
+        this.nombre = nombre;
     }
     
     public static String getNombre(int id)

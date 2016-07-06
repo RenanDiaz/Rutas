@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.rdiaz.model.Ruta;
 import com.rdiaz.model.Ubicacion;
 import com.rdiaz.utils.WriteXMLFile;
 
@@ -33,7 +32,7 @@ public class UbicacionController extends BaseController
     public String agregarUbicacion(@PathVariable String placa, @RequestParam(value = "fecha", required = true) long fecha, @RequestParam(value = "ruta", required = true) int ruta, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
     {
         Ubicacion.nueva(fecha, ruta, placa, latitud, longitud);
-        System.out.println(String.format("Nueva ubicacion: %s\t%d\t%s\t%s\t%s", new Date(fecha), ruta, vehiculos.get(placa).nombreCorto(), latitud, longitud));
+        System.out.println(String.format("Nueva ubicacion: %s\t%d\t%s\t%s\t%s", new Date(fecha), ruta, vehiculos.get(placa).getNombreCorto(), latitud, longitud));
         return "sucess";
     }
     
@@ -41,41 +40,41 @@ public class UbicacionController extends BaseController
     @ResponseBody
     public String editarUbicacion(@PathVariable String placa, @RequestParam(value = "id", required = true) int id, @RequestParam(value = "ruta", required = true) int ruta, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
     {
-        Ubicacion ubicacion = new Ubicacion(id);
-        ubicacion.editar(ruta, placa, latitud, longitud);
+        Ubicacion ubicacion = ubicaciones.get(id);
+        ubicacion.editar(rutas.get(ruta), vehiculos.get(placa), latitud, longitud);
         return "success";
     }
     
     @RequestMapping(value = "exportar", method = RequestMethod.POST)
     @ResponseBody public String exportarUbicaciones(HttpServletRequest request, @RequestParam(value = "inicio", required = true) int inicio, @RequestParam(value = "fin", required = true) int fin)
     {
-        return WriteXMLFile.createRouteFile(Ubicacion.rango(inicio, fin), request.getServletContext().getRealPath("/"));
+        return WriteXMLFile.createRouteFile(ubicaciones.rango(inicio, fin), request.getServletContext().getRealPath("/"));
     }
     
     @RequestMapping(value = "calcular", method = RequestMethod.POST)
     @ResponseBody public String calcularDistancias(@RequestParam(value = "inicio", required = true) int inicio, @RequestParam(value = "fin", required = true) int fin)
     {
-        return String.valueOf(Ubicacion.calcularDistanciaTotalEntre(inicio, fin));
+        return String.valueOf(ubicaciones.calcularDistanciaTotalEntre(inicio, fin));
     }
     
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String ubicaciones(ModelMap model)
     {
-        model.addAttribute("ubicaciones", Ubicacion.todas());
-        model.addAttribute("vehiculos", vehiculos.lista());
-        model.addAttribute("rutas", Ruta.todas());
-        model.addAttribute("total", Ubicacion.todas().size());
+        model.addAttribute("ubicaciones", ubicaciones.getUbicaciones());
+        model.addAttribute("vehiculos", vehiculos.getVehiculos());
+        model.addAttribute("rutas", rutas.getRutas());
+        model.addAttribute("total", ubicaciones.size());
         return "ubicaciones";
     }
     
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public String ubicacion(ModelMap model, @PathVariable("id") int id)
     {
-        Ubicacion ubicacion = new Ubicacion(id);
+        Ubicacion ubicacion = ubicaciones.get(id);
         model.addAttribute("ubicacion", ubicacion);
-        model.addAttribute("vehiculos", vehiculos.lista());
-        model.addAttribute("rutas", Ruta.todas());
-        model.addAttribute("total", Ubicacion.todas().size());
+        model.addAttribute("vehiculos", vehiculos.getVehiculos());
+        model.addAttribute("rutas", rutas.getRutas());
+        model.addAttribute("total", ubicaciones.size());
         return "ubicacion";
     }
     

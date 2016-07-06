@@ -12,8 +12,8 @@ public class TaxisController extends BaseController
     public String taxis(ModelMap model)
     {
         model.addAttribute("titulo", "Taxis");
-        model.addAttribute("marcas", marcas.lista());
-        model.addAttribute("vehiculos", vehiculos.taxis());
+        model.addAttribute("marcas", marcas.getMarcas());
+        model.addAttribute("vehiculos", vehiculos.getTaxis());
         return "vehiculos";
     }
 }

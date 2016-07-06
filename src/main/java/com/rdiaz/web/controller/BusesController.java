@@ -12,8 +12,8 @@ public class BusesController extends BaseController
     public String buses(ModelMap model)
     {
         model.addAttribute("titulo", "Buses");
-        model.addAttribute("marcas", marcas.lista());
-        model.addAttribute("vehiculos", vehiculos.buses());
+        model.addAttribute("marcas", marcas.getMarcas());
+        model.addAttribute("vehiculos", vehiculos.getBuses());
         return "vehiculos";
     }
 }

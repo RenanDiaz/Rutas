@@ -6,12 +6,13 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Marcas
 {
-    private Map<String, Marca> _marcas = new HashMap<String, Marca>();
+    @JsonProperty("marcas")
+    private ArrayList<Marca> marcas = new ArrayList<>();
     
     public Marcas()
     {
@@ -29,8 +30,7 @@ public class Marcas
             {
                 int id = rs.getInt(1);
                 String nombre = rs.getString(2);
-                Marca marca = new Marca(id, nombre);
-                add(marca);
+                add(new Marca(id, nombre));
             }
             con.close();
             
@@ -42,37 +42,51 @@ public class Marcas
     
     public void add(Marca marca)
     {
-        _marcas.put(marca.nombre(), marca);
+        marcas.add(marca);
     }
     
     public Marca get(String nombre)
     {
-        return _marcas.get(nombre);
+        for(final Marca marca : marcas)
+        {
+            if(marca.getNombre().equals(nombre))
+            {
+                return marca;
+            }
+        }
+        return null;
+    }
+    
+    public Marca get(int id)
+    {
+        for(final Marca marca : marcas)
+        {
+            if(marca.getId() == id)
+            {
+                return marca;
+            }
+        }
+        return null;
     }
     
     public int size()
     {
-        return _marcas.size();
+        return marcas.size();
     }
     
     public void remove(String nombre)
     {
-        _marcas.remove(nombre);
+        marcas.remove(nombre);
     }
     
     private void clear()
     {
-        _marcas.clear();
+        marcas.clear();
     }
     
-    public ArrayList<Marca> lista()
+    public ArrayList<Marca> getMarcas()
     {
-        ArrayList<Marca> marcas = new ArrayList<Marca>();
-        for(Map.Entry<String, Marca> marca : _marcas.entrySet())
-        {
-            marcas.add(marca.getValue());
-        }
-        marcas.sort(Comparator.comparing(Marca::nombre));
+        marcas.sort(Comparator.comparing(Marca::getNombre));
         return marcas;
     }
 }

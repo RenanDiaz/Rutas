@@ -44,11 +44,11 @@ public class WriteXMLFile
             {
                 Element wpt = doc.createElement("wpt");
                 rootElement.appendChild(wpt);
-                wpt.setAttribute("lat", ubicacion.latitud());
-                wpt.setAttribute("lon", ubicacion.longitud());
+                wpt.setAttribute("lat", ubicacion.getLatitud());
+                wpt.setAttribute("lon", ubicacion.getLongitud());
                 
                 Element name = doc.createElement("name");
-                name.appendChild(doc.createTextNode(String.valueOf(ubicacion.id())));
+                name.appendChild(doc.createTextNode(String.valueOf(ubicacion.getId())));
                 wpt.appendChild(name);
             }
             

@@ -47,7 +47,7 @@
           <c:forEach items="${ubicaciones}" var="ubicacion">
             <tr class="link" id="${ubicacion.id()}" title="${ubicacion.id()}">
               <td>${ubicacion.fechahora()}</td>
-              <td>${ubicacion.ruta().descripcion()}</td>
+              <td>${ubicacion.ruta().getDescripcion()}</td>
               <td>${ubicacion.vehiculo().nombreCorto()}</td>
               <td>${ubicacion.latitud()}</td>
               <td>${ubicacion.longitud()}</td>
@@ -102,7 +102,7 @@
             <label>Ruta</label>
             <select name="ruta" id="ruta" class="form-control">
               <c:forEach items="${rutas}" var="ruta">
-                <option value="${ruta.id()}">${ruta.descripcion()}</option>
+                <option value="${ruta.getId()}">${ruta.getDescripcion()}</option>
               </c:forEach>
             </select>
           </div>

@@ -8,10 +8,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.rdiaz.model.Bus;
 import com.rdiaz.model.Marca;
-import com.rdiaz.model.Particular;
-import com.rdiaz.model.Taxi;
+import com.rdiaz.model.TipoDeVehiculo;
+import com.rdiaz.model.Vehiculo;
 
 @Controller
 public class VehiculosController extends BaseController
@@ -21,34 +20,21 @@ public class VehiculosController extends BaseController
     {
         model.addAttribute("vehiculo", vehiculos.get(placa));
         model.addAttribute("tipo", tipo);
-        model.addAttribute("marcas", marcas.lista());
+        model.addAttribute("marcas", marcas.getMarcas());
         return "vehiculo";
     }
     
     @RequestMapping(value = "/{tipo}/agregar", method = RequestMethod.POST)
-    @ResponseBody public String agregarBus(@PathVariable String tipo, @RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "marca", required = true) int marca, @RequestParam(value = "nombreMarca", required = false) String nombreMarca, @RequestParam(value = "modelo", required = true) String modelo, @RequestParam(value = "anno", required = true) int anno)
+    @ResponseBody public String agregarVehiculo(@PathVariable String tipo, @RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "marca", required = true) int marca, @RequestParam(value = "nombreMarca", required = false) String nombreMarca, @RequestParam(value = "modelo", required = true) String modelo, @RequestParam(value = "anno", required = true) int anno)
     {
         if(nombreMarca != null && marca == 0)
         {
             Marca nuevaMarca = new Marca(nombreMarca);
-            marca = nuevaMarca.id();
+            marca = nuevaMarca.getId();
+            marcas.add(nuevaMarca);
         }
-        
-        switch(tipo)
-        {
-        case "buses":
-            Bus bus = new Bus(placa, marca, modelo, anno);
-            vehiculos.add(bus);
-            break;
-        case "taxis":
-            Taxi taxi = new Taxi(placa, marca, modelo, anno);
-            vehiculos.add(taxi);
-            break;
-        case "particulares":
-            Particular particular = new Particular(placa, marca, modelo, anno);
-            vehiculos.add(particular);
-            break;
-        }
+        Vehiculo vehiculo = vehiculos.nuevo(placa, marcas.get(marca), modelo, anno, TipoDeVehiculo.getEnumByString(tipo));
+        vehiculos.add(vehiculo);
         
         return "success";
     }
@@ -59,10 +45,11 @@ public class VehiculosController extends BaseController
         if(nombreMarca != null && marca == 0)
         {
             Marca nuevaMarca = new Marca(nombreMarca);
-            marca = nuevaMarca.id();
+            marca = nuevaMarca.getId();
+            marcas.add(nuevaMarca);
         }
         
-        vehiculos.editar(placa, marca, modelo, anno);
+        vehiculos.editar(placa, marcas.get(marca), modelo, anno, TipoDeVehiculo.getEnumByString(tipo));
         return "success";
     }
 }

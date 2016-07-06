@@ -44,11 +44,11 @@
         </thead>
         <tbody>
           <c:forEach items="${vehiculos}" var="vehiculo">
-            <tr class="link" id="${vehiculo.placa()}">
-              <td>${vehiculo.placa()}</td>
-              <td>${vehiculo.marca()}</td>
-              <td>${vehiculo.modelo()}</td>
-              <td>${vehiculo.anno()}</td>
+            <tr class="link" id="${vehiculo.getPlaca()}">
+              <td>${vehiculo.getPlaca()}</td>
+              <td>${vehiculo.getMarca().getNombre()}</td>
+              <td>${vehiculo.getModelo()}</td>
+              <td>${vehiculo.getAnno()}</td>
             </tr>
           </c:forEach>
         </tbody>
@@ -73,7 +73,7 @@
           <div class="form-group">
             <label>Marca</label> <select name="marca" id="marca" class="form-control">
               <c:forEach items="${marcas}" var="marca">
-                <option value="${marca.id()}">${marca.nombre()}</option>
+                <option value="${marca.getId()}">${marca.getNombre()}</option>
               </c:forEach>
               <option value="0">Otra</option>
             </select>
