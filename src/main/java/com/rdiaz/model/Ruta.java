@@ -18,12 +18,9 @@ public class Ruta
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO rutas (partida, destino) VALUES (?, ?);");
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO rutas (partida, destino) VALUES (?, ?); SELECT @@IDENTITY FROM rutas;");
             stmt.setString(1, partida);
             stmt.setString(2, destino);
-            stmt.executeUpdate();
-            
-            stmt = conexion.prepareStatement("SELECT id FROM rutas WHERE destino = ? AND partida = ?;");
             ResultSet rs = stmt.executeQuery();
             if(rs.last())
             {
@@ -76,34 +73,6 @@ public class Ruta
     public String getDescripcion()
     {
         return String.format("%s - %s", getPartida(), getDestino());
-    }
-    
-    public static Ruta nueva(String partida, String destino)
-    {
-        int id = 0;
-        try
-        {
-            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO rutas (partida, destino) VALUES (?, ?);");
-            stmt.setString(1, partida);
-            stmt.setString(2, destino);
-            stmt.executeUpdate();
-            
-            stmt = conexion.prepareStatement("SELECT id FROM rutas WHERE partida = ? AND destino = ?;");
-            stmt.setString(1, partida);
-            stmt.setString(2, destino);
-            ResultSet rs = stmt.executeQuery();
-            if(rs.last())
-            {
-                id = rs.getInt(1);
-            }
-            
-            conexion.close();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return new Ruta(id, partida, destino);
     }
     
     public void editar(String partida, String destino)

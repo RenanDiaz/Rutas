@@ -18,7 +18,7 @@ public class RutasController extends BaseController
     @ResponseBody
     public String agregarRuta(@RequestParam(value = "partida", required = true) String partida, @RequestParam(value = "destino", required = true) String destino)
     {
-        rutas.add(Ruta.nueva(partida, destino));
+        rutas.add(new Ruta(partida, destino));
         return "sucess";
     }
     

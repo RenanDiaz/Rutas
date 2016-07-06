@@ -35,7 +35,7 @@ public class UbicacionController extends BaseController
     {
         Vehiculo vehiculo = vehiculos.get(placa);
         Ruta ruta = rutas.get(idRuta);
-        Ubicacion.nueva(fecha, ruta, vehiculo, latitud, longitud);
+        ubicaciones.add(new Ubicacion(fecha, ruta, vehiculo, latitud, longitud));
         System.out.println(String.format("Nueva ubicacion: %s\t%d\t%s\t%s\t%s", new Date(fecha), ruta.getDescripcion(), vehiculo.getNombreCorto(), latitud, longitud));
         return "sucess";
     }
@@ -60,7 +60,7 @@ public class UbicacionController extends BaseController
         return String.valueOf(ubicaciones.calcularDistanciaTotalEntre(inicio, fin));
     }
     
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping
     public String ubicaciones(ModelMap model)
     {
         model.addAttribute("ubicaciones", ubicaciones.getUbicaciones());
@@ -70,7 +70,7 @@ public class UbicacionController extends BaseController
         return "ubicaciones";
     }
     
-    @RequestMapping(value = "{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}")
     public String ubicacion(ModelMap model, @PathVariable("id") int id)
     {
         model.addAttribute("ubicacion", ubicaciones.get(id));

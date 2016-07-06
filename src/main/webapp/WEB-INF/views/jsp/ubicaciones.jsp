@@ -94,7 +94,7 @@
             <label>Veh&iacute;culo</label>
             <select name="placa" id="placa" class="form-control" autofocus>
               <c:forEach items="${vehiculos}" var="vehiculo">
-                <option value="${vehiculo.getPlaca()}">${vehiculo.getModelo()}</option>
+                <option value="${vehiculo.getPlaca()}">${vehiculo.getNombreCorto()}</option>
               </c:forEach>
             </select>
           </div>

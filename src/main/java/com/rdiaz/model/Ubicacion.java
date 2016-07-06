@@ -15,6 +15,32 @@ public class Ubicacion
     private String latitud;
     private String longitud;
     
+    public Ubicacion(long fecha, Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
+    {
+        Timestamp fechahora = new Timestamp(fecha);
+        try
+        {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas?allowMultiQueries=true", "root", "");
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ubicacion (fechahora, ruta, vehiculo, latitud, longitud) VALUES (?, ?, ?, ?, ?); SELECT @@IDENTITY FROM ubicacion;");
+            stmt.setTimestamp(1, fechahora);
+            stmt.setInt(2, ruta.getId());
+            stmt.setString(3, vehiculo.getPlaca());
+            stmt.setString(4, latitud);
+            stmt.setString(5, longitud);
+            System.out.println(stmt.toString());
+            ResultSet rs = stmt.executeQuery();
+            if(rs.last())
+            {
+                setId(rs.getInt(1));
+            }
+            
+            conexion.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
     public Ubicacion(int id, Timestamp fechahora, Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
     {
         setId(id);
@@ -82,37 +108,6 @@ public class Ubicacion
     public void setLongitud(String longitud)
     {
         this.longitud = longitud;
-    }
-    
-    public static Ubicacion nueva(long fecha, Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
-    {
-        Timestamp fechahora = new Timestamp(fecha);
-        int id = 0;
-        try
-        {
-            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ubicacion (fechahora, ruta, vehiculo, latitud, longitud) VALUES (?, ?, ?, ?, ?);");
-            stmt.setTimestamp(1, fechahora);
-            stmt.setInt(2, ruta.getId());
-            stmt.setString(3, vehiculo.getPlaca());
-            stmt.setString(4, latitud);
-            stmt.setString(5, longitud);
-            stmt.executeUpdate();
-            
-            stmt = conexion.prepareStatement("SELECT id FROM ubicacion WHERE fechahora = ?;");
-            stmt.setTimestamp(1, fechahora);
-            ResultSet rs = stmt.executeQuery();
-            if(rs.last())
-            {
-                id = rs.getInt(1);
-            }
-            
-            conexion.close();
-        } catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        return new Ubicacion(id, fechahora, ruta, vehiculo, latitud, longitud);
     }
     
     public void editar(Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
