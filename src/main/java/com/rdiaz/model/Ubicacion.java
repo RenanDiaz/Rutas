@@ -21,13 +21,15 @@ public class Ubicacion
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas?allowMultiQueries=true", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ubicacion (fechahora, ruta, vehiculo, latitud, longitud) VALUES (?, ?, ?, ?, ?); SELECT @@IDENTITY FROM ubicacion;");
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ubicacion (fechahora, ruta, vehiculo, latitud, longitud) VALUES (?, ?, ?, ?, ?);");
             stmt.setTimestamp(1, fechahora);
             stmt.setInt(2, ruta.getId());
             stmt.setString(3, vehiculo.getPlaca());
             stmt.setString(4, latitud);
             stmt.setString(5, longitud);
-            System.out.println(stmt.toString());
+            stmt.executeUpdate();
+            
+            stmt = conexion.prepareStatement("SELECT @@IDENTITY FROM ubicacion;");
             ResultSet rs = stmt.executeQuery();
             if(rs.last())
             {

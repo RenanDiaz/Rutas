@@ -23,11 +23,14 @@ public class RutaAsignada
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ruta_asignada (vehiculo, ruta, hora_inicial, hora_final) VALUES (?, ?, ?, ?); SELECT @@IDENTITY FROM ruta_asignada;");
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ruta_asignada (vehiculo, ruta, hora_inicial, hora_final) VALUES (?, ?, ?, ?);");
             stmt.setString(1, vehiculo.getPlaca());
             stmt.setInt(2, ruta.getId());
             stmt.setTimestamp(3, horaInicial);
             stmt.setTimestamp(4, horaFinal);
+            stmt.executeUpdate();
+            
+            stmt = conexion.prepareStatement("SELECT @@IDENTITY FROM ruta_asignada;");
             ResultSet rs = stmt.executeQuery();
             if(rs.last())
             {

@@ -18,9 +18,12 @@ public class Ruta
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO rutas (partida, destino) VALUES (?, ?); SELECT @@IDENTITY FROM rutas;");
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO rutas (partida, destino) VALUES (?, ?);");
             stmt.setString(1, partida);
             stmt.setString(2, destino);
+            stmt.executeUpdate();
+            
+            stmt = conexion.prepareStatement("SELECT @@IDENTITY FROM rutas;");
             ResultSet rs = stmt.executeQuery();
             if(rs.last())
             {

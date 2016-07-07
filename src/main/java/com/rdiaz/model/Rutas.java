@@ -40,6 +40,30 @@ public class Rutas
         }
     }
     
+    public Rutas(String busqueda)
+    {
+        busqueda = "%" + busqueda + "%";
+        try
+        {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
+            PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM rutas WHERE partida LIKE ? OR destino LIKE ?;");
+            stmt.setString(1, busqueda);
+            stmt.setString(2, busqueda);
+            ResultSet rs = stmt.executeQuery();
+            while(rs.next())
+            {
+                int id = rs.getInt(1);
+                String partida = rs.getString(2);
+                String destino = rs.getString(3);
+                rutas.add(new Ruta(id, partida, destino));
+            }
+            conexion.close();
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+    
     public void add(Ruta ruta)
     {
         rutas.add(ruta);

@@ -19,32 +19,41 @@ import com.rdiaz.model.Vehiculo;
 public class RestAPIController extends BaseController
 {
     @RequestMapping(value = "rutas", method = RequestMethod.GET)
-    @ResponseBody public Rutas rutas(@RequestParam(value = "buscar", defaultValue = "") String buscar)
+    @ResponseBody
+    public Rutas rutas(@RequestParam(value = "buscar", defaultValue = "") String buscar)
     {
-       return rutas;
+        if (buscar.isEmpty())
+        {
+            return rutas;
+        }
+        return new Rutas(buscar);
     }
     
     @RequestMapping(value = "vehiculos", method = RequestMethod.GET)
-    @ResponseBody public ArrayList<Vehiculo> vehiculos(@RequestParam(value = "buscar", defaultValue = "") String buscar)
+    @ResponseBody
+    public ArrayList<Vehiculo> vehiculos(@RequestParam(value = "buscar", defaultValue = "") String buscar)
     {
-       return vehiculos.getVehiculos();
+        return vehiculos.getVehiculos();
     }
     
     @RequestMapping(value = "buses", method = RequestMethod.GET)
-    @ResponseBody public ArrayList<Bus> buses(@RequestParam(value = "buscar", defaultValue = "") String buscar)
+    @ResponseBody
+    public ArrayList<Bus> buses(@RequestParam(value = "buscar", defaultValue = "") String buscar)
     {
-       return vehiculos.getBuses();
+        return vehiculos.getBuses();
     }
     
     @RequestMapping(value = "taxis", method = RequestMethod.GET)
-    @ResponseBody public ArrayList<Taxi> taxis(@RequestParam(value = "buscar", defaultValue = "") String buscar)
+    @ResponseBody
+    public ArrayList<Taxi> taxis(@RequestParam(value = "buscar", defaultValue = "") String buscar)
     {
-       return vehiculos.getTaxis();
+        return vehiculos.getTaxis();
     }
     
     @RequestMapping(value = "particulares", method = RequestMethod.GET)
-    @ResponseBody public ArrayList<Particular> particulares(@RequestParam(value = "buscar", defaultValue = "") String buscar)
+    @ResponseBody
+    public ArrayList<Particular> particulares(@RequestParam(value = "buscar", defaultValue = "") String buscar)
     {
-       return vehiculos.getParticulares();
+        return vehiculos.getParticulares();
     }
 }
