@@ -30,6 +30,7 @@
     $.ajax({
   	  url: "${pageContext.request.contextPath}/rest/ubicaciones?placa=${vehiculo.getPlaca()}&inicio=${inicio}&fin=${fin}",
       method: "GET",
+      async: false,
       success: function(data) {
         $.each(data.ubicaciones, function(key, value) {
           var lat = Number(value.latitud);

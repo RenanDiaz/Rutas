@@ -77,6 +77,18 @@
           Descargar <span class="glyphicon glyphicon-download-alt"></span>
         </a>
       </div>
+      <div class="col-xs-12 col-sm-2">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpMapa">
+          Ver mapa <span class="glyphicon glyphicon-map-marker"></span>
+        </button>
+      </div>
+    </div>
+    <br>
+    <br>
+    <div class="row" id="iframe-row" style="display: none;">
+      <div class="col-xs-12">
+        <iframe id="iframe-mapa" style="width: 100%; height: 300px;"></iframe>
+      </div>
     </div>
   </div>
 </c:if>
@@ -122,6 +134,29 @@
   </div>
 </div>
 
+<div id="popUpCalcular" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Calcular distancia</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label>Inicio</label> <input id="inicio-calc" class="form-control" type="number" min="${ubicaciones.get(0).getId()}" max="${ubicaciones.get(total - 1).getId()}" required autofocus>
+        </div>
+        <div class="form-group">
+          <label>Fin</label> <input id="fin-calc" class="form-control" type="number" min="${ubicaciones.get(0).getId()}" max="${ubicaciones.get(total - 1).getId()}" required>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="calcular">Calcular</button>
+        <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div id="popUpExportar" class="modal fade" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
@@ -153,23 +188,40 @@
   </div>
 </div>
 
-<div id="popUpCalcular" class="modal fade" role="dialog">
+<div id="popUpMapa" class="modal fade" role="dialog">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <h4 class="modal-title">Calcular distancia</h4>
+        <h4 class="modal-title">Ver ruta en mapa</h4>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-          <label>Inicio</label> <input id="inicio-calc" class="form-control" type="number" min="${ubicaciones.get(0).getId()}" max="${ubicaciones.get(total - 1).getId()}" required autofocus>
-        </div>
-        <div class="form-group">
-          <label>Fin</label> <input id="fin-calc" class="form-control" type="number" min="${ubicaciones.get(0).getId()}" max="${ubicaciones.get(total - 1).getId()}" required>
-        </div>
+        <c:if test="${not empty vehiculos}">
+          <div class="form-group">
+            <label>Veh&iacute;culo</label> <select id="placa-mapa" class="form-control" autofocus>
+              <c:forEach items="${vehiculos}" var="vehiculo">
+                <option value="${vehiculo.getPlaca()}">${vehiculo.getNombreCorto()}</option>
+              </c:forEach>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Inicio</label>
+            <div class="input-group">
+              <span class="input-group-addon"> <input type="checkbox" class="checkbox" id="cb-inicio" title="Si no marca esta casilla se exportará desde el primer regristro" autofocus>
+              </span> <input id="inicio-mapa" class="form-control disableable" type="number" min="${ubicaciones.get(0).getId()}" max="${ubicaciones.get(total - 1).getId()}" required disabled>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Fin</label>
+            <div class="input-group">
+              <span class="input-group-addon"> <input type="checkbox" class="checkbox" id="cb-fin" title="Si no marca esta casilla se exportará hasta el último registro">
+              </span> <input id="fin-mapa" class="form-control disableable" type="number" min="${ubicaciones.get(0).getId()}" max="${ubicaciones.get(total - 1).getId()}" required disabled>
+            </div>
+          </div>
+        </c:if>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" id="calcular">Calcular</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="verMapa">Ver</button>
         <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
@@ -252,6 +304,15 @@ $("#exportar").click(function() {
       }
     }
   });
+});
+
+$("#verMapa").click(function() {
+  var primera = ${ubicaciones.get(0).getId()};
+  var ultima = ${ubicaciones.get(total - 1).getId()}
+  var inicio = $("#cb-inicio-mapa").prop("checked") ? $("#inicio-mapa").val() : primera;
+  var fin = $("#cb-fin-mapa").prop("checked") ? $("#fin-mapa").val() : ultima;
+  $("#iframe-mapa").attr("src", "${pageContext.request.contextPath}/mapa/" + $("#placa-mapa").val() +"?inicio=" + inicio + "&fin=" + fin);
+  $("#iframe-row").show();
 });
 
 $(".checkbox").change(function() {
