@@ -18,9 +18,14 @@ public class Ubicacion
     public Ubicacion(long fecha, Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
     {
         Timestamp fechahora = new Timestamp(fecha);
+        setFechahora(fechahora);
+        setRuta(ruta);
+        setVehiculo(vehiculo);
+        setLatitud(latitud);
+        setLongitud(longitud);
         try
         {
-            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas?allowMultiQueries=true", "root", "");
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
             PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ubicacion (fechahora, ruta, vehiculo, latitud, longitud) VALUES (?, ?, ?, ?, ?);");
             stmt.setTimestamp(1, fechahora);
             stmt.setInt(2, ruta.getId());

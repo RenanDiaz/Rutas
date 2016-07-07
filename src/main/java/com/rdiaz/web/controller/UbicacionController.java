@@ -36,7 +36,7 @@ public class UbicacionController extends BaseController
         Vehiculo vehiculo = vehiculos.get(placa);
         Ruta ruta = rutas.get(idRuta);
         ubicaciones.add(new Ubicacion(fecha, ruta, vehiculo, latitud, longitud));
-        System.out.println(String.format("Nueva ubicacion: %s\t%d\t%s\t%s\t%s", new Date(fecha), ruta.getDescripcion(), vehiculo.getNombreCorto(), latitud, longitud));
+        System.out.println(String.format("Nueva ubicacion: %s\t%s\t%s\t%s\t%s", new Date(fecha), ruta.getDescripcion(), vehiculo.getNombreCorto(), latitud, longitud));
         return "sucess";
     }
     

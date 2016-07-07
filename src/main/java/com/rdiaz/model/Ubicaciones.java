@@ -39,6 +39,11 @@ public class Ubicaciones
         }
     }
     
+    private Ubicaciones()
+    {
+        
+    }
+    
     public void add(Ubicacion ubicacion)
     {
         ubicaciones.add(ubicacion);
@@ -70,6 +75,19 @@ public class Ubicaciones
     {
         ubicaciones.sort(Comparator.comparing(Ubicacion::getId));
         return ubicaciones;
+    }
+    
+    public Ubicaciones ubicacionesDe(Vehiculo vehiculo)
+    {
+        Ubicaciones ubicacionesDelVehiculo = new Ubicaciones();
+        for(final Ubicacion ubicacion : getUbicaciones())
+        {
+            if(ubicacion.getVehiculo().equals(vehiculo))
+            {
+                ubicacionesDelVehiculo.add(ubicacion);
+            }
+        }
+        return ubicacionesDelVehiculo;
     }
 
     public ArrayList<Ubicacion> rango(int inicio, int fin)

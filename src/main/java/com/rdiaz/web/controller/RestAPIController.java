@@ -12,6 +12,7 @@ import com.rdiaz.model.Bus;
 import com.rdiaz.model.Particular;
 import com.rdiaz.model.Rutas;
 import com.rdiaz.model.Taxi;
+import com.rdiaz.model.Ubicaciones;
 import com.rdiaz.model.Vehiculo;
 
 @RestController
@@ -55,5 +56,12 @@ public class RestAPIController extends BaseController
     public ArrayList<Particular> particulares(@RequestParam(value = "buscar", defaultValue = "") String buscar)
     {
         return vehiculos.getParticulares();
+    }
+    
+    @RequestMapping(value = "ubicaciones")
+    @ResponseBody
+    public Ubicaciones ubicaciones(@RequestParam(value = "placa", required = true) String placa)
+    {
+        return ubicaciones.ubicacionesDe(vehiculos.get(placa));
     }
 }
