@@ -33,6 +33,7 @@
         <li><a href="taxis">Taxis<span class="badge">${taxis}</span></a></li>
         <li><a href="particulares">Particulares<span class="badge">${particulares}</span></a></li>
         <li><a href="rutas">Rutas<span class="badge" id="rutas">${rutas}</span></a></li>
+        <li><a href="asignacion">Rutas asignadas<span class="badge" id="rutasAsignadas">${rutasAsignadas}</span></a></li>
         <li><a href="ubicacion">Ubicaciones<span class="badge" id="ubicaciones">${ubicaciones}</span></a></li>
       </ul>
     </div>

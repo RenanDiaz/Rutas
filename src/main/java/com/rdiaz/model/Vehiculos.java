@@ -77,9 +77,9 @@ public class Vehiculos
         return vehiculos.size();
     }
     
-    public void remove(String placa)
+    public void remove(Vehiculo vehiculo)
     {
-        vehiculos.remove(placa);
+        vehiculos.remove(vehiculo);
     }
     
     private void clear()

@@ -61,9 +61,9 @@ public class Ubicaciones
         return ubicaciones.size();
     }
     
-    public void remove(String nombre)
+    public void remove(Ubicacion ubicacion)
     {
-        ubicaciones.remove(nombre);
+        ubicaciones.remove(ubicacion);
     }
     
     public ArrayList<Ubicacion> getUbicaciones()

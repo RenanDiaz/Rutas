@@ -14,8 +14,10 @@ public class RutaAsignada
     private Timestamp horaInicial;
     private Timestamp horaFinal;
     
-    public RutaAsignada(Vehiculo vehiculo, Ruta ruta, Timestamp horaInicial, Timestamp horaFinal)
+    public RutaAsignada(Vehiculo vehiculo, Ruta ruta, long inicio, long fin)
     {
+        Timestamp horaInicial = new Timestamp(inicio);
+        Timestamp horaFinal = new Timestamp(fin);
         setVehiculo(vehiculo);
         setRuta(ruta);
         setHoraInicial(horaInicial);

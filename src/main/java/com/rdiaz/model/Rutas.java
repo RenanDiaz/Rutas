@@ -103,9 +103,9 @@ public class Rutas
         return rutas.size();
     }
     
-    public void remove(String nombre)
+    public void remove(Ruta ruta)
     {
-        rutas.remove(nombre);
+        rutas.remove(ruta);
     }
     
     public ArrayList<Ruta> getRutas()
