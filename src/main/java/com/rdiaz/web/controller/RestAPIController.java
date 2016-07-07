@@ -60,8 +60,12 @@ public class RestAPIController extends BaseController
     
     @RequestMapping(value = "ubicaciones")
     @ResponseBody
-    public Ubicaciones ubicaciones(@RequestParam(value = "placa", required = true) String placa)
+    public Ubicaciones ubicaciones(@RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "inicio", defaultValue = "1") int inicio, @RequestParam(value = "fin", defaultValue = "0") int fin)
     {
-        return ubicaciones.ubicacionesDe(vehiculos.get(placa));
+        if(fin == 0)
+        {
+            fin = ubicaciones.size();
+        }
+        return ubicaciones.ubicacionesDe(vehiculos.get(placa), inicio, fin);
     }
 }

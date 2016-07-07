@@ -4,15 +4,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping(value = "/mapa")
 public class MapaController extends BaseController
 {
     @RequestMapping(value = "{placa}")
-    public String mapa(ModelMap model, @PathVariable String placa)
+    public String mapa(ModelMap model, @PathVariable String placa, @RequestParam(value = "inicio", defaultValue = "1") int inicio, @RequestParam(value = "fin", defaultValue = "0") int fin)
     {
         model.addAttribute("vehiculo", vehiculos.get(placa));
+        model.addAttribute("inicio", inicio);
+        model.addAttribute("fin", fin);
         return "mapa";
     }
 }

@@ -28,7 +28,7 @@
     var cantTotal = 0;
     
     $.ajax({
-  	  url: "${pageContext.request.contextPath}/rest/ubicaciones?placa=${vehiculo.getPlaca()}",
+  	  url: "${pageContext.request.contextPath}/rest/ubicaciones?placa=${vehiculo.getPlaca()}&inicio=${inicio}&fin=${fin}",
       method: "GET",
       success: function(data) {
         $.each(data.ubicaciones, function(key, value) {

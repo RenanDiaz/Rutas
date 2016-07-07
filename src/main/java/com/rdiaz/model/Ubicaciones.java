@@ -77,10 +77,10 @@ public class Ubicaciones
         return ubicaciones;
     }
     
-    public Ubicaciones ubicacionesDe(Vehiculo vehiculo)
+    public Ubicaciones ubicacionesDe(Vehiculo vehiculo, int inicio, int fin)
     {
         Ubicaciones ubicacionesDelVehiculo = new Ubicaciones();
-        for(final Ubicacion ubicacion : getUbicaciones())
+        for(final Ubicacion ubicacion : rango(inicio, fin))
         {
             if(ubicacion.getVehiculo().equals(vehiculo))
             {
