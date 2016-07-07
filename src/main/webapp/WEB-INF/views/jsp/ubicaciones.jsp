@@ -216,14 +216,14 @@
           <div class="form-group">
             <label>Inicio</label>
             <div class="input-group">
-              <span class="input-group-addon"> <input type="checkbox" class="checkbox" id="cb-inicio" title="Si no marca esta casilla se exportará desde el primer regristro" autofocus>
+              <span class="input-group-addon"> <input type="checkbox" class="checkbox" id="cb-inicio-mapa" title="Si no marca esta casilla se exportará desde el primer regristro" autofocus>
               </span> <input id="inicio-mapa" class="form-control disableable" type="number" min="${ubicaciones.get(0).getId()}" max="${ubicaciones.get(total - 1).getId()}" required disabled>
             </div>
           </div>
           <div class="form-group">
             <label>Fin</label>
             <div class="input-group">
-              <span class="input-group-addon"> <input type="checkbox" class="checkbox" id="cb-fin" title="Si no marca esta casilla se exportará hasta el último registro">
+              <span class="input-group-addon"> <input type="checkbox" class="checkbox" id="cb-fin-mapa" title="Si no marca esta casilla se exportará hasta el último registro">
               </span> <input id="fin-mapa" class="form-control disableable" type="number" min="${ubicaciones.get(0).getId()}" max="${ubicaciones.get(total - 1).getId()}" required disabled>
             </div>
           </div>
@@ -320,7 +320,7 @@ $("#verMapa").click(function() {
   var ultima = ${ubicaciones.get(total - 1).getId()}
   var inicio = $("#cb-inicio-mapa").prop("checked") ? $("#inicio-mapa").val() : primera;
   var fin = $("#cb-fin-mapa").prop("checked") ? $("#fin-mapa").val() : ultima;
-  var ruta = "${pageContext.request.contextPath}/mapa/" + $("#placa-mapa").val() +"?inicio=" + inicio + "&fin=" + fin;
+  var ruta = "${pageContext.request.contextPath}/mapa/ruta/" + $("#placa-mapa").val() +"?inicio=" + inicio + "&fin=" + fin;
   $("#iframe-mapa").attr("src", ruta);
   $("#link-mapa").attr("href", ruta);
   $("#iframe-row").show();

@@ -27,42 +27,77 @@
     var latTotal = 0;
     var lngTotal = 0;
     var cantTotal = 0;
-    
-    $.ajax({
-  	  url: "${pageContext.request.contextPath}/rest/ubicaciones?placa=${vehiculo.getPlaca()}&inicio=${inicio}&fin=${fin}",
-      method: "GET",
-      async: false,
-      success: function(data) {
-        $.each(data.ubicaciones, function(key, value) {
-          var lat = Number(value.latitud);
-          var lng = Number(value.longitud);
-          latTotal += lat;
-          lngTotal += lng;
-          cantTotal++;
-          var ubicacion = {"lat": lat, "lng":lng};
-          coordenadas.push(ubicacion);
-        });
-      }
-    });
+    var vehiculo;
 
     function initMap() {
-      var latCenter = latTotal / cantTotal;
-      var lngCenter = lngTotal / cantTotal;
-      var center = {"lat": latCenter, "lng": lngCenter};
-      var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 15,
-        center: center,
-        mapTypeId: google.maps.MapTypeId.ROADMAP
-      });
-      var route = new google.maps.Polyline({
-        path: coordenadas,
-        geodesic: true,
-        strokeColor: '#FF0000',
-        strokeOpacity: 1.0,
-        strokeWeight: 2
-      });
+      $.ajax({
+          url: "${pageContext.request.contextPath}/rest/ubicaciones?placa=${vehiculo.getPlaca()}&inicio=${inicio}&fin=${fin}",
+          method: "GET",
+          success: function(data) {
+          if(data.hasOwnProperty("ubicaciones")) {
+            vehiculo = data.ubicaciones[0].vehiculo;
+            $.each(data.ubicaciones, function(key, value) {
+              var lat = Number(value.latitud);
+              var lng = Number(value.longitud);
+              latTotal += lat;
+              lngTotal += lng;
+              cantTotal++;
+              var ubicacion = {"lat": lat, "lng": lng};
+              coordenadas.push(ubicacion);
+            });
+          } else {
+            vehiculo = data.vehiculo;
+            var lat = Number(data.latitud);
+            var lng = Number(data.longitud);
+            latTotal = lat;
+            lngTotal = lng;
+            cantTotal = 1;
+            var ubicacion = {"lat": lat, "lng": lng};
+            coordenadas.push(ubicacion);
+          }
+          
+          var latCenter = latTotal / cantTotal;
+          var lngCenter = lngTotal / cantTotal;
+          var center = {"lat": latCenter, "lng": lngCenter};
+          var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: center,
+            mapTypeId: google.maps.MapTypeId.ROADMAP
+          });
+          var route = new google.maps.Polyline({
+            path: coordenadas,
+            geodesic: true,
+            strokeColor: '#FF0000',
+            strokeOpacity: 1.0,
+            strokeWeight: 2
+          });
+          route.setMap(map);
 
-      route.setMap(map);
+          if(coordenadas.length == 1)
+          {
+            var marker = new google.maps.Marker({
+              position: coordenadas[0],
+              map: map,
+              title: vehiculo.nombreCorto
+            });
+          } else {
+      	    var marker1 = new google.maps.Marker({
+              position: coordenadas[0],
+              map: map,
+              title: "Inicio"
+            });
+      	  
+      	    var marker2 = new google.maps.Marker({
+              position: coordenadas[cantTotal - 1],
+              map: map,
+              title: "Fin"
+            });
+          }
+
+          var trafficLayer = new google.maps.TrafficLayer();
+          trafficLayer.setMap(map);
+        }
+      });
     }
     </script>
     <script async defer
