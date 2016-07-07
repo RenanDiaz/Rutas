@@ -23,25 +23,36 @@
     <script>
 
     var coordenadas = [];
+    var latTotal = 0;
+    var lngTotal = 0;
+    var cantTotal = 0;
     
     $.ajax({
   	  url: "${pageContext.request.contextPath}/rest/ubicaciones?placa=${vehiculo.getPlaca()}",
       method: "GET",
       success: function(data) {
         $.each(data.ubicaciones, function(key, value) {
-          var ubicacion = {"lat":Number(value.latitud), "lng":Number(value.longitud)};
+          var lat = Number(value.latitud);
+          var lng = Number(value.longitud);
+          latTotal += lat;
+          lngTotal += lng;
+          cantTotal++;
+          var ubicacion = {"lat": lat, "lng":lng};
           coordenadas.push(ubicacion);
         });
       }
     });
 
     function initMap() {
+      var latCenter = latTotal / cantTotal;
+      var lngCenter = lngTotal / cantTotal;
+      var center = {"lat": latCenter, "lng": lngCenter};
       var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 3,
-        center: {lat: 0, lng: -180},
-        mapTypeId: google.maps.MapTypeId.TERRAIN
+        zoom: 15,
+        center: center,
+        mapTypeId: google.maps.MapTypeId.ROADMAP
       });
-      var flightPath = new google.maps.Polyline({
+      var route = new google.maps.Polyline({
         path: coordenadas,
         geodesic: true,
         strokeColor: '#FF0000',
@@ -49,7 +60,7 @@
         strokeWeight: 2
       });
 
-      flightPath.setMap(map);
+      route.setMap(map);
     }
     </script>
     <script async defer
