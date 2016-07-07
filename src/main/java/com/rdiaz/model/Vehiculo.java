@@ -78,7 +78,7 @@ public abstract class Vehiculo
     
     public String getNombreCorto()
     {
-        return String.format("%s %s placa %s", getMarca().getNombre(), getModelo(), getPlaca());
+        return String.format("%s %s (%s)", getMarca().getNombre(), getModelo(), getPlaca());
     }
     
     public static Vehiculo nuevo(String placa, Marca marca, String modelo, int anno, TipoDeVehiculo tipo)

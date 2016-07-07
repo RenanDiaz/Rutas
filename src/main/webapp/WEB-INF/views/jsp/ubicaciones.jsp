@@ -89,6 +89,10 @@
       <div class="col-xs-12">
         <iframe id="iframe-mapa" style="width: 100%; height: 300px;"></iframe>
       </div>
+      <br>
+      <div class="col-xs-12">
+        <a href="#" target="_blank" id="link-mapa">Abrir en una ventana aparte</a>
+      </div>
     </div>
   </div>
 </c:if>
@@ -311,7 +315,9 @@ $("#verMapa").click(function() {
   var ultima = ${ubicaciones.get(total - 1).getId()}
   var inicio = $("#cb-inicio-mapa").prop("checked") ? $("#inicio-mapa").val() : primera;
   var fin = $("#cb-fin-mapa").prop("checked") ? $("#fin-mapa").val() : ultima;
-  $("#iframe-mapa").attr("src", "${pageContext.request.contextPath}/mapa/" + $("#placa-mapa").val() +"?inicio=" + inicio + "&fin=" + fin);
+  var ruta = "${pageContext.request.contextPath}/mapa/" + $("#placa-mapa").val() +"?inicio=" + inicio + "&fin=" + fin;
+  $("#iframe-mapa").attr("src", ruta);
+  $("#link-mapa").attr("href", ruta);
   $("#iframe-row").show();
 });
 
