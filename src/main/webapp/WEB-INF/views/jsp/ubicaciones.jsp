@@ -12,6 +12,11 @@
 <link href="${commonCss}" rel="stylesheet" />
 <link href="${datatablesCss}" rel="stylesheet" />
 </head>
+<style type="text/css">
+#botones div {
+  margin: 10px auto;
+}
+</style>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
@@ -56,28 +61,28 @@
         </tbody>
       </table>
     </div>
-    <div class="row">
-      <div class="col-xs-12 col-sm-2">
+    <div class="row" id="botones">
+      <div class="col-xs-6 col-sm-2">
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpAgregar">
           Agregar <span class="glyphicon glyphicon-plus-sign"></span>
         </button>
       </div>
-      <div class="col-xs-12 col-sm-2">
+      <div class="col-xs-6 col-sm-2">
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpCalcular">
           Distancia <span class="glyphicon glyphicon-road"></span>
         </button>
       </div>
-      <div class="col-xs-12 col-sm-2">
+      <div class="col-xs-6 col-sm-2">
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpExportar">
           Exportar <span class="glyphicon glyphicon-export"></span>
         </button>
       </div>
-      <div class="col-xs-12 col-sm-2">
+      <div class="col-xs-6 col-sm-2">
         <a class="btn btn-info btn-lg" id="descargar">
           Descargar <span class="glyphicon glyphicon-download-alt"></span>
         </a>
       </div>
-      <div class="col-xs-12 col-sm-2">
+      <div class="col-xs-6 col-sm-2">
         <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpMapa">
           Ver mapa <span class="glyphicon glyphicon-map-marker"></span>
         </button>
