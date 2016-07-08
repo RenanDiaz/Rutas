@@ -56,8 +56,8 @@
             <td>${rutaAsignada.getId()}</td>
             <td>${rutaAsignada.getVehiculo().getNombreCorto()}</td>
             <td>${rutaAsignada.getRuta().getDescripcion()}</td>
-            <td>${rutaAsignada.getHoraDePartida()}</td>
-            <td>${rutaAsignada.getHoraDeLlegada()}</td>
+            <td>${rutaAsignada.getFechahoraDePartida()}</td>
+            <td>${rutaAsignada.getFechahoraDeLlegada()}</td>
           </tr>
         </tbody>
       </table>
@@ -89,13 +89,14 @@
               </c:forEach>
             </select>
           </div>
-          <div class="form-group date" id="fechaInicio">
-            <label>Partida</label> <input id="inicio" class="form-control" type="text" required> <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span>
-            </span>
+          <div class="form-group date" id="fecha">
+            <label>Fecha</label> <input id="fechaDePartida" class="form-control" type="date" value="${rutaAsignada.getFechaDePartida()}">
           </div>
-          <div class="form-group date" id="fechaFin">
-            <label>Llegada</label> <input id="fin" class="form-control" type="text" required> <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span>
-            </span>
+          <div class="form-group date" id="horaPartida">
+            <label>Hora de partida</label><input id="horaDePartida" class="form-control" type="time" value="${rutaAsignada.getHoraDePartida()}">
+          </div>
+          <div class="form-group date" id="horaLlegada">
+            <label>Hora de llegada</label> <input id="horaDeLlegada" class="form-control" type="time" value="${rutaAsignada.getHoraDeLlegada()}">
           </div>
         </c:if>
       </div>
@@ -123,19 +124,29 @@
 <script src="${bootstrapJs}"></script>
 <script type="text/javascript">
 $("#guardar").click(function() {
+  var fechahoraDePartida = getFechahora($("#horaDePartida").val());
+  var fechahoraDeLlegada = getFechahora($("#horaDeLlegada").val());
+	
   $.ajax({
-    url: "${pageContext.request.contextPath}/rutas/editar",
+    url: "${pageContext.request.contextPath}/asignacion/editar",
     method: "POST",
     data: {
-      id: $("#id").val(),
-      origen: $("#origen").val(),
-      destino: $("#destino").val()
+      id: "${rutaAsignada.getId()}",
+      placa: $("#placa").val(),
+      ruta: $("#ruta").val(),
+      partida: fechahoraDePartida.getTime(),
+      llegada: fechahoraDeLlegada.getTime()
     },
     success: function() {
       location.reload();
     }
   });
 });
+
+function getFechahora(hora) {
+  var fecha = $("#fechaDePartida").val();
+  return new Date(fecha + " " + hora);
+}
 </script>
 </body>
 </html>

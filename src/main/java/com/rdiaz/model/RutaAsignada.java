@@ -5,31 +5,32 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.Calendar;
 
 public class RutaAsignada
 {
     private int id;
     private Vehiculo vehiculo;
     private Ruta ruta;
-    private Timestamp horaDePartida;
-    private Timestamp horaDeLlegada;
+    private Timestamp fechahoraDePartida;
+    private Timestamp fechahoraDeLlegada;
     
     public RutaAsignada(Vehiculo vehiculo, Ruta ruta, long partida, long llegada)
     {
-        Timestamp horaDePartida = new Timestamp(partida);
-        Timestamp horaDeLlegada = new Timestamp(llegada);
+        Timestamp fechahoraDePartida = new Timestamp(partida);
+        Timestamp fechahoraDeLlegada = new Timestamp(llegada);
         setVehiculo(vehiculo);
         setRuta(ruta);
-        setHoraDePartida(horaDePartida);
-        setHoraDeLlegada(horaDeLlegada);
+        setFechahoraDePartida(fechahoraDePartida);
+        setFechahoraDeLlegada(fechahoraDeLlegada);
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ruta_asignada (vehiculo, ruta, hora_de_partida, hora_de_llegada) VALUES (?, ?, ?, ?);");
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ruta_asignada (vehiculo, ruta, fechahora_de_partida, fechahora_de_llegada) VALUES (?, ?, ?, ?);");
             stmt.setString(1, vehiculo.getPlaca());
             stmt.setInt(2, ruta.getId());
-            stmt.setTimestamp(3, horaDePartida);
-            stmt.setTimestamp(4, horaDeLlegada);
+            stmt.setTimestamp(3, fechahoraDePartida);
+            stmt.setTimestamp(4, fechahoraDeLlegada);
             stmt.executeUpdate();
             
             stmt = conexion.prepareStatement("SELECT @@IDENTITY FROM ruta_asignada;");
@@ -45,13 +46,13 @@ public class RutaAsignada
         }
     }
     
-    public RutaAsignada(int id, Vehiculo vehiculo, Ruta ruta, Timestamp horaDePartida, Timestamp horaDeLlegada)
+    public RutaAsignada(int id, Vehiculo vehiculo, Ruta ruta, Timestamp fechahoraDePartida, Timestamp fechahoraDeLlegada)
     {
         setId(id);
         setVehiculo(vehiculo);
         setRuta(ruta);
-        setHoraDePartida(horaDePartida);
-        setHoraDeLlegada(horaDeLlegada);
+        setFechahoraDePartida(fechahoraDePartida);
+        setFechahoraDeLlegada(fechahoraDeLlegada);
     }
     
     public int getId()
@@ -84,45 +85,67 @@ public class RutaAsignada
         this.ruta = ruta;
     }
 
-    public Timestamp getHoraDePartida()
+    public Timestamp getFechahoraDePartida()
     {
-        return horaDePartida;
+        return fechahoraDePartida;
     }
 
-    public void setHoraDePartida(Timestamp horaDePartida)
+    public void setFechahoraDePartida(Timestamp fechahoraDePartida)
     {
-        this.horaDePartida = horaDePartida;
+        this.fechahoraDePartida = fechahoraDePartida;
     }
 
-    public Timestamp getHoraDeLlegada()
+    public Timestamp getFechahoraDeLlegada()
     {
-        return horaDeLlegada;
+        return fechahoraDeLlegada;
     }
 
-    public void setHoraDeLlegada(Timestamp horaDeLlegada)
+    public void setFechahoraDeLlegada(Timestamp fechahoraDeLlegada)
     {
-        this.horaDeLlegada = horaDeLlegada;
+        this.fechahoraDeLlegada = fechahoraDeLlegada;
     }
     
     public String getDescripcion()
     {
         return String.format("%s %s", vehiculo.getNombreCorto(), ruta.getDescripcion());
     }
-
-    public void editar(Vehiculo vehiculo, Ruta ruta, Timestamp horaDePartida, Timestamp horaDeLlegada)
+    
+    public String getFechaDePartida()
     {
+        return fechaFormateada(fechahoraDePartida);
+    }
+    
+    public String getHoraDePartida()
+    {
+        return horaFormateada(fechahoraDePartida);
+    }
+    
+    public String getFechaDeLlegada()
+    {
+        return fechaFormateada(fechahoraDeLlegada);
+    }
+    
+    public String getHoraDeLlegada()
+    {
+        return horaFormateada(fechahoraDeLlegada);
+    }
+
+    public void editar(Vehiculo vehiculo, Ruta ruta, long partida, long llegada)
+    {
+        Timestamp fechahoraDePartida = new Timestamp(partida);
+        Timestamp fechahoraDeLlegada = new Timestamp(llegada);
         setVehiculo(vehiculo);
         setRuta(ruta);
-        setHoraDePartida(horaDePartida);
-        setHoraDeLlegada(horaDeLlegada);
+        setFechahoraDePartida(fechahoraDePartida);
+        setFechahoraDeLlegada(fechahoraDeLlegada);
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("UPDATE ruta_asignada SET vehiculo = ?, ruta = ?, hora_de_partida = ?, hora_de_llegada = ? WHERE id = ?;");
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE ruta_asignada SET vehiculo = ?, ruta = ?, fechahora_de_partida = ?, fechahora_de_llegada = ? WHERE id = ?;");
             stmt.setString(1, vehiculo.getPlaca());
             stmt.setInt(2, ruta.getId());
-            stmt.setTimestamp(3, horaDePartida);
-            stmt.setTimestamp(4, horaDeLlegada);
+            stmt.setTimestamp(3, fechahoraDePartida);
+            stmt.setTimestamp(4, fechahoraDeLlegada);
             stmt.setInt(5, getId());
             stmt.executeUpdate();
             
@@ -131,5 +154,29 @@ public class RutaAsignada
         {
             e.printStackTrace();
         }
+    }
+    
+    private String fechaFormateada(Timestamp fechahora)
+    {
+        long timestamp = fechahora.getTime();
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp);
+        int anno = cal.get(Calendar.YEAR);
+        int mes = cal.get(Calendar.MONTH);
+        int dia = cal.get(Calendar.DATE);
+        
+        return String.format("%d-%02d-%02d", anno, mes, dia);
+    }
+
+    
+    private String horaFormateada(Timestamp fechahora)
+    {
+        long timestamp = fechahora.getTime();
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp);
+        int hora = cal.get(Calendar.HOUR_OF_DAY);
+        int minuto = cal.get(Calendar.MINUTE);
+        
+        return String.format("%02d:%02d", hora, minuto);
     }
 }

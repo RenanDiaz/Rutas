@@ -49,8 +49,8 @@
               <td>${rutaAsignada.getId()}</td>
               <td>${rutaAsignada.getVehiculo().getNombreCorto()}</td>
               <td>${rutaAsignada.getRuta().getDescripcion()}</td>
-              <td>${rutaAsignada.getHoraDePartida()}</td>
-              <td>${rutaAsignada.getHoraDeLlegada()}</td>
+              <td>${rutaAsignada.getFechahoraDePartida()}</td>
+              <td>${rutaAsignada.getFechahoraDeLlegada()}</td>
             </tr>
           </c:forEach>
         </c:if>
@@ -89,13 +89,14 @@
               </c:forEach>
             </select>
           </div>
-          <div class="form-group date" id="fechaInicio">
-            <label>Partida</label> <input id="inicio" class="form-control" type="text" required> <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span>
-            </span>
+          <div class="form-group date" id="fecha">
+            <label>Fecha</label> <input id="fechaDePartida" class="form-control" type="date">
           </div>
-          <div class="form-group date" id="fechaFin">
-            <label>Llegada</label> <input id="fin" class="form-control" type="text" required> <span class="input-group-addon"> <span class="glyphicon glyphicon-calendar"></span>
-            </span>
+          <div class="form-group date" id="horaPartida">
+            <label>Hora de partida</label><input id="horaDePartida" class="form-control" type="time">
+          </div>
+          <div class="form-group date" id="horaLlegada">
+            <label>Hora de llegada</label> <input id="horaDeLlegada" class="form-control" type="time">
           </div>
         </c:if>
       </div>
@@ -123,6 +124,8 @@
 <script src="${bootstrapJs}"></script>
 <script src="${datatablesJs}"></script>
 <script type="text/javascript">
+resetearFechasHoras();
+
 $("table").DataTable({
 	"order": [[ 0, "desc" ]]
 });
@@ -136,8 +139,8 @@ $("#agregar").click(function() {
     data: {
       placa: $("#placa").val(),
       ruta: $("#ruta").val(),
-      inicio: new Date($("#inicio").val()).getTime(),
-      fin: new Date($("#fin").val()).getTime()
+      partida: new Date($("#inicio").val()).getTime(),
+      llegada: new Date($("#fin").val()).getTime()
     },
     success: function() {
       location.reload();
@@ -146,9 +149,7 @@ $("#agregar").click(function() {
 });
 
 $('.modal').on('hidden.bs.modal', function () {
-  $(".modal input").val("");
-  $(".modal input[type='checkbox']").prop("checked", false);
-  $(".disableable").prop("disabled", true);
+  resetearFechasHoras();
   $(".modal select option:first").prop("selected", true);
 })
 
@@ -156,6 +157,29 @@ $('body').delegate(".link", "click", function() {
   var id = $(this).prop("id");
   window.location.href = "/Rutas/asignacion/" + id;
 });
+
+function getFechahora(hora) {
+  var fecha = $("#fechaDePartida").val();
+  return new Date(fecha + " " + hora);
+}
+
+function resetearFechasHoras() {
+  var hoy = new Date();
+  var fecha = hoy.getFullYear() + "-" + pad(hoy.getMonth()) + "-" + pad(hoy.getDate());
+  var hora1 = pad(hoy.getHours()) + ":" + pad(hoy.getMinutes());
+  var hora2 = pad(hoy.getHours() + 1) + ":" + pad(hoy.getMinutes());
+  $("#fechaDePartida").val(fecha);
+  $("#horaDePartida").val(hora1);
+  $("#horaDeLlegada").val(hora2);
+}
+
+function pad(numero) {
+  var dosDigitos = numero > 9;
+  if(dosDigitos) {
+    return numero;
+  }
+  return "0" + numero;
+}
 </script>
 </body>
 </html>
