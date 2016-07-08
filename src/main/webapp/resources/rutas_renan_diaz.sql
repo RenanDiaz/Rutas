@@ -77,7 +77,7 @@ DROP TABLE IF EXISTS `rutas`;
 
 CREATE TABLE `rutas` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `partida` varchar(25) DEFAULT NULL,
+  `origen` varchar(25) DEFAULT NULL,
   `destino` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -85,7 +85,7 @@ CREATE TABLE `rutas` (
 LOCK TABLES `rutas` WRITE;
 /*!40000 ALTER TABLE `rutas` DISABLE KEYS */;
 
-INSERT INTO `rutas` (`id`, `partida`, `destino`)
+INSERT INTO `rutas` (`id`, `origen`, `destino`)
 VALUES
 	(1,'USMA','Mall Chiriquí'),
 	(2,'Centro','Santa Cruz'),

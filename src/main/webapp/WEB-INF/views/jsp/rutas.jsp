@@ -37,7 +37,7 @@
         <thead>
           <tr>
             <th>ID</th>
-            <th>Partida</th>
+            <th>Origen</th>
             <th>Destino</th>
           </tr>
         </thead>
@@ -45,7 +45,7 @@
           <c:forEach items="${rutas}" var="ruta">
             <tr class="link" id="${ruta.getId()}">
               <td>${ruta.getId()}</td>
-              <td>${ruta.getPartida()}</td>
+              <td>${ruta.getOrigen()}</td>
               <td>${ruta.getDestino()}</td>
             </tr>
           </c:forEach>
@@ -65,7 +65,7 @@
       </div>
       <div class="modal-body">
         <div class="form-group">
-          <label>Partida</label> <input id="partida" class="form-control" type="text" required autofocus>
+          <label>Origen</label> <input id="origen" class="form-control" type="text" required autofocus>
         </div>
         <div class="form-group">
           <label>Destino</label> <input id="destino" class="form-control" type="text" required>
@@ -103,7 +103,7 @@ $("#agregar").click(function() {
     url: "${pageContext.request.contextPath}/rutas/agregar",
     method: "POST",
     data: {
-      partida: $("#partida").val(),
+      origen: $("#origen").val(),
       destino: $("#destino").val()
     },
     success: function() {

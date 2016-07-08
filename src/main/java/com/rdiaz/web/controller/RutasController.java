@@ -16,17 +16,17 @@ public class RutasController extends BaseController
 {
     @RequestMapping(value = "agregar", method = RequestMethod.POST)
     @ResponseBody
-    public String agregarRuta(@RequestParam(value = "partida", required = true) String partida, @RequestParam(value = "destino", required = true) String destino)
+    public String agregarRuta(@RequestParam(value = "origen", required = true) String origen, @RequestParam(value = "destino", required = true) String destino)
     {
-        rutas.add(new Ruta(partida, destino));
+        rutas.add(new Ruta(origen, destino));
         return "sucess";
     }
     
     @RequestMapping(value = "editar", method = RequestMethod.POST)
     @ResponseBody
-    public String editarRuta(@RequestParam(value = "id", required = true) int id, @RequestParam(value = "partida", required = true) String partida, @RequestParam(value = "destino", required = true) String destino)
+    public String editarRuta(@RequestParam(value = "id", required = true) int id, @RequestParam(value = "origen", required = true) String origen, @RequestParam(value = "destino", required = true) String destino)
     {
-        rutas.get(id).editar(partida, destino);
+        rutas.get(id).editar(origen, destino);
         return "success";
     }
     

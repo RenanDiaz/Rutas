@@ -7,9 +7,6 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Rutas
@@ -29,9 +26,9 @@ public class Rutas
             while(rs.next())
             {
                 int id = rs.getInt(1);
-                String partida = rs.getString(2);
+                String origen = rs.getString(2);
                 String destino = rs.getString(3);
-                rutas.add(new Ruta(id, partida, destino));
+                rutas.add(new Ruta(id, origen, destino));
             }
             conexion.close();
         } catch (Exception e)
@@ -46,16 +43,16 @@ public class Rutas
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM rutas WHERE partida LIKE ? OR destino LIKE ?;");
+            PreparedStatement stmt = conexion.prepareStatement("SELECT * FROM rutas WHERE origen LIKE ? OR destino LIKE ?;");
             stmt.setString(1, busqueda);
             stmt.setString(2, busqueda);
             ResultSet rs = stmt.executeQuery();
             while(rs.next())
             {
                 int id = rs.getInt(1);
-                String partida = rs.getString(2);
+                String origen = rs.getString(2);
                 String destino = rs.getString(3);
-                rutas.add(new Ruta(id, partida, destino));
+                rutas.add(new Ruta(id, origen, destino));
             }
             conexion.close();
         } catch (Exception e)
@@ -79,23 +76,6 @@ public class Rutas
             }
         }
         return null;
-    }
-    
-    public JSONObject buscar(String busqueda)
-    {
-        JSONArray arreglo = new JSONArray();
-        for(final Ruta ruta : rutas)
-        {
-            if(busqueda.isEmpty() || ruta.getPartida().contains(busqueda) || ruta.getDestino().contains(busqueda))
-            {
-                JSONObject entrada = new JSONObject();
-                entrada.put("id", ruta.getId());
-                entrada.put("partida", ruta.getPartida());
-                entrada.put("destino", ruta.getDestino());
-                arreglo.put(entrada);
-            }
-        }
-        return new JSONObject().put("rutas", arreglo);
     }
     
     public int size()

@@ -8,18 +8,18 @@ import java.sql.ResultSet;
 public class Ruta
 {
     private int id;
-    private String partida;
+    private String origen;
     private String destino;
     
-    public Ruta(String partida, String destino)
+    public Ruta(String origen, String destino)
     {
-        setPartida(partida);
+        setOrigen(origen);
         setDestino(destino);
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO rutas (partida, destino) VALUES (?, ?);");
-            stmt.setString(1, partida);
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO rutas (origen, destino) VALUES (?, ?);");
+            stmt.setString(1, origen);
             stmt.setString(2, destino);
             stmt.executeUpdate();
             
@@ -36,10 +36,10 @@ public class Ruta
         }
     }
     
-    public Ruta(int id, String partida, String destino)
+    public Ruta(int id, String origen, String destino)
     {
         setId(id);
-        setPartida(partida);
+        setOrigen(origen);
         setDestino(destino);
     }
     
@@ -53,14 +53,14 @@ public class Ruta
         this.id = id;
     }
     
-    public String getPartida()
+    public String getOrigen()
     {
-        return partida;
+        return origen;
     }
     
-    void setPartida(String partida)
+    void setOrigen(String origen)
     {
-        this.partida = partida;
+        this.origen = origen;
     }
     
     public String getDestino()
@@ -75,18 +75,18 @@ public class Ruta
     
     public String getDescripcion()
     {
-        return String.format("%s - %s", getPartida(), getDestino());
+        return String.format("%s - %s", getOrigen(), getDestino());
     }
     
-    public void editar(String partida, String destino)
+    public void editar(String origen, String destino)
     {
-        setPartida(partida);
+        setOrigen(origen);
         setDestino(destino);
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("UPDATE rutas SET partida = ?, destino = ? WHERE id = ?;");
-            stmt.setString(1, partida);
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE rutas SET origen = ?, destino = ? WHERE id = ?;");
+            stmt.setString(1, origen);
             stmt.setString(2, destino);
             stmt.setInt(3, getId());
             stmt.executeUpdate();

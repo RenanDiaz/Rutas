@@ -107,11 +107,11 @@ public class Ubicaciones
         double tiempoAcumulado = 0;
         for(int i = 0; i < rango.size() - 1; i++)
         {
-            Ubicacion partida = rango.get(i);
+            Ubicacion origen = rango.get(i);
             Ubicacion destino = rango.get(i + 1);
-            double distancia = distanciaEntre(partida, destino);
+            double distancia = distanciaEntre(origen, destino);
             distanciaTotal += distancia;
-            double tiempo = destino.getFechahora().getTime() - partida.getFechahora().getTime();
+            double tiempo = destino.getFechahora().getTime() - origen.getFechahora().getTime();
             tiempoAcumulado += tiempo;
             double velocidad = (distancia / 1000) / (tiempo / 1000 / 60 / 60);
             System.out.printf("%d. %6.2fm\t%.2fms\t%6.2fkm/h\t%.2fm\t%.2fmin%n", destino.getId(), distancia, tiempo, velocidad, distanciaTotal, tiempoAcumulado / 1000 / 60);
@@ -122,11 +122,11 @@ public class Ubicaciones
         return distanciaTotal;
     }
     
-    public double distanciaEntre(Ubicacion partida, Ubicacion destino)
+    public double distanciaEntre(Ubicacion origen, Ubicacion destino)
     {
-        double lat1 = Double.valueOf(partida.getLatitud());
+        double lat1 = Double.valueOf(origen.getLatitud());
         double lat2 = Double.valueOf(destino.getLatitud());
-        double lon1 = Double.valueOf(partida.getLongitud());
+        double lon1 = Double.valueOf(origen.getLongitud());
         double lon2 = Double.valueOf(destino.getLongitud());
         double el1 = 0;
         double el2 = 0;
