@@ -11,25 +11,25 @@ public class RutaAsignada
     private int id;
     private Vehiculo vehiculo;
     private Ruta ruta;
-    private Timestamp horaInicial;
-    private Timestamp horaFinal;
+    private Timestamp horaDePartida;
+    private Timestamp horaDeLlegada;
     
-    public RutaAsignada(Vehiculo vehiculo, Ruta ruta, long inicio, long fin)
+    public RutaAsignada(Vehiculo vehiculo, Ruta ruta, long partida, long llegada)
     {
-        Timestamp horaInicial = new Timestamp(inicio);
-        Timestamp horaFinal = new Timestamp(fin);
+        Timestamp horaDePartida = new Timestamp(partida);
+        Timestamp horaDeLlegada = new Timestamp(llegada);
         setVehiculo(vehiculo);
         setRuta(ruta);
-        setHoraInicial(horaInicial);
-        setHoraFinal(horaFinal);
+        setHoraDePartida(horaDePartida);
+        setHoraDeLlegada(horaDeLlegada);
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ruta_asignada (vehiculo, ruta, hora_inicial, hora_final) VALUES (?, ?, ?, ?);");
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ruta_asignada (vehiculo, ruta, hora_de_partida, hora_de_llegada) VALUES (?, ?, ?, ?);");
             stmt.setString(1, vehiculo.getPlaca());
             stmt.setInt(2, ruta.getId());
-            stmt.setTimestamp(3, horaInicial);
-            stmt.setTimestamp(4, horaFinal);
+            stmt.setTimestamp(3, horaDePartida);
+            stmt.setTimestamp(4, horaDeLlegada);
             stmt.executeUpdate();
             
             stmt = conexion.prepareStatement("SELECT @@IDENTITY FROM ruta_asignada;");
@@ -45,13 +45,13 @@ public class RutaAsignada
         }
     }
     
-    public RutaAsignada(int id, Vehiculo vehiculo, Ruta ruta, Timestamp horaInicial, Timestamp horaFinal)
+    public RutaAsignada(int id, Vehiculo vehiculo, Ruta ruta, Timestamp horaDePartida, Timestamp horaDeLlegada)
     {
         setId(id);
         setVehiculo(vehiculo);
         setRuta(ruta);
-        setHoraInicial(horaInicial);
-        setHoraFinal(horaFinal);
+        setHoraDePartida(horaDePartida);
+        setHoraDeLlegada(horaDeLlegada);
     }
     
     public int getId()
@@ -84,40 +84,45 @@ public class RutaAsignada
         this.ruta = ruta;
     }
 
-    public Timestamp getHoraInicial()
+    public Timestamp getHoraDePartida()
     {
-        return horaInicial;
+        return horaDePartida;
     }
 
-    public void setHoraInicial(Timestamp horaInicial)
+    public void setHoraDePartida(Timestamp horaDePartida)
     {
-        this.horaInicial = horaInicial;
+        this.horaDePartida = horaDePartida;
     }
 
-    public Timestamp getHoraFinal()
+    public Timestamp getHoraDeLlegada()
     {
-        return horaFinal;
+        return horaDeLlegada;
     }
 
-    public void setHoraFinal(Timestamp horaFinal)
+    public void setHoraDeLlegada(Timestamp horaDeLlegada)
     {
-        this.horaFinal = horaFinal;
+        this.horaDeLlegada = horaDeLlegada;
+    }
+    
+    public String getDescripcion()
+    {
+        return String.format("%s %s", vehiculo.getNombreCorto(), ruta.getDescripcion());
     }
 
-    public void editar(Vehiculo vehiculo, Ruta ruta, Timestamp horaInicial, Timestamp horaFinal)
+    public void editar(Vehiculo vehiculo, Ruta ruta, Timestamp horaDePartida, Timestamp horaDeLlegada)
     {
         setVehiculo(vehiculo);
         setRuta(ruta);
-        setHoraInicial(horaInicial);
-        setHoraFinal(horaFinal);
+        setHoraDePartida(horaDePartida);
+        setHoraDeLlegada(horaDeLlegada);
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("UPDATE ruta_asignada SET vehiculo = ?, ruta = ?, hora_inicial = ?, hora_final = ? WHERE id = ?;");
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE ruta_asignada SET vehiculo = ?, ruta = ?, hora_de_partida = ?, hora_de_llegada = ? WHERE id = ?;");
             stmt.setString(1, vehiculo.getPlaca());
             stmt.setInt(2, ruta.getId());
-            stmt.setTimestamp(3, horaInicial);
-            stmt.setTimestamp(4, horaFinal);
+            stmt.setTimestamp(3, horaDePartida);
+            stmt.setTimestamp(4, horaDeLlegada);
             stmt.setInt(5, getId());
             stmt.executeUpdate();
             

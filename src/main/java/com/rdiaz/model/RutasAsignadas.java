@@ -27,9 +27,9 @@ public class RutasAsignadas
                 int id = rs.getInt(1);
                 Vehiculo vehiculo = vehiculos.get(rs.getString(2));
                 Ruta ruta = rutas.get(rs.getInt(3));
-                Timestamp horaInicial = rs.getTimestamp(4);
-                Timestamp horaFinal = rs.getTimestamp(5);
-                rutasAsignadas.add(new RutaAsignada(id, vehiculo, ruta, horaInicial, horaFinal));
+                Timestamp horaDePartida = rs.getTimestamp(4);
+                Timestamp horaDeLlegada = rs.getTimestamp(5);
+                rutasAsignadas.add(new RutaAsignada(id, vehiculo, ruta, horaDePartida, horaDeLlegada));
             }
             conexion.close();
         } catch (Exception e)
