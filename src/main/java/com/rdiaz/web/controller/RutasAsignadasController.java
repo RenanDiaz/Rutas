@@ -1,7 +1,5 @@
 package com.rdiaz.web.controller;
 
-import java.sql.Timestamp;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;

@@ -47,11 +47,9 @@
 <spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
 <spring:url value="/resources/core/js/common.js" var="coreJs" />
 <spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
-<spring:url value="/resources/core/js/ubicacionAtmosphere.js" var="atmosphereJs" />
 
 <script src="${jquery}"></script>
 <script src="${coreJs}"></script>
 <script src="${bootstrapJs}"></script>
-<script src="${atmosphereJs}"></script>
 </body>
 </html>

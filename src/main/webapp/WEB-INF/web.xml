@@ -16,24 +16,4 @@
     <url-pattern>/</url-pattern>
   </servlet-mapping>
 
-  <servlet>
-    <servlet-name>notification</servlet-name>
-    <servlet-class>org.atmosphere.cpr.MeteorServlet</servlet-class>
-    <init-param>
-      <param-name>org.atmosphere.servlet</param-name>
-      <param-value>org.springframework.web.servlet.DispatcherServlet</param-value>
-    </init-param>
-    <init-param>
-      <param-name>contextClass</param-name>
-      <param-value>org.springframework.web.context.support.AnnotationConfigWebApplicationContext</param-value>
-    </init-param>
-    <load-on-startup>2</load-on-startup>
-    <async-supported>true</async-supported>
-  </servlet>
-
-  <servlet-mapping>
-    <servlet-name>notification</servlet-name>
-    <url-pattern>/n/*</url-pattern>
-  </servlet-mapping>
-
 </web-app>
