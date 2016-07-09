@@ -35,7 +35,6 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>ID</th>
           <th>Vehiculo</th>
           <th>Ruta</th>
           <th>Partida</th>
@@ -46,7 +45,6 @@
         <c:if test="${not empty rutasAsignadas}">
           <c:forEach items="${rutasAsignadas}" var="rutaAsignada">
             <tr class="link" id="${rutaAsignada.getId()}" title="${rutaAsignada.getId()}">
-              <td>${rutaAsignada.getId()}</td>
               <td>${rutaAsignada.getVehiculo().getNombreCorto()}</td>
               <td>${rutaAsignada.getRuta().getDescripcion()}</td>
               <td>${rutaAsignada.getFechahoraDePartida()}</td>
@@ -127,20 +125,18 @@
 resetearFechasHoras();
 
 $("table").DataTable({
-	"order": [[ 0, "desc" ]]
+	"order": [[ 2, "asc" ]]
 });
 
 $("#agregar").click(function() {
-  var d = new Date();
-  var fecha = d.getTime();
   $.ajax({
     url: "${pageContext.request.contextPath}/asignacion/agregar",
     method: "POST",
     data: {
       placa: $("#placa").val(),
       ruta: $("#ruta").val(),
-      partida: new Date($("#inicio").val()).getTime(),
-      llegada: new Date($("#fin").val()).getTime()
+      partida: new Date(getFechahora($("#horaDePartida").val())).getTime(),
+      llegada: new Date(getFechahora($("#horaDeLlegada").val())).getTime()
     },
     success: function() {
       location.reload();

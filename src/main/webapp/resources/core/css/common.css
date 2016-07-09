@@ -1,3 +1,7 @@
 .link {
   cursor: pointer;
 }
+
+th {
+  text-align: center;
+}
