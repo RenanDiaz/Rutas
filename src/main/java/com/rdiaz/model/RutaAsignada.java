@@ -129,6 +129,11 @@ public class RutaAsignada
     {
         return horaFormateada(fechahoraDeLlegada);
     }
+    
+    public String getRangoDeHoras()
+    {
+        return String.format("%s - %s", getHoraDePartida(), getHoraDeLlegada());
+    }
 
     public void editar(Vehiculo vehiculo, Ruta ruta, long partida, long llegada)
     {
@@ -162,7 +167,7 @@ public class RutaAsignada
         Calendar cal = Calendar.getInstance();
         cal.setTimeInMillis(timestamp);
         int anno = cal.get(Calendar.YEAR);
-        int mes = cal.get(Calendar.MONTH);
+        int mes = cal.get(Calendar.MONTH) + 1;
         int dia = cal.get(Calendar.DATE);
         
         return String.format("%d-%02d-%02d", anno, mes, dia);

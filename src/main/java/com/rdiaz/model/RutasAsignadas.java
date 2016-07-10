@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.Comparator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -38,6 +40,11 @@ public class RutasAsignadas
         }
     }
     
+    public RutasAsignadas()
+    {
+        
+    }
+    
     public void add(RutaAsignada rutaAsignada)
     {
         rutasAsignadas.add(rutaAsignada);
@@ -65,23 +72,74 @@ public class RutasAsignadas
         rutasAsignadas.remove(rutaAsignada);
     }
     
-    public ArrayList<RutaAsignada> getRutasAsignadas()
+    public void ordenarAscendentementePorFecha()
+    {
+        rutasAsignadas.sort(Comparator.comparing(RutaAsignada::getFechahoraDePartida));
+    }
+    
+    public void ordenarDescendentementePorFecha()
+    {
+        ordenarAscendentementePorFecha();
+        Collections.reverse(rutasAsignadas);
+    }
+    
+    public void ordenar()
     {
         rutasAsignadas.sort(Comparator.comparing(RutaAsignada::getId));
+    }
+    
+    public ArrayList<RutaAsignada> getRutasAsignadas()
+    {
+        ordenar();
         return rutasAsignadas;
     }
     
     public RutasAsignadas getRutasAsignadasA(Vehiculo vehiculo)
     {
-        RutasAsignadas rutasAsignadasParaEsteVehiculo = this;
-        for(RutaAsignada rutaAsignada : rutasAsignadas)
+        RutasAsignadas rutasAsignadasParaEsteVehiculo = new RutasAsignadas();
+        for(final RutaAsignada rutaAsignada : rutasAsignadas)
         {
-            if(!rutaAsignada.getVehiculo().equals(vehiculo))
+            if(rutaAsignada.getVehiculo().equals(vehiculo))
             {
-                rutasAsignadasParaEsteVehiculo.remove(rutaAsignada);
+                rutasAsignadasParaEsteVehiculo.add(rutaAsignada);
             }
         }
         
         return rutasAsignadasParaEsteVehiculo;
+    }
+
+    public RutasAsignadas getAsignacionesDeHoyDe(Ruta ruta)
+    {
+        RutasAsignadas asignacionesDeHoy = new RutasAsignadas();
+        for(final RutaAsignada rutaAsignada : rutasAsignadas)
+        {
+            if(rutaAsignada.getRuta().equals(ruta))
+            {
+                int fechaDePartida = getIntFecha(rutaAsignada.getFechahoraDePartida());
+                int fechaDeHoy = getIntFecha(getTimestampHoy());
+                if(fechaDePartida >= fechaDeHoy)
+                {
+                    asignacionesDeHoy.add(rutaAsignada);
+                }
+            }
+        }
+        asignacionesDeHoy.ordenarDescendentementePorFecha();
+        return asignacionesDeHoy;
+    }
+    
+    private int getIntFecha(Timestamp fechahora)
+    {
+        long timestamp = fechahora.getTime();
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp);
+        int anno = cal.get(Calendar.YEAR);
+        int mes = cal.get(Calendar.MONTH);
+        int dia = cal.get(Calendar.DATE);
+        return anno + mes + dia;
+    }
+    
+    private Timestamp getTimestampHoy()
+    {
+        return new Timestamp(Calendar.getInstance().getTimeInMillis());
     }
 }

@@ -41,7 +41,7 @@
 <c:if test="${not empty rutaAsignada}">
   <div class="container">
     <div class="table-responsive">
-      <table class="table table-striped">
+      <table class="table table-striped table-hover table-hover">
         <thead>
           <tr>
             <th>ID</th>
@@ -78,14 +78,24 @@
           <div class="form-group">
             <label>Veh&iacute;culo</label> <select name="placa" id="placa" class="form-control" autofocus>
               <c:forEach items="${vehiculos}" var="vehiculo">
-                <option value="${vehiculo.getPlaca()}">${vehiculo.getNombreCorto()}</option>
+                <c:if test="${vehiculo.getPlaca() == rutaAsignada.getVehiculo().getPlaca()}">
+                  <option value="${vehiculo.getPlaca()}" selected>${vehiculo.getNombreCorto()}</option>
+                </c:if>
+                <c:if test="${vehiculo.getPlaca() != rutaAsignada.getVehiculo().getPlaca()}">
+                  <option value="${vehiculo.getPlaca()}">${vehiculo.getNombreCorto()}</option>
+                </c:if>
               </c:forEach>
             </select>
           </div>
           <div class="form-group">
             <label>Ruta</label> <select name="ruta" id="ruta" class="form-control">
               <c:forEach items="${rutas}" var="ruta">
-                <option value="${ruta.getId()}">${ruta.getDescripcion()}</option>
+                <c:if test="${ruta.getId() == rutaAsignada.getRuta().getId()}">
+                  <option value="${ruta.getId()}" selected>${ruta.getDescripcion()}</option>
+                </c:if>
+                <c:if test="${ruta.getId() != rutaAsignada.getRuta().getId()}">
+                  <option value="${ruta.getId()}">${ruta.getDescripcion()}</option>
+                </c:if>
               </c:forEach>
             </select>
           </div>

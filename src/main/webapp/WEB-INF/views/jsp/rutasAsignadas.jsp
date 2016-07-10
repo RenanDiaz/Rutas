@@ -32,7 +32,7 @@
 <br>
 <div class="container">
   <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-striped table-hover">
       <thead>
         <tr>
           <th>Vehiculo</th>
@@ -125,7 +125,7 @@
 resetearFechasHoras();
 
 $("table").DataTable({
-	"order": [[ 2, "asc" ]]
+	"order": [[ 2, "desc" ]]
 });
 
 $("#agregar").click(function() {
@@ -161,7 +161,7 @@ function getFechahora(hora) {
 
 function resetearFechasHoras() {
   var hoy = new Date();
-  var fecha = hoy.getFullYear() + "-" + pad(hoy.getMonth()) + "-" + pad(hoy.getDate());
+  var fecha = hoy.getFullYear() + "-" + pad(hoy.getMonth() + 1) + "-" + pad(hoy.getDate());
   var hora1 = pad(hoy.getHours()) + ":" + pad(hoy.getMinutes());
   var hora2 = pad(hoy.getHours() + 1) + ":" + pad(hoy.getMinutes());
   $("#fechaDePartida").val(fecha);

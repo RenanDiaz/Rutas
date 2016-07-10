@@ -40,7 +40,9 @@ public class RutasController extends BaseController
     @RequestMapping(value = "{id}")
     public String ruta(ModelMap model, @PathVariable("id") int id)
     {
-        model.addAttribute("ruta", rutas.get(id));
+        Ruta ruta = rutas.get(id);
+        model.addAttribute("ruta", ruta);
+        model.addAttribute("asignaciones", rutasAsignadas.getRutasAsignadas());
         return "ruta";
     }
 }

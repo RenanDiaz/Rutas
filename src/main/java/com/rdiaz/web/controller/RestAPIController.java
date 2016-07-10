@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.rdiaz.model.Bus;
 import com.rdiaz.model.Particular;
 import com.rdiaz.model.Rutas;
+import com.rdiaz.model.RutasAsignadas;
 import com.rdiaz.model.Taxi;
 import com.rdiaz.model.Ubicaciones;
 import com.rdiaz.model.Vehiculo;
@@ -67,5 +68,12 @@ public class RestAPIController extends BaseController
             fin = ubicaciones.size();
         }
         return ubicaciones.ubicacionesDe(vehiculos.get(placa), inicio, fin);
+    }
+    
+    @RequestMapping(value = "asignaciones")
+    @ResponseBody
+    public RutasAsignadas asignaciones(@RequestParam(value = "ruta", required = true) int ruta)
+    {
+        return rutasAsignadas.getAsignacionesDeHoyDe(rutas.get(ruta));
     }
 }
