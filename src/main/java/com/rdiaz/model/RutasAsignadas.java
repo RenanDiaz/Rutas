@@ -135,7 +135,7 @@ public class RutasAsignadas
         int anno = cal.get(Calendar.YEAR);
         int mes = cal.get(Calendar.MONTH);
         int dia = cal.get(Calendar.DATE);
-        return anno + mes + dia;
+        return Integer.valueOf(String.format("%4d%02d%02d", anno, mes, dia));
     }
     
     private Timestamp getTimestampHoy()
