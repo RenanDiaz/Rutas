@@ -129,14 +129,20 @@ $("table").DataTable({
 });
 
 $("#agregar").click(function() {
+  var fechahoraDePartida = getFechahora($("#horaDePartida").val());
+  var fechahoraDeLlegada = getFechahora($("#horaDeLlegada").val());
+  var timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+  var partida = fechahoraDePartida.getTime() + timezoneOffset;
+  var llegada = fechahoraDeLlegada.getTime() + timezoneOffset;
+  
   $.ajax({
     url: "${pageContext.request.contextPath}/asignacion/agregar",
     method: "POST",
     data: {
       placa: $("#placa").val(),
       ruta: $("#ruta").val(),
-      partida: new Date(getFechahora($("#horaDePartida").val())).getTime(),
-      llegada: new Date(getFechahora($("#horaDeLlegada").val())).getTime()
+      partida: partida,
+      llegada: llegada
     },
     success: function() {
       location.reload();
@@ -156,7 +162,7 @@ $('body').delegate(".link", "click", function() {
 
 function getFechahora(hora) {
   var fecha = $("#fechaDePartida").val();
-  return new Date(fecha + " " + hora);
+  return new Date(fecha + "T" + hora);
 }
 
 function resetearFechasHoras() {
