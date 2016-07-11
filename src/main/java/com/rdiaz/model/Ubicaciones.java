@@ -105,7 +105,7 @@ public class Ubicaciones
     
     public Ubicacion getUltimaUbicacion()
     {
-        return get(size());
+        return getUbicaciones().get((size() - 1));
     }
     
     public Ubicaciones ubicacionesDe(Vehiculo vehiculo, int inicio, int fin)
