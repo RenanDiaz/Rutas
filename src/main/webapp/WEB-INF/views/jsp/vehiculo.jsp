@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<title>Rutas - Vehiculo</title>
+<title>Rutas - Veh&iacute;culo</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
 <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
 <spring:url value="/resources/core/css/common.css" var="commonCss" />

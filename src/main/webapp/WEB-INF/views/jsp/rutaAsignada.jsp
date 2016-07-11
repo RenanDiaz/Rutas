@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<title>Rutas - Vehiculo</title>
+<title>Rutas - Asignaci&oacute;n</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
 <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
 <spring:url value="/resources/core/css/common.css" var="commonCss" />
@@ -136,6 +136,9 @@
 $("#guardar").click(function() {
   var fechahoraDePartida = getFechahora($("#horaDePartida").val());
   var fechahoraDeLlegada = getFechahora($("#horaDeLlegada").val());
+  var timezoneOffset = new Date().getTimezoneOffset() * 60 * 1000;
+  var partida = fechahoraDePartida.getTime() + timezoneOffset;
+  var llegada = fechahoraDeLlegada.getTime() + timezoneOffset;
 	
   $.ajax({
     url: "${pageContext.request.contextPath}/asignacion/editar",
@@ -144,8 +147,8 @@ $("#guardar").click(function() {
       id: "${rutaAsignada.getId()}",
       placa: $("#placa").val(),
       ruta: $("#ruta").val(),
-      partida: fechahoraDePartida.getTime(),
-      llegada: fechahoraDeLlegada.getTime()
+      partida: partida,
+      llegada: llegada
     },
     success: function() {
       location.reload();
@@ -155,7 +158,7 @@ $("#guardar").click(function() {
 
 function getFechahora(hora) {
   var fecha = $("#fechaDePartida").val();
-  return new Date(fecha + " " + hora);
+  return new Date(fecha + "T" + hora);
 }
 </script>
 </body>
