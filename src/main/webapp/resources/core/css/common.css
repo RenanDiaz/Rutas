@@ -5,3 +5,7 @@
 th {
   text-align: center;
 }
+
+#botones div {
+  margin: 10px auto;
+}

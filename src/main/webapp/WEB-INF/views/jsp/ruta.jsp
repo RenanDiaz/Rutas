@@ -7,10 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
 <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
 <spring:url value="/resources/core/css/common.css" var="commonCss" />
-<spring:url value="/resources/core/DataTables/datatables.min.js" var="datatablesJs" />
+<spring:url value="/resources/core/DataTables/datatables.min.css" var="datatablesCss" />
 <link href="${bootstrapCss}" rel="stylesheet" />
 <link href="${commonCss}" rel="stylesheet" />
-<script src="${datatablesJs}"></script>
+<link href="${datatablesCss}" rel="stylesheet" />
 <style type="text/css">
 .hidden {
   display: none;
@@ -32,7 +32,7 @@
       <span class="glyphicon glyphicon-triangle-left"></span>
     </a>
     <c:if test="${not empty ruta}">
-      ${ruta.getId()} - ${ruta.getDescripcion()}
+      (${ruta.getId()}) ${ruta.getDescripcion()}
     </c:if>
     <c:if test="${empty ruta}">
       No encontrado
@@ -43,10 +43,9 @@
 <c:if test="${not empty asignaciones}">
   <div class="container">
     <div class="table-responsive">
-      <table class="table table-striped table-hover">
+      <table id="asignaciones" class="table table-striped table-hover">
         <thead>
           <tr>
-            <th>ID</th>
             <th>Vehiculo</th>
             <th>Partida</th>
             <th>Llegada</th>
@@ -55,16 +54,45 @@
         <tbody>
           <c:forEach items="${asignaciones}" var="asignacion">
             <tr class="link" id="${asignacion.getId()}">
-              <td>${asignacion.getId()}</td>
               <td>${asignacion.getVehiculo().getNombreCorto()}</td>
-              <td>${asignacion.getFechahoraDePartida()}</td>
-              <td>${asignacion.getFechahoraDeLlegada()}</td>
+              <td>${asignacion.getFechaDePartida()} ${asignacion.getHoraDePartida()}</td>
+              <td>${asignacion.getFechaDeLlegada()} ${asignacion.getHoraDeLlegada()}</td>
             </tr>
           </c:forEach>
         </tbody>
       </table>
     </div>
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeEditar">Editar <span class="glyphicon glyphicon-edit"></span></button>
+    <div class="row" id="botones">
+      <div class="col-xs-6 col-sm-2">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeEditar">Editar <span class="glyphicon glyphicon-edit"></span></button>
+      </div>
+    </div>
+    <hr>
+    <h3>Ubicaciones</h3>
+    <div class="table-responsive">
+      <table id="ubicaciones" class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Fecha y hora</th>
+            <th>Veh&iacute;culo</th>
+            <th>Latitud</th>
+            <th>Longitud</th>
+          </tr>
+        </thead>
+        <tbody>
+          <c:if test="${not empty ubicaciones}">
+            <c:forEach items="${ubicaciones}" var="ubicacion">
+              <tr class="link" id="${ubicacion.getId()}" title="${ubicacion.getId()}">
+                <td>${ubicacion.getFechahora()}</td>
+                <td>${ubicacion.getVehiculo().getNombreCorto()}</td>
+                <td>${ubicacion.getLatitud()}</td>
+                <td>${ubicacion.getLongitud()}</td>
+              </tr>
+            </c:forEach>
+          </c:if>
+        </tbody>
+      </table>
+    </div>
   </div>
 </c:if>
 
@@ -112,8 +140,12 @@
 <script src="${bootstrapJs}"></script>
 <script src="${datatablesJs}"></script>
 <script type="text/javascript">
-$("table").DataTable({
-	"order": [[ 2, "desc" ]]
+$("#asignaciones").DataTable({
+	"order": [[ 1, "desc" ]]
+});
+
+$("#ubicaciones").DataTable({
+	"order": [[ 0, "desc" ]]
 });
 
 $("#guardar").click(function() {

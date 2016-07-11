@@ -99,12 +99,11 @@ public class RutasAsignadas
         RutasAsignadas rutasAsignadasParaEsteVehiculo = new RutasAsignadas();
         for(final RutaAsignada rutaAsignada : rutasAsignadas)
         {
-            if(rutaAsignada.getVehiculo().equals(vehiculo))
+            if(rutaAsignada.getVehiculo().getPlaca().equals(vehiculo.getPlaca()))
             {
                 rutasAsignadasParaEsteVehiculo.add(rutaAsignada);
             }
         }
-        
         return rutasAsignadasParaEsteVehiculo;
     }
 

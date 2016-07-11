@@ -7,8 +7,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
 <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
 <spring:url value="/resources/core/css/common.css" var="commonCss" />
+<spring:url value="/resources/core/DataTables/datatables.min.css" var="datatablesCss" />
 <link href="${bootstrapCss}" rel="stylesheet" />
 <link href="${commonCss}" rel="stylesheet" />
+<link href="${datatablesCss}" rel="stylesheet" />
 <style type="text/css">
 .hidden {
   display: none;
@@ -62,7 +64,63 @@
         </tbody>
       </table>
     </div>
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeEditar">Editar <span class="glyphicon glyphicon-edit"></span></button>
+    <div class="row" id="botones">
+      <div class="col-xs-6 col-sm-2">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeEditar">
+          Editar <span class="glyphicon glyphicon-edit"></span>
+        </button>
+      </div>
+    </div>
+    <hr>
+    <h3>Asignaciones</h3>
+    <div class="table-responsive">
+      <table id="asignaciones" class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Ruta</th>
+            <th>Partida</th>
+            <th>Llegada</th>
+          </tr>
+        </thead>
+        <tbody>
+          <c:if test="${not empty rutasAsignadas}">
+            <c:forEach items="${rutasAsignadas}" var="rutaAsignada">
+              <tr class="link" id="${rutaAsignada.getId()}" title="${rutaAsignada.getId()}">
+                <td>${rutaAsignada.getRuta().getDescripcion()}</td>
+                <td>${rutaAsignada.getFechaDePartida()} ${rutaAsignada.getHoraDePartida()}</td>
+                <td>${rutaAsignada.getFechaDeLlegada()} ${rutaAsignada.getHoraDeLlegada()}</td>
+              </tr>
+            </c:forEach>
+          </c:if>
+        </tbody>
+      </table>
+    </div>
+    <hr>
+    <h3>Ubicaciones</h3>
+    <div class="table-responsive">
+      <table id="ubicaciones" class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th>Fecha y hora</th>
+            <th>Ruta</th>
+            <th>Latitud</th>
+            <th>Longitud</th>
+          </tr>
+        </thead>
+        <tbody>
+          <c:if test="${not empty ubicaciones}">
+            <c:forEach items="${ubicaciones}" var="ubicacion">
+              <tr class="link" id="${ubicacion.getId()}" title="${ubicacion.getId()}">
+                <td>${ubicacion.getFechahora()}</td>
+                <td>${ubicacion.getRuta().getDescripcion()}</td>
+                <td>${ubicacion.getLatitud()}</td>
+                <td>${ubicacion.getLongitud()}</td>
+              </tr>
+            </c:forEach>
+          </c:if>
+        </tbody>
+      </table>
+    </div>
   </div>
 </c:if>
 
@@ -117,15 +175,24 @@
     <p>&copy; Ren&aacute;n D&iacute;az Reyes 2016</p>
   </footer>
 </div>
-
 <spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
 <spring:url value="/resources/core/js/common.js" var="coreJs" />
 <spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
+<spring:url value="/resources/core/DataTables/datatables.min.js" var="datatablesJs" />
 
 <script src="${jquery}"></script>
 <script src="${coreJs}"></script>
 <script src="${bootstrapJs}"></script>
+<script src="${datatablesJs}"></script>
 <script type="text/javascript">
+$("#asignaciones").DataTable({
+	"order": [[ 1, "desc" ]]
+});
+
+$("#ubicaciones").DataTable({
+	"order": [[ 0, "desc" ]]
+});
+
 $("#guardar").click(function() {
   $.ajax({
     url: "${pageContext.request.contextPath}/${tipo}/editar",
@@ -149,6 +216,11 @@ $("#marca").change(function() {
   } else {
     $("#oculto").addClass("hidden");
   }
+});
+
+$('body').delegate(".link", "click", function() {
+  var id = $(this).prop("id");
+  window.location.href = "/Rutas/asignacion/" + id;
 });
 </script>
 </body>

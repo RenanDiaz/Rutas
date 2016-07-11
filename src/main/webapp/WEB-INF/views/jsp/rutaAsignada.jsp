@@ -30,7 +30,7 @@
       <span class="glyphicon glyphicon-triangle-left"></span>
     </a>
     <c:if test="${not empty rutaAsignada}">
-      ${rutaAsignada.getId()} - ${rutaAsignada.getDescripcion()}
+      ${rutaAsignada.getId()} ${rutaAsignada.getDescripcion()}
     </c:if>
     <c:if test="${empty rutaAsignada}">
       No encontrada
@@ -41,7 +41,7 @@
 <c:if test="${not empty rutaAsignada}">
   <div class="container">
     <div class="table-responsive">
-      <table class="table table-striped table-hover table-hover">
+      <table class="table table-striped">
         <thead>
           <tr>
             <th>ID</th>
@@ -56,13 +56,13 @@
             <td>${rutaAsignada.getId()}</td>
             <td>${rutaAsignada.getVehiculo().getNombreCorto()}</td>
             <td>${rutaAsignada.getRuta().getDescripcion()}</td>
-            <td>${rutaAsignada.getFechahoraDePartida()}</td>
-            <td>${rutaAsignada.getFechahoraDeLlegada()}</td>
+            <td>${rutaAsignada.getFechaDePartida()} ${rutaAsignada.getHoraDePartida()}</td>
+            <td>${rutaAsignada.getFechaDeLlegada()} ${rutaAsignada.getHoraDeLlegada()}</td>
           </tr>
         </tbody>
       </table>
     </div>
-  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeEditar">Editar <span class="glyphicon glyphicon-edit"></span></button>
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeEditar">Editar <span class="glyphicon glyphicon-edit"></span></button>
   </div>
 </c:if>
 
@@ -103,10 +103,10 @@
             <label>Fecha</label> <input id="fechaDePartida" class="form-control" type="date" value="${rutaAsignada.getFechaDePartida()}">
           </div>
           <div class="form-group date" id="horaPartida">
-            <label>Hora de partida</label><input id="horaDePartida" class="form-control" type="time" value="${rutaAsignada.getHoraDePartida()}">
+            <label>Hora de partida</label><input id="horaDePartida" class="form-control" type="time" step="300" value="${rutaAsignada.getHoraDePartida()}">
           </div>
           <div class="form-group date" id="horaLlegada">
-            <label>Hora de llegada</label> <input id="horaDeLlegada" class="form-control" type="time" value="${rutaAsignada.getHoraDeLlegada()}">
+            <label>Hora de llegada</label> <input id="horaDeLlegada" class="form-control" type="time" step="300" value="${rutaAsignada.getHoraDeLlegada()}">
           </div>
         </c:if>
       </div>

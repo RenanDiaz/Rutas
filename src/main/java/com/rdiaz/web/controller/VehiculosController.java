@@ -18,9 +18,12 @@ public class VehiculosController extends BaseController
     @RequestMapping(value = "/{tipo}/{placa}", method = RequestMethod.GET)
     public String particular(ModelMap model, @PathVariable("tipo") String tipo, @PathVariable("placa") String placa)
     {
-        model.addAttribute("vehiculo", vehiculos.get(placa));
+        Vehiculo vehiculo = vehiculos.get(placa);
+        model.addAttribute("vehiculo", vehiculo);
         model.addAttribute("tipo", tipo);
         model.addAttribute("marcas", marcas.getMarcas());
+        model.addAttribute("rutasAsignadas", rutasAsignadas.getRutasAsignadasA(vehiculo).getRutasAsignadas());
+        model.addAttribute("ubicaciones", ubicaciones.getUbicacionesDelVehiculo(vehiculo).getUbicaciones());
         return "vehiculo";
     }
     

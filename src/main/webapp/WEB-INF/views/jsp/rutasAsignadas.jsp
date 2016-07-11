@@ -47,8 +47,8 @@
             <tr class="link" id="${rutaAsignada.getId()}" title="${rutaAsignada.getId()}">
               <td>${rutaAsignada.getVehiculo().getNombreCorto()}</td>
               <td>${rutaAsignada.getRuta().getDescripcion()}</td>
-              <td>${rutaAsignada.getFechahoraDePartida()}</td>
-              <td>${rutaAsignada.getFechahoraDeLlegada()}</td>
+              <td>${rutaAsignada.getFechaDePartida()} ${rutaAsignada.getHoraDePartida()}</td>
+              <td>${rutaAsignada.getFechaDeLlegada()} ${rutaAsignada.getHoraDeLlegada()}</td>
             </tr>
           </c:forEach>
         </c:if>
@@ -91,10 +91,10 @@
             <label>Fecha</label> <input id="fechaDePartida" class="form-control" type="date">
           </div>
           <div class="form-group date" id="horaPartida">
-            <label>Hora de partida</label><input id="horaDePartida" class="form-control" type="time">
+            <label>Hora de partida</label><input id="horaDePartida" class="form-control" type="time" step="300">
           </div>
           <div class="form-group date" id="horaLlegada">
-            <label>Hora de llegada</label> <input id="horaDeLlegada" class="form-control" type="time">
+            <label>Hora de llegada</label> <input id="horaDeLlegada" class="form-control" type="time" step="300">
           </div>
         </c:if>
       </div>

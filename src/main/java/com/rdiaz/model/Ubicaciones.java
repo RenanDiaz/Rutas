@@ -51,7 +51,7 @@ public class Ubicaciones
     
     public Ubicacion get(int id)
     {
-        for(Ubicacion ubicacion : ubicaciones)
+        for(final Ubicacion ubicacion : ubicaciones)
         {
             if(ubicacion.getId() == id)
             {
@@ -75,6 +75,37 @@ public class Ubicaciones
     {
         ubicaciones.sort(Comparator.comparing(Ubicacion::getId));
         return ubicaciones;
+    }
+
+    public Ubicaciones getUbicacionesEnLaRuta(Ruta ruta)
+    {
+        Ubicaciones ubicacionesDeLaRuta = new Ubicaciones();
+        for(final Ubicacion ubicacion : ubicaciones)
+        {
+            if(ubicacion.getRuta().equals(ruta))
+            {
+                ubicacionesDeLaRuta.add(ubicacion);
+            }
+        }
+        return ubicacionesDeLaRuta;
+    }
+
+    public Ubicaciones getUbicacionesDelVehiculo(Vehiculo vehiculo)
+    {
+        Ubicaciones ubicacionesDelVehiculo = new Ubicaciones();
+        for(final Ubicacion ubicacion : ubicaciones)
+        {
+            if(ubicacion.getVehiculo().equals(vehiculo))
+            {
+                ubicacionesDelVehiculo.add(ubicacion);
+            }
+        }
+        return ubicacionesDelVehiculo;
+    }
+    
+    public Ubicacion getUltimaUbicacion()
+    {
+        return get(size());
     }
     
     public Ubicaciones ubicacionesDe(Vehiculo vehiculo, int inicio, int fin)

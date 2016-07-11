@@ -43,6 +43,7 @@ public class RutasController extends BaseController
         Ruta ruta = rutas.get(id);
         model.addAttribute("ruta", ruta);
         model.addAttribute("asignaciones", rutasAsignadas.getRutasAsignadas());
+        model.addAttribute("ubicaciones", ubicaciones.getUbicacionesEnLaRuta(ruta).getUbicaciones());
         return "ruta";
     }
 }
