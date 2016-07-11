@@ -13,7 +13,7 @@ public class BusesController extends BaseController
     {
         model.addAttribute("titulo", "Buses");
         model.addAttribute("marcas", marcas.getMarcas());
-        model.addAttribute("vehiculos", vehiculos.getBuses());
+        model.addAttribute("vehiculos", vehiculos.listaDeBuses());
         return "vehiculos";
     }
 }

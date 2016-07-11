@@ -13,7 +13,7 @@ public class ParticularesController extends BaseController
     {
         model.addAttribute("titulo", "Particulares");
         model.addAttribute("marcas", marcas.getMarcas());
-        model.addAttribute("vehiculos", vehiculos.getParticulares());
+        model.addAttribute("vehiculos", vehiculos.listaDeParticulares());
         return "vehiculos";
     }
 }

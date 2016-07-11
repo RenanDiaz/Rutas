@@ -11,9 +11,9 @@ public class HomeController extends BaseController
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String inicio(ModelMap model)
     {
-        model.addAttribute("buses", vehiculos.getBuses().size());
-        model.addAttribute("taxis", vehiculos.getTaxis().size());
-        model.addAttribute("particulares", vehiculos.getParticulares().size());
+        model.addAttribute("buses", vehiculos.listaDeBuses().size());
+        model.addAttribute("taxis", vehiculos.listaDeTaxis().size());
+        model.addAttribute("particulares", vehiculos.listaDeParticulares().size());
         model.addAttribute("rutas", rutas.size());
         model.addAttribute("rutasAsignadas", rutasAsignadas.size());
         model.addAttribute("ubicaciones", ubicaciones.size());

@@ -13,7 +13,7 @@ public class TaxisController extends BaseController
     {
         model.addAttribute("titulo", "Taxis");
         model.addAttribute("marcas", marcas.getMarcas());
-        model.addAttribute("vehiculos", vehiculos.getTaxis());
+        model.addAttribute("vehiculos", vehiculos.listaDeTaxis());
         return "vehiculos";
     }
 }

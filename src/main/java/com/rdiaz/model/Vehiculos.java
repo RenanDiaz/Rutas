@@ -7,11 +7,8 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 public class Vehiculos
 {
-    @JsonProperty("vehiculos")
     private ArrayList<Vehiculo> vehiculos = new ArrayList<>();
     
     public Vehiculos(Marcas marcas)
@@ -55,6 +52,11 @@ public class Vehiculos
         }
     }
     
+    private Vehiculos(ArrayList<Vehiculo> vehiculos)
+    {
+        this.vehiculos = vehiculos;
+    }
+    
     public void add(Vehiculo vehiculo)
     {
         vehiculos.add(vehiculo);
@@ -93,7 +95,7 @@ public class Vehiculos
         return vehiculos;
     }
 
-    public ArrayList<Bus> getBuses()
+    public ArrayList<Bus> listaDeBuses()
     {
         ArrayList<Bus> buses = new ArrayList<>();
         for(Vehiculo vehiculo : vehiculos)
@@ -104,11 +106,11 @@ public class Vehiculos
                 buses.add(bus);
             }
         }
-        buses.sort(Comparator.comparing(Bus::getPlaca));
+        buses.sort(Comparator.comparing(Vehiculo::getPlaca));
         return buses;
     }
 
-    public ArrayList<Taxi> getTaxis()
+    public ArrayList<Taxi> listaDeTaxis()
     {
         ArrayList<Taxi> taxis = new ArrayList<>();
         for(Vehiculo vehiculo : vehiculos)
@@ -123,7 +125,7 @@ public class Vehiculos
         return taxis;
     }
 
-    public ArrayList<Particular> getParticulares()
+    public ArrayList<Particular> listaDeParticulares()
     {
         ArrayList<Particular> particulares = new ArrayList<>();
         for(Vehiculo vehiculo : vehiculos)
@@ -136,5 +138,21 @@ public class Vehiculos
         }
         particulares.sort(Comparator.comparing(Particular::getPlaca));
         return particulares;
+    }
+    
+    public Vehiculos buses()
+    {
+        ArrayList<Vehiculo> buses = new ArrayList<>();
+        for(Vehiculo vehiculo : vehiculos)
+        {
+            if(vehiculo instanceof Bus)
+            {
+                Bus bus = (Bus) vehiculo;
+                buses.add(bus);
+            }
+        }
+        buses.sort(Comparator.comparing(Vehiculo::getPlaca));
+        Vehiculos vehiculos = new Vehiculos(buses);
+        return vehiculos;
     }
 }
