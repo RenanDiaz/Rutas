@@ -38,6 +38,11 @@
       </ul>
     </div>
   </div>
+  <div class="row">
+    <div class="col-xs-12">
+      <p id="p"></p>
+    </div>
+  </div>
   <hr>
   <footer>
     <p>&copy; Ren&aacute;n D&iacute;az Reyes 2016</p>
@@ -51,5 +56,16 @@
 <script src="${jquery}"></script>
 <script src="${coreJs}"></script>
 <script src="${bootstrapJs}"></script>
+<script type="text/javascript">
+$.ajax({
+//   url: "${pageContext.request.contextPath}/rest/buses",
+  url: "${pageContext.request.contextPath}/distancematrix/json?origins=40.6655101,-73.89188969999998&destinations=40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.6905615%2C-73.9976592%7C40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626%7C40.659569%2C-73.933783%7C40.729029%2C-73.851524%7C40.6860072%2C-73.6334271%7C40.598566%2C-73.7527626",
+  method: "GET",
+  success: function(data) {
+    console.log(data);
+    $("#p").html(data);
+  }
+});
+</script>
 </body>
 </html>
