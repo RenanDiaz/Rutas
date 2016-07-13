@@ -27,37 +27,42 @@ public class UbicacionController extends BaseController
     
     @RequestMapping(value = "agregar/{placa}", method = RequestMethod.POST)
     @ResponseBody
-    public String agregarUbicacion(@PathVariable String placa, @RequestParam(value = "fecha", required = true) long fecha, @RequestParam(value = "ruta", required = true) int idRuta, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
+    public Ubicacion agregarUbicacion(@PathVariable String placa, @RequestParam(value = "fecha", required = true) long fecha, @RequestParam(value = "ruta", required = true) int idRuta, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
     {
         Vehiculo vehiculo = vehiculos.get(placa);
         Ruta ruta = rutas.get(idRuta);
-        ubicaciones.add(new Ubicacion(fecha, ruta, vehiculo, latitud, longitud));
+        Ubicacion ubicacion = new Ubicacion(fecha, ruta, vehiculo, latitud, longitud);
+        ubicaciones.add(ubicacion);
+        template.convertAndSend("/topic/ubicaciones", ubicacion);
         System.out.println(String.format("Nueva ubicacion: %s\t%s\t%s\t%s\t%s", new Date(fecha), ruta.getDescripcion(), vehiculo.getNombreCorto(), latitud, longitud));
-        return "sucess";
+        return ubicacion;
     }
     
     @RequestMapping(value = "editar/{placa}", method = RequestMethod.POST)
     @ResponseBody
-    public String editarUbicacion(@PathVariable String placa, @RequestParam(value = "id", required = true) int id, @RequestParam(value = "ruta", required = true) int ruta, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
+    public Ubicacion editarUbicacion(@PathVariable String placa, @RequestParam(value = "id", required = true) int id, @RequestParam(value = "ruta", required = true) int ruta, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
     {
-        ubicaciones.get(id).editar(rutas.get(ruta), vehiculos.get(placa), latitud, longitud);
-        return "success";
+        Ubicacion ubicacion = ubicaciones.get(id);
+        ubicacion.editar(rutas.get(ruta), vehiculos.get(placa), latitud, longitud);
+        return ubicacion;
     }
     
     @RequestMapping(value = "exportar", method = RequestMethod.POST)
-    @ResponseBody public String exportarUbicaciones(HttpServletRequest request, @RequestParam(value = "inicio", required = true) int inicio, @RequestParam(value = "fin", required = true) int fin)
+    @ResponseBody
+    public String exportarUbicaciones(HttpServletRequest request, @RequestParam(value = "inicio", required = true) int inicio, @RequestParam(value = "fin", required = true) int fin)
     {
         return WriteXMLFile.createRouteFile(ubicaciones.rango(inicio, fin), request.getServletContext().getRealPath("/"));
     }
     
     @RequestMapping(value = "calcular", method = RequestMethod.POST)
-    @ResponseBody public String calcularDistancias(@RequestParam(value = "inicio", required = true) int inicio, @RequestParam(value = "fin", required = true) int fin)
+    @ResponseBody
+    public String calcularDistancias(@RequestParam(value = "inicio", required = true) int inicio, @RequestParam(value = "fin", required = true) int fin)
     {
         return String.valueOf(ubicaciones.calcularDistanciaTotalEntre(inicio, fin));
     }
     
     @RequestMapping
-    public String ubicaciones(ModelMap model)
+    public String ubicacionesView(ModelMap model)
     {
         model.addAttribute("ubicaciones", ubicaciones.getUbicaciones());
         model.addAttribute("vehiculos", vehiculos.getVehiculos());
@@ -67,7 +72,7 @@ public class UbicacionController extends BaseController
     }
     
     @RequestMapping(value = "{id}")
-    public String ubicacion(ModelMap model, @PathVariable("id") int id)
+    public String ubicacionView(ModelMap model, @PathVariable("id") int id)
     {
         model.addAttribute("ubicacion", ubicaciones.get(id));
         model.addAttribute("vehiculos", vehiculos.getVehiculos());

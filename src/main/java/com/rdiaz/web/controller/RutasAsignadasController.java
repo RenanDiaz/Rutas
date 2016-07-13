@@ -16,22 +16,23 @@ public class RutasAsignadasController extends BaseController
 {
     @RequestMapping(value = "agregar", method = RequestMethod.POST)
     @ResponseBody
-    public String agregarAsignacion(@RequestParam(value = "placa") String placa, @RequestParam(value = "ruta") int ruta, @RequestParam(value = "partida") long partida, @RequestParam(value = "llegada") long llegada)
+    public RutaAsignada agregarAsignacion(@RequestParam(value = "placa") String placa, @RequestParam(value = "ruta") int ruta, @RequestParam(value = "partida") long partida, @RequestParam(value = "llegada") long llegada)
     {
-        rutasAsignadas.add(new RutaAsignada(vehiculos.get(placa), rutas.get(ruta), partida, llegada));
-        return "success";
+        RutaAsignada rutaAsignada = new RutaAsignada(vehiculos.get(placa), rutas.get(ruta), partida, llegada);
+        rutasAsignadas.add(rutaAsignada);
+        return rutaAsignada;
     }
     @RequestMapping(value = "editar", method = RequestMethod.POST)
     @ResponseBody
-    public String editarAsignacion(@RequestParam(value = "id") int id, @RequestParam(value = "placa") String placa, @RequestParam(value = "ruta") int ruta, @RequestParam(value = "partida") long partida, @RequestParam(value = "llegada") long llegada)
+    public RutaAsignada editarAsignacion(@RequestParam(value = "id") int id, @RequestParam(value = "placa") String placa, @RequestParam(value = "ruta") int ruta, @RequestParam(value = "partida") long partida, @RequestParam(value = "llegada") long llegada)
     {
         RutaAsignada rutaAsignada = rutasAsignadas.get(id);
         rutaAsignada.editar(vehiculos.get(placa), rutas.get(ruta), partida, llegada);
-        return "success";
+        return rutaAsignada;
     }
     
     @RequestMapping
-    public String getAsignaciones(ModelMap model)
+    public String asignacionesView(ModelMap model)
     {
         model.addAttribute("rutasAsignadas", rutasAsignadas.getRutasAsignadas());
         model.addAttribute("vehiculos", vehiculos.getVehiculos());
@@ -40,7 +41,7 @@ public class RutasAsignadasController extends BaseController
     }
     
     @RequestMapping(value = "{id}")
-    public String getAsignacion(ModelMap model, @PathVariable int id)
+    public String asignacionView(ModelMap model, @PathVariable int id)
     {
         model.addAttribute("rutaAsignada", rutasAsignadas.get(id));
         model.addAttribute("vehiculos", vehiculos.getVehiculos());

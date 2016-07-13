@@ -2,7 +2,6 @@ package com.rdiaz.web.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -15,7 +14,7 @@ public class HomeController extends BaseController
     static String KEY = "AIzaSyCCZK_NqEkdDLgJz0OyWL-FvrxkZn1EbOQ";
     
     @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String inicio(ModelMap model)
+    public String inicioView(ModelMap model)
     {
         model.addAttribute("buses", vehiculos.listaDeBuses().size());
         model.addAttribute("taxis", vehiculos.listaDeTaxis().size());
@@ -27,7 +26,6 @@ public class HomeController extends BaseController
         return "home";
     }
     
-    @CrossOrigin
     @RequestMapping(value = "/distancematrix/{type}")
     @ResponseBody
     public String distance(@PathVariable String type, @RequestParam(value = "origins") String origins, @RequestParam(value = "destinations") String destinations)
@@ -38,7 +36,7 @@ public class HomeController extends BaseController
     }
     
     @RequestMapping(value = "/login")
-    public String login()
+    public String loginView()
     {
         return "login";
     }

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class BusesController extends BaseController
 {
     @RequestMapping
-    public String buses(ModelMap model)
+    public String busesView(ModelMap model)
     {
         model.addAttribute("titulo", "Buses");
         model.addAttribute("marcas", marcas.getMarcas());

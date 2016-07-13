@@ -28,20 +28,21 @@ public class RutasController extends BaseController
     @ResponseBody
     public Ruta editarRuta(@RequestParam(value = "id", required = true) int id, @RequestParam(value = "origen", required = true) String origen, @RequestParam(value = "destino", required = true) String destino)
     {
-        rutas.get(id).editar(origen, destino);
-        template.convertAndSend("/topic/rutas", rutas.get(id));
-        return rutas.get(id);
+        Ruta ruta = rutas.get(id);
+        ruta.editar(origen, destino);
+        template.convertAndSend("/topic/rutas", ruta);
+        return ruta;
     }
     
     @RequestMapping
-    public String rutas(ModelMap model)
+    public String rutasView(ModelMap model)
     {
         model.addAttribute("rutas", rutas.getRutas());
         return "rutas";
     }
     
     @RequestMapping(value = "{id}")
-    public String ruta(ModelMap model, @PathVariable("id") int id)
+    public String rutaView(ModelMap model, @PathVariable("id") int id)
     {
         Ruta ruta = rutas.get(id);
         model.addAttribute("ruta", ruta);
