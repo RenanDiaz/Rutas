@@ -14,7 +14,7 @@ public class GreetingController
         return "hello/index";
     }
     
-    @MessageMapping("/hello")
+    @MessageMapping("/hellos")
     @SendTo("/topic/greetings")
     public Greeting greeting(HelloMessage message) throws Exception
     {

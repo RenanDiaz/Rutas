@@ -5,15 +5,23 @@
 <head>
 <title>Rutas</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
-<spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
-<spring:url value="/resources/core/css/common.css" var="commonCss" />
-<link href="${bootstrapCss}" rel="stylesheet" />
-<link href="${commonCss}" rel="stylesheet" />
 
+<spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
+<spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
+<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
+<spring:url value="/resources/core/css/common.css" var="commonCss" />
+<spring:url value="/resources/core/js/common.js" var="commonJs" />
 <spring:url value="/resources/core/stomp/sockjs-0.3.4.js" var="sockJs" />
 <spring:url value="/resources/core/stomp/stomp.js" var="stompJs" />
+
+<script src="${jquery}"></script>
+<link href="${bootstrapCss}" rel="stylesheet" />
+<script src="${bootstrapJs}"></script>
+<link href="${commonCss}" rel="stylesheet" />
+<script src="${commonJs}"></script>
 <script src="${sockJs}"></script>
 <script src="${stompJs}"></script>
+
 <script type="text/javascript">
   var stompClient = null;
 
@@ -38,17 +46,16 @@
   }
 
   function updateValues(message) {
-	var arrayDeSpans = document.getElementsByClassName("badge");
-	for(i = 0; i < arrayDeSpans.length; i++) {
-      var id = arrayDeSpans[i].getAttribute("id");
+	$(".badge").each(function(index, value) {
+      var id = $(value).attr("id");
       var object = message[id];
       setQuantity(id, object);
-	}
+	});
   }
   
   function setQuantity(id, object) {
-	var span = document.getElementById(id);
-	span.innerHTML = object;
+	var span = $("#" + id);
+	span.html(object);
   }
 </script>
 
@@ -93,13 +100,6 @@
   </footer>
 </div>
 
-<spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
-<spring:url value="/resources/core/js/common.js" var="coreJs" />
-<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
-
-<script src="${jquery}"></script>
-<script src="${coreJs}"></script>
-<script src="${bootstrapJs}"></script>
 <script type="text/javascript">
 // $.ajax({
 // //   url: "${pageContext.request.contextPath}/rest/buses",

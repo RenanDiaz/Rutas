@@ -112,7 +112,7 @@ $(document).on("click", ".link", function() {
 var stompClient = null;
 
 function connect() {
-  var socket = new SockJS('/Rutas/rutas/agregar');
+  var socket = new SockJS('/Rutas/hello');
   stompClient = Stomp.over(socket);
   stompClient.connect({}, function(frame) {
     console.log('Connected: ' + frame);
@@ -130,7 +130,7 @@ function disconnect() {
 }
 
 function sendName() {
-  stompClient.send("/app/websocket", {}, JSON.stringify({
+  stompClient.send("/app/rutas/agregar", {}, JSON.stringify({
     "origen": $("#origen").val(),
     "destino": $("#destino").val()
   }));

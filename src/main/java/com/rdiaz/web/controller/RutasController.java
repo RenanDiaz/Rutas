@@ -1,5 +1,7 @@
 package com.rdiaz.web.controller;
 
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,15 +16,17 @@ import com.rdiaz.model.Ruta;
 @RequestMapping(value = "/rutas")
 public class RutasController extends BaseController
 {
-    @RequestMapping(value = "agregar", method = RequestMethod.POST)
+    @MessageMapping("/rutas/agregar")
+    @SendTo("/topic/rutas")
     @ResponseBody
-    public Ruta agregarRuta(@RequestParam(value = "origen", required = true) String origen, @RequestParam(value = "destino", required = true) String destino)
+    public Ruta agregarRuta(Ruta rutaSinId)
     {
+        String origen = rutaSinId.getOrigen();
+        String destino = rutaSinId.getDestino();
         Ruta ruta = new Ruta(origen, destino);
         rutas.add(ruta);
         contadores.add("rutas", rutas.size());
         template.convertAndSend("/topic/contadores", contadores);
-        template.convertAndSend("/topic/rutas", ruta);
         return ruta;
     }
     

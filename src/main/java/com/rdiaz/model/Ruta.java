@@ -43,6 +43,11 @@ public class Ruta
         setDestino(destino);
     }
     
+    public Ruta()
+    {
+        
+    }
+    
     public int getId()
     {
         return id;
