@@ -13,8 +13,7 @@ import com.rdiaz.model.Rutas;
 import com.rdiaz.model.RutasAsignadas;
 import com.rdiaz.model.Ubicaciones;
 import com.rdiaz.model.Vehiculos;
-
-import hello.Contadores;
+import com.rdiaz.websocket.Contadores;
 
 @Controller
 public class BaseController
@@ -31,11 +30,11 @@ public class BaseController
     
     public BaseController()
     {
-        contadores.add(Rutas.class, rutas.size());
-        contadores.add(Marcas.class, marcas.size());
-        contadores.add(Vehiculos.class, vehiculos.size());
-        contadores.add(RutasAsignadas.class, rutasAsignadas.size());
-        contadores.add(Ubicaciones.class, ubicaciones.size());
+        contadores.add("rutas", rutas.size());
+        contadores.add("marcas", marcas.size());
+        contadores.add("rutas-asignadas", rutasAsignadas.size());
+        contadores.add("ubicaciones", ubicaciones.size());
+        contadores.add(vehiculos.sizes());
     }
     
     protected String encode(String str)

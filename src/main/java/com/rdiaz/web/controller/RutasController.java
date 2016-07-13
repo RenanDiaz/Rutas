@@ -19,8 +19,10 @@ public class RutasController extends BaseController
     public Ruta agregarRuta(@RequestParam(value = "origen", required = true) String origen, @RequestParam(value = "destino", required = true) String destino)
     {
         Ruta ruta = new Ruta(origen, destino);
-        template.convertAndSend("/topic/rutas", ruta);
         rutas.add(ruta);
+        contadores.add("rutas", rutas.size());
+        template.convertAndSend("/topic/contadores", contadores);
+        template.convertAndSend("/topic/rutas", ruta);
         return ruta;
     }
     

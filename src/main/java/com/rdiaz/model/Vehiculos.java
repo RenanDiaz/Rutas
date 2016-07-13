@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
 
 public class Vehiculos
 {
@@ -154,5 +155,15 @@ public class Vehiculos
         buses.sort(Comparator.comparing(Vehiculo::getPlaca));
         Vehiculos vehiculos = new Vehiculos(buses);
         return vehiculos;
+    }
+
+    public HashMap<String, Integer> sizes()
+    {
+        HashMap<String, Integer> sizes = new HashMap<>();
+        sizes.put("buses", listaDeBuses().size());
+        sizes.put("taxis", listaDeTaxis().size());
+        sizes.put("particulares", listaDeParticulares().size());
+        
+        return sizes;
     }
 }

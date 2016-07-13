@@ -1,4 +1,4 @@
-package hello;
+package com.rdiaz.websocket;
 
 public class Greeting
 {

@@ -9,56 +9,66 @@
 <spring:url value="/resources/core/css/common.css" var="commonCss" />
 <link href="${bootstrapCss}" rel="stylesheet" />
 <link href="${commonCss}" rel="stylesheet" />
-<script src="/Rutas/resources/core/stomp/sockjs-0.3.4.js"></script>
-<script src="/Rutas/resources/core/stomp/stomp.js"></script>
+
+<spring:url value="/resources/core/stomp/sockjs-0.3.4.js" var="sockJs" />
+<spring:url value="/resources/core/stomp/stomp.js" var="stompJs" />
+<script src="${sockJs}"></script>
+<script src="${stompJs}"></script>
 <script type="text/javascript">
-        var stompClient = null;
+	var stompClient = null;
 
-        function setConnected(connected) {
-            document.getElementById('connect').disabled = connected;
-            document.getElementById('disconnect').disabled = !connected;
-            document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
-            document.getElementById('response').innerHTML = '';
-        }
+	function setConnected(connected) {
+		document.getElementById('connect').disabled = connected;
+		document.getElementById('disconnect').disabled = !connected;
+		document.getElementById('conversationDiv').style.visibility = connected ? 'visible'
+				: 'hidden';
+		document.getElementById('response').innerHTML = '';
+	}
 
-        function connect() {
-            var socket = new SockJS('/Rutas/hello');
-            stompClient = Stomp.over(socket);
-            stompClient.connect({}, function(frame) {
-                setConnected(true);
-                console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/rutas', function(ruta){
-                    var message = JSON.parse(ruta.body);
-                    showMessage(message.id + " " + message.descripcion);
-                });
-                stompClient.subscribe('/topic/greetings', function(greeting) {
-                  var message = JSON.parse(greeting.body);
-                  showMessage(message.content)
-                });
-            });
-        }
+	function connect() {
+		var socket = new SockJS('/Rutas/hello');
+		stompClient = Stomp.over(socket);
+		stompClient.connect({}, function(frame) {
+			setConnected(true);
+			console.log('Connected: ' + frame);
+			stompClient.subscribe('/topic/rutas', function(ruta) {
+				var message = JSON.parse(ruta.body);
+				showMessage(message.id + " " + message.descripcion);
+			});
+			stompClient.subscribe('/topic/greetings', function(greeting) {
+				var message = JSON.parse(greeting.body);
+				showMessage(message.content);
+			});
+			stompClient.subscribe('/topic/contadores', function(greeting) {
+				var message = greeting.body;
+				showMessage(message);
+			});
+		});
+	}
 
-        function disconnect() {
-            if (stompClient != null) {
-                stompClient.disconnect();
-            }
-            setConnected(false);
-            console.log("Disconnected");
-        }
+	function disconnect() {
+		if (stompClient != null) {
+			stompClient.disconnect();
+		}
+		setConnected(false);
+		console.log("Disconnected");
+	}
 
-        function sendName() {
-          var name = document.getElementById('name').value;
-          stompClient.send("/app/hello", {}, JSON.stringify({ 'name': name }));
-        }
+	function sendName() {
+		var name = document.getElementById('name').value;
+		stompClient.send("/app/hello", {}, JSON.stringify({
+			'name' : name
+		}));
+	}
 
-        function showMessage(message) {
-            var response = $('#response');
-            var p = $('<p />');
-            p.attr("style", "word-wrap: break-word");
-            p.append(document.createTextNode(message));
-            response.append(p);
-        }
-    </script>
+	function showMessage(message) {
+		var response = document.getElementById('p');
+        var p = document.createElement('p');
+        p.style.wordWrap = 'break-word';
+        p.appendChild(document.createTextNode(message));
+        response.appendChild(p);
+	}
+</script>
 </head>
 <body onload="disconnect()">
   <noscript>
@@ -83,13 +93,13 @@
       </div>
     </div>
   </div>
-<spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
-<spring:url value="/resources/core/js/common.js" var="coreJs" />
-<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
-<spring:url value="/resources/core/DataTables/datatables.min.js" var="datatablesJs" />
+  <spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
+  <spring:url value="/resources/core/js/common.js" var="coreJs" />
+  <spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
+  <spring:url value="/resources/core/DataTables/datatables.min.js" var="datatablesJs" />
 
-<script src="${jquery}"></script>
-<script src="${coreJs}"></script>
-<script src="${bootstrapJs}"></script>
+  <script src="${jquery}"></script>
+  <script src="${coreJs}"></script>
+  <script src="${bootstrapJs}"></script>
 </body>
 </html>
