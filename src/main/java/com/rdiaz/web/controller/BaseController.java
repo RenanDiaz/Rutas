@@ -14,6 +14,8 @@ import com.rdiaz.model.RutasAsignadas;
 import com.rdiaz.model.Ubicaciones;
 import com.rdiaz.model.Vehiculos;
 
+import hello.Contadores;
+
 @Controller
 public class BaseController
 {
@@ -22,9 +24,19 @@ public class BaseController
     static Vehiculos vehiculos = new Vehiculos(marcas);
     static RutasAsignadas rutasAsignadas = new RutasAsignadas(vehiculos, rutas);
     static Ubicaciones ubicaciones = new Ubicaciones(vehiculos, rutas);
+    static Contadores contadores = new Contadores();
     
     @Autowired
     protected SimpMessagingTemplate template;
+    
+    public BaseController()
+    {
+        contadores.add(Rutas.class, rutas.size());
+        contadores.add(Marcas.class, marcas.size());
+        contadores.add(Vehiculos.class, vehiculos.size());
+        contadores.add(RutasAsignadas.class, rutasAsignadas.size());
+        contadores.add(Ubicaciones.class, ubicaciones.size());
+    }
     
     protected String encode(String str)
     {
