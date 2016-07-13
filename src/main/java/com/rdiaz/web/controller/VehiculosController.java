@@ -13,6 +13,7 @@ import com.rdiaz.model.TipoDeVehiculo;
 import com.rdiaz.model.Vehiculo;
 
 @Controller
+@RequestMapping(value = "/vehiculos")
 public class VehiculosController extends BaseController
 {
     @RequestMapping(value = "/{tipo}/{placa}", method = RequestMethod.GET)

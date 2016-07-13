@@ -3,12 +3,12 @@ package com.rdiaz.web.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
+@RequestMapping(value = "/vehiculos/particulares")
 public class ParticularesController extends BaseController
 {
-    @RequestMapping(value = "/particulares", method = RequestMethod.GET)
+    @RequestMapping
     public String particulares(ModelMap model)
     {
         model.addAttribute("titulo", "Particulares");

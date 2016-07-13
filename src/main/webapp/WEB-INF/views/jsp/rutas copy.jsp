@@ -11,8 +11,10 @@
 <link href="${bootstrapCss}" rel="stylesheet" />
 <link href="${commonCss}" rel="stylesheet" />
 <link href="${datatablesCss}" rel="stylesheet" />
+<script src="/Rutas/resources/core/stomp/sockjs-0.3.4.js"></script>
+<script src="/Rutas/resources/core/stomp/stomp.js"></script>
 </head>
-
+<body onload="disconnect()">
 <nav class="navbar navbar-inverse navbar-fixed-top">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -72,7 +74,7 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" data-dismiss="modal" id="agregar">Agregar</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal" id="agregar" onclick="sendName();">Agregar</button>
         <button type="button" class="btn" data-dismiss="modal">Cancelar</button>
       </div>
     </div>
@@ -90,36 +92,60 @@
 <spring:url value="/resources/core/js/common.js" var="coreJs" />
 <spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
 <spring:url value="/resources/core/DataTables/datatables.min.js" var="datatablesJs" />
+<spring:url value="/resources/core/stomp/sockjs-0.3.4.js" var="sockjs" />
+<spring:url value="/resources/core/stomp/stomp.js" var="stompJs" />
 
 <script src="${jquery}"></script>
 <script src="${coreJs}"></script>
 <script src="${bootstrapJs}"></script>
 <script src="${datatablesJs}"></script>
+<script src="${sockjs}"></script>
+<script src="${stompJs}"></script>
 <script type="text/javascript">
 var datatable = $("table").DataTable();
-
-$("#agregar").click(function() {
-  $.ajax({
-    url: "${pageContext.request.contextPath}/rutas/agregar",
-    method: "POST",
-    data: {
-      origen: $("#origen").val(),
-      destino: $("#destino").val()
-    },
-    success: function(data) {
-      var row = $("<tr />", { class: "link", id: data.id });
-      row.append("<td>" + data.id + "</td>");
-      row.append("<td>" + data.origen + "</td>");
-      row.append("<td>" + data.destino + "</td>");
-      datatable.row.add(row).draw();
-    }
-  });
-});
 
 $(document).on("click", ".link", function() {
   var id = $(this).prop('id');
   window.location.href = "${pageContext.request.contextPath}/rutas/" + id;
 });
+
+var stompClient = null;
+
+function connect() {
+  var socket = new SockJS('/Rutas/rutas/agregar');
+  stompClient = Stomp.over(socket);
+  stompClient.connect({}, function(frame) {
+    console.log('Connected: ' + frame);
+    stompClient.subscribe('/topic/rutas', function(greeting) {
+      showGreeting(JSON.parse(greeting.body));
+    });
+  });
+}
+
+function disconnect() {
+  if(stompClient != null) {
+    stompClient.disconnect();
+  }
+  console.log("Disconnected");
+}
+
+function sendName() {
+  stompClient.send("/app/websocket", {}, JSON.stringify({
+    "origen": $("#origen").val(),
+    "destino": $("#destino").val()
+  }));
+}
+
+function showGreeting(message) {
+  console.log(message);
+  var row = $("<tr />", { class: "link", id: message.id });
+  row.append("<td>" + message.id + "</td>");
+  row.append("<td>" + message.origen + "</td>");
+  row.append("<td>" + message.destino + "</td>");
+  datatable.row.add(row).draw();
+}
+
+connect();
 </script>
 </body>
 </html>

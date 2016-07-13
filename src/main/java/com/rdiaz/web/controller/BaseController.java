@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
 import com.rdiaz.model.Marcas;
@@ -20,6 +22,9 @@ public class BaseController
     static Vehiculos vehiculos = new Vehiculos(marcas);
     static RutasAsignadas rutasAsignadas = new RutasAsignadas(vehiculos, rutas);
     static Ubicaciones ubicaciones = new Ubicaciones(vehiculos, rutas);
+    
+    @Autowired
+    protected SimpMessagingTemplate template;
     
     protected String encode(String str)
     {

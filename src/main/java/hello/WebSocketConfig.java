@@ -1,4 +1,4 @@
-package com.rdiaz.web.configuration;
+package hello;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
@@ -22,5 +22,6 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer
     public void registerStompEndpoints(StompEndpointRegistry registry)
     {
         registry.addEndpoint("/hello").withSockJS();
+        registry.addEndpoint("/rutas/agregar").withSockJS();
     }
 }

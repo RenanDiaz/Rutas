@@ -8,6 +8,7 @@
         http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
   <context:component-scan base-package="com.rdiaz.web.controller" />
+  <context:component-scan base-package="hello" />
 
   <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
     <property name="prefix">

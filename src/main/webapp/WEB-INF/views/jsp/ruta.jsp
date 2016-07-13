@@ -32,7 +32,7 @@
       <span class="glyphicon glyphicon-triangle-left"></span>
     </a>
     <c:if test="${not empty ruta}">
-      (${ruta.getId()}) ${ruta.getDescripcion()}
+      <span id="descripcion">(${ruta.getId()}) ${ruta.getDescripcion()}</span>
     </c:if>
     <c:if test="${empty ruta}">
       No encontrado
@@ -157,8 +157,8 @@ $("#guardar").click(function() {
       origen: $("#origen").val(),
       destino: $("#destino").val()
     },
-    success: function() {
-      location.reload();
+    success: function(data) {
+      $("#descripcion").text("(" + data.id + ") " + data.descripcion);
     }
   });
 });

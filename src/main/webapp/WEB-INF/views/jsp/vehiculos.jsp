@@ -121,7 +121,7 @@ var tipo = "${titulo}".toLowerCase();
 
 $("#agregar").click(function() {
   $.ajax({
-    url: "${pageContext.request.contextPath}/" + tipo + "/agregar",
+    url: "${pageContext.request.contextPath}/vehiculos/" + tipo + "/agregar",
     method: "POST",
     data: {
       placa: $("#placa").val(),
@@ -151,7 +151,7 @@ $('.modal').on('hidden.bs.modal', function () {
 
 $(".link").click(function() {
   var id = $(this).prop('id');
-  window.location.href = "/Rutas/" + tipo + "/" + id;
+  window.location.href = "/Rutas/vehiculos/" + tipo + "/" + id;
 });
 </script>
 </body>

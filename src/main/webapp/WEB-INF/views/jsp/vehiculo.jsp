@@ -28,7 +28,7 @@
 <br><br><br>
 <div class="container">
   <h2>
-    <a href="/Rutas/${tipo}" class="btn btn-info">
+    <a href="/Rutas/vehiculos/${tipo}" class="btn btn-info">
       <span class="glyphicon glyphicon-triangle-left"></span>
     </a>
     <c:if test="${not empty vehiculo}">
@@ -195,7 +195,7 @@ $("#ubicaciones").DataTable({
 
 $("#guardar").click(function() {
   $.ajax({
-    url: "${pageContext.request.contextPath}/${tipo}/editar",
+    url: "${pageContext.request.contextPath}/vehiculos/${tipo}/editar",
     method: "POST",
     data: {
       placa: $("#placa").val(),
