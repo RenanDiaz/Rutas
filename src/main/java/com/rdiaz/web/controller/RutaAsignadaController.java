@@ -12,7 +12,7 @@ import com.rdiaz.model.RutaAsignada;
 
 @Controller
 @RequestMapping(value = "/asignacion")
-public class RutasAsignadasController extends BaseController
+public class RutaAsignadaController extends BaseController
 {
     @RequestMapping(value = "agregar", method = RequestMethod.POST)
     @ResponseBody
@@ -46,6 +46,7 @@ public class RutasAsignadasController extends BaseController
         model.addAttribute("rutaAsignada", rutasAsignadas.get(id));
         model.addAttribute("vehiculos", vehiculos.getVehiculos());
         model.addAttribute("rutas", rutas.getRutas());
+        model.addAttribute("total", rutasAsignadas.size());
         return "rutaAsignada";
     }
 }

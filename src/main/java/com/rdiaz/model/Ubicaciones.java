@@ -5,7 +5,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -103,6 +105,31 @@ public class Ubicaciones
         return ubicacionesDelVehiculo;
     }
     
+    public Ubicaciones getUbicacionesDeLaFecha(Timestamp fechahora)
+    {
+        long timestamp = fechahora.getTime();
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(timestamp);
+        int anno = cal.get(Calendar.YEAR);
+        int mes = cal.get(Calendar.MONTH) + 1;
+        int dia = cal.get(Calendar.DATE);
+        Timestamp min = Timestamp.valueOf(LocalDate.of(anno, mes, dia).atStartOfDay());
+        Timestamp max = Timestamp.valueOf(LocalDate.of(dia < 31 ? anno : mes < 12 ? anno : anno + 1, dia < 31 ? mes : mes < 12 ? mes + 1 : 1, dia < 31 ? dia + 1 : 1).atStartOfDay());
+        
+        Ubicaciones recorridoDeLaFecha = new Ubicaciones();
+        
+        for(final Ubicacion ubicacion : ubicaciones)
+        {
+            Timestamp fechahoraUbicacion = ubicacion.getFechahora();
+            if((min.before(fechahoraUbicacion) || min.equals(fechahoraUbicacion)) && max.after(fechahoraUbicacion))
+            {
+                recorridoDeLaFecha.add(ubicacion);
+            }
+        }
+        
+        return recorridoDeLaFecha;
+    }
+    
     public Ubicacion getUltimaUbicacion()
     {
         if(size() > 0)
@@ -110,6 +137,27 @@ public class Ubicaciones
             return getUbicaciones().get((size() - 1));
         }
         return null;
+    }
+    
+    public Ubicaciones getUltimoRecorrido(Vehiculo vehiculo, Ruta ruta)
+    {
+        Ubicaciones recorridosDelVehiculoYLaRuta = getUbicacionesDelVehiculo(vehiculo).getUbicacionesEnLaRuta(ruta);
+        Timestamp ultimaFecha = recorridosDelVehiculoYLaRuta.getUltimaFecha();
+        return recorridosDelVehiculoYLaRuta.getUbicacionesDeLaFecha(ultimaFecha);
+    }
+    
+    private Timestamp getUltimaFecha()
+    {
+        Timestamp ultimaFecha = new Timestamp(0);
+        for(final Ubicacion ubicacion : ubicaciones)
+        {
+            if(ubicacion.getFechahora().after(ultimaFecha))
+            {
+                ultimaFecha = ubicacion.getFechahora();
+            }
+        }
+        
+        return ultimaFecha;
     }
     
     public Ubicaciones ubicacionesDe(Vehiculo vehiculo, int inicio, int fin)

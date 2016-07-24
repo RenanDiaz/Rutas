@@ -40,7 +40,12 @@
 <br>
 <c:if test="${not empty rutaAsignada}">
   <div class="container">
-    <div class="table-responsive">
+    <div class="col-sm-1">
+      <h2>
+        <a href="${pageContext.request.contextPath}/asignacion/${rutaAsignada.getId() - 1}" class="btn btn-info" ${rutaAsignada.getId() > 1 ? "" : "disabled"}><span class="glyphicon glyphicon-menu-left"></span></a>
+      </h2>
+    </div>
+    <div class="table-responsive col-sm-10">
       <table class="table table-striped">
         <thead>
           <tr>
@@ -61,6 +66,11 @@
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="col-sm-1">
+      <h2>
+        <a href="${pageContext.request.contextPath}/asignacion/${rutaAsignada.getId() + 1}" class="btn btn-info" ${rutaAsignada.getId() < total ? "" : "disabled"}><span class="glyphicon glyphicon-menu-right"></span></a>
+      </h2>
     </div>
     <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeEditar">Editar <span class="glyphicon glyphicon-edit"></span></button>
   </div>

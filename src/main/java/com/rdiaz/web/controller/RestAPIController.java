@@ -104,4 +104,11 @@ public class RestAPIController extends BaseController
     {
         return rutasAsignadas.getAsignacionesDeHoyDe(rutas.get(ruta));
     }
+    
+    @RequestMapping(value = "ultimo-recorrido")
+    @ResponseBody
+    public Ubicaciones ultimoRecorrido(@RequestParam(value = "placa") String placa, @RequestParam(value = "ruta", required = true) int ruta)
+    {
+        return ubicaciones.getUltimoRecorrido(vehiculos.get(placa), rutas.get(ruta));
+    }
 }

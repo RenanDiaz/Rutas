@@ -80,9 +80,9 @@
   <div class="row">
     <div class="col-md-2">
       <ul class="nav nav-stacked">
-        <li><a href="buses">Buses<span id="buses" class="badge">${buses}</span></a></li>
-        <li><a href="taxis">Taxis<span id="taxis" class="badge">${taxis}</span></a></li>
-        <li><a href="particulares">Particulares<span id="particulares" class="badge">${particulares}</span></a></li>
+        <li><a href="vehiculos/buses">Buses<span id="buses" class="badge">${buses}</span></a></li>
+        <li><a href="vehiculos/taxis">Taxis<span id="taxis" class="badge">${taxis}</span></a></li>
+        <li><a href="vehiculos/particulares">Particulares<span id="particulares" class="badge">${particulares}</span></a></li>
         <li><a href="rutas">Rutas<span id="rutas" class="badge" id="rutas">${rutas}</span></a></li>
         <li><a href="asignacion">Rutas asignadas<span id="rutas-asignadas" class="badge" id="rutasAsignadas">${rutasAsignadas}</span></a></li>
         <li><a href="ubicacion">Ubicaciones<span id="ubicaciones" class="badge" id="ubicaciones">${ubicaciones}</span></a></li>
