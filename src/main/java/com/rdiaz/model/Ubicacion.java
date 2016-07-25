@@ -11,30 +11,24 @@ public class Ubicacion
     private int id;
     private Timestamp fechahora;
     private Asignacion asignacion;
-    private Ruta ruta;
-    private Vehiculo vehiculo;
     private String latitud;
     private String longitud;
     
-    public Ubicacion(long fecha, Asignacion asignacion, Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
+    public Ubicacion(long fecha, Asignacion asignacion, String latitud, String longitud)
     {
         Timestamp fechahora = new Timestamp(fecha);
         setFechahora(fechahora);
         setAsignacion(asignacion);
-        setRuta(ruta);
-        setVehiculo(vehiculo);
         setLatitud(latitud);
         setLongitud(longitud);
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ubicacion (fechahora, asignacion, ruta, vehiculo, latitud, longitud) VALUES (?, ?, ?, ?, ?);");
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ubicacion (fechahora, asignacion, latitud, longitud) VALUES (?, ?, ?, ?);");
             stmt.setTimestamp(1, fechahora);
             stmt.setInt(2, asignacion.getId());
-            stmt.setInt(3, ruta.getId());
-            stmt.setString(4, vehiculo.getPlaca());
-            stmt.setString(5, latitud);
-            stmt.setString(6, longitud);
+            stmt.setString(3, latitud);
+            stmt.setString(4, longitud);
             stmt.executeUpdate();
             
             stmt = conexion.prepareStatement("SELECT @@IDENTITY FROM ubicacion;");
@@ -51,13 +45,11 @@ public class Ubicacion
         }
     }
     
-    public Ubicacion(int id, Timestamp fechahora, Asignacion asignacion, Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
+    public Ubicacion(int id, Timestamp fechahora, Asignacion asignacion, String latitud, String longitud)
     {
         setId(id);
         setFechahora(fechahora);
         setAsignacion(asignacion);
-        setRuta(ruta);
-        setVehiculo(vehiculo);
         setLatitud(latitud);
         setLongitud(longitud);
     }
@@ -91,26 +83,6 @@ public class Ubicacion
         this.asignacion = asignacion;
     }
     
-    public Ruta getRuta()
-    {
-        return this.ruta;
-    }
-    
-    public void setRuta(Ruta ruta)
-    {
-        this.ruta = ruta;
-    }
-    
-    public Vehiculo getVehiculo()
-    {
-        return this.vehiculo;
-    }
-    
-    public void setVehiculo(Vehiculo vehiculo)
-    {
-        this.vehiculo = vehiculo;
-    }
-    
     public String getLatitud()
     {
         return this.latitud;
@@ -131,23 +103,19 @@ public class Ubicacion
         this.longitud = longitud;
     }
     
-    public void editar(Asignacion asignacion, Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
+    public void editar(Asignacion asignacion, String latitud, String longitud)
     {
         setAsignacion(asignacion);
-        setRuta(ruta);
-        setVehiculo(vehiculo);
         setLatitud(latitud);
         setLongitud(longitud);
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("UPDATE ubicacion SET asignacion = ?, ruta = ?, vehiculo = ?, latitud = ?, longitud = ? WHERE id = ?;");
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE ubicacion SET asignacion = ?, latitud = ?, longitud = ? WHERE id = ?;");
             stmt.setInt(1, asignacion.getId());
-            stmt.setInt(2, ruta.getId());
-            stmt.setString(3, vehiculo.getPlaca());
-            stmt.setString(4, latitud);
-            stmt.setString(5, longitud);
-            stmt.setInt(6, getId());
+            stmt.setString(2, latitud);
+            stmt.setString(3, longitud);
+            stmt.setInt(4, getId());
             stmt.executeUpdate();
             
             conexion.close();

@@ -29,11 +29,9 @@ public class Ubicaciones
                 int id = rs.getInt(1);
                 Timestamp fechahora = rs.getTimestamp(2);
                 Asignacion asignacion = asignaciones.get(rs.getInt(3));
-                Ruta ruta = rutas.get(rs.getInt(4));
-                Vehiculo vehiculo = vehiculos.get(rs.getString(5));
-                String latitud = rs.getString(6);
-                String longitud = rs.getString(7);
-                ubicaciones.add(new Ubicacion(id, fechahora, asignacion, ruta, vehiculo, latitud, longitud));
+                String latitud = rs.getString(4);
+                String longitud = rs.getString(5);
+                ubicaciones.add(new Ubicacion(id, fechahora, asignacion, latitud, longitud));
             }
             conexion.close();
         } catch (Exception e)
@@ -85,7 +83,7 @@ public class Ubicaciones
         Ubicaciones ubicacionesDeLaRuta = new Ubicaciones();
         for(final Ubicacion ubicacion : ubicaciones)
         {
-            if(ubicacion.getRuta().equals(ruta))
+            if(ubicacion.getAsignacion().getRuta().equals(ruta))
             {
                 ubicacionesDeLaRuta.add(ubicacion);
             }
@@ -98,7 +96,7 @@ public class Ubicaciones
         Ubicaciones ubicacionesDelVehiculo = new Ubicaciones();
         for(final Ubicacion ubicacion : ubicaciones)
         {
-            if(ubicacion.getVehiculo().equals(vehiculo))
+            if(ubicacion.getAsignacion().getVehiculo().equals(vehiculo))
             {
                 ubicacionesDelVehiculo.add(ubicacion);
             }
@@ -164,7 +162,7 @@ public class Ubicaciones
         Ubicaciones ubicacionesDelVehiculo = new Ubicaciones();
         for(final Ubicacion ubicacion : rango(inicio, fin))
         {
-            if(ubicacion.getVehiculo().equals(vehiculo))
+            if(ubicacion.getAsignacion().getVehiculo().equals(vehiculo))
             {
                 ubicacionesDelVehiculo.add(ubicacion);
             }

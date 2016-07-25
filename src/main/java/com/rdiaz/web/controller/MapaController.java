@@ -22,7 +22,7 @@ public class MapaController extends BaseController
     @RequestMapping(value = "punto/{id}")
     public String puntoMapaView(ModelMap model, @PathVariable int id)
     {
-        model.addAttribute("vehiculo", ubicaciones.get(id).getVehiculo());
+        model.addAttribute("vehiculo", ubicaciones.get(id).getAsignacion().getVehiculo());
         model.addAttribute("inicio", id);
         model.addAttribute("fin", id);
         return "mapa";

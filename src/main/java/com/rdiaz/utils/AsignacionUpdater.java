@@ -26,11 +26,11 @@ public class AsignacionUpdater
         int i = 0;
         for(Ubicacion ubicacion : ubicaciones.getUbicaciones())
         {
-            Asignaciones asignacionesParaLaUbicacion = asignaciones.getAsignacionesDelVehiculo(ubicacion.getVehiculo()).getAsignacionesDeLaRuta(ubicacion.getRuta());
+            Asignaciones asignacionesParaLaUbicacion = asignaciones.getAsignacionesDelVehiculo(ubicacion.getAsignacion().getVehiculo()).getAsignacionesDeLaRuta(ubicacion.getAsignacion().getRuta());
             if(asignacionesParaLaUbicacion.size() > 0)
             {
                 Asignacion asignacion = asignacionesParaLaUbicacion.getAsignaciones().get(0);
-                ubicacion.editar(asignacion, asignacion.getRuta(), asignacion.getVehiculo(), ubicacion.getLatitud(), ubicacion.getLongitud());
+                ubicacion.editar(asignacion, ubicacion.getLatitud(), ubicacion.getLongitud());
                 System.out.println(++i);
             }
         }

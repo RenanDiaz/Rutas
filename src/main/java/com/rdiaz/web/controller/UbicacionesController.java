@@ -33,7 +33,7 @@ public class UbicacionesController extends BaseController
         Asignacion asignacion = asignaciones.get(idAsignacion);
         Vehiculo vehiculo = asignacion.getVehiculo();
         Ruta ruta = asignacion.getRuta();
-        Ubicacion ubicacion = new Ubicacion(fecha, asignacion, ruta, vehiculo, latitud, longitud);
+        Ubicacion ubicacion = new Ubicacion(fecha, asignacion, latitud, longitud);
         ubicaciones.add(ubicacion);
         template.convertAndSend("/topic/ubicaciones", ubicacion);
         System.out.println(String.format("Nueva ubicacion: %s\t%s\t%s\t%s\t%s", new Date(fecha), ruta.getDescripcion(), vehiculo.getNombreCorto(), latitud, longitud));
@@ -46,7 +46,7 @@ public class UbicacionesController extends BaseController
     {
         Ubicacion ubicacion = ubicaciones.get(id);
         Asignacion asignacion = asignaciones.get(idAsignacion);
-        ubicacion.editar(asignacion, asignacion.getRuta(), asignacion.getVehiculo(), latitud, longitud);
+        ubicacion.editar(asignacion, latitud, longitud);
         return ubicacion;
     }
     
