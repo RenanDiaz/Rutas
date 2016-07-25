@@ -53,9 +53,9 @@ UNLOCK TABLES;
 # Dump of table ruta_asignada
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `ruta_asignada`;
+DROP TABLE IF EXISTS `asignacion`;
 
-CREATE TABLE `ruta_asignada` (
+CREATE TABLE `asignacion` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `vehiculo` varchar(6) CHARACTER SET utf8 DEFAULT '',
   `ruta` int(11) unsigned DEFAULT NULL,
@@ -104,13 +104,16 @@ DROP TABLE IF EXISTS `ubicacion`;
 CREATE TABLE `ubicacion` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `fechahora` timestamp NULL DEFAULT NULL,
+  `asignacion` int(11) unsigned DEFAULT NULL,
   `ruta` int(11) unsigned DEFAULT NULL,
   `vehiculo` varchar(6) DEFAULT NULL,
   `latitud` varchar(20) DEFAULT NULL,
   `longitud` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
+  KEY `fk_asignacion` (`asignacion`),
   KEY `fk_ruta` (`ruta`),
   KEY `fk_vehiculo` (`vehiculo`),
+  CONSTRAINT `fk_asignacion` FOREIGN KEY (`asignacion`) REFERENCES `asignacion` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_ruta` FOREIGN KEY (`ruta`) REFERENCES `rutas` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_vehiculo` FOREIGN KEY (`vehiculo`) REFERENCES `vehiculos` (`placa`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

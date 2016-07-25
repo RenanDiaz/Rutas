@@ -20,7 +20,7 @@ public class HomeController extends BaseController
         model.addAttribute("taxis", vehiculos.listaDeTaxis().size());
         model.addAttribute("particulares", vehiculos.listaDeParticulares().size());
         model.addAttribute("rutas", rutas.size());
-        model.addAttribute("rutasAsignadas", rutasAsignadas.size());
+        model.addAttribute("asignaciones", asignaciones.size());
         model.addAttribute("ubicaciones", ubicaciones.size());
         
         return "home";

@@ -17,7 +17,7 @@ public class Ubicaciones
     @JsonProperty("ubicaciones")
     ArrayList<Ubicacion> ubicaciones = new ArrayList<>();
     
-    public Ubicaciones(Vehiculos vehiculos, Rutas rutas)
+    public Ubicaciones(Asignaciones asignaciones, Vehiculos vehiculos, Rutas rutas)
     {
         try
         {
@@ -28,11 +28,12 @@ public class Ubicaciones
             {
                 int id = rs.getInt(1);
                 Timestamp fechahora = rs.getTimestamp(2);
-                Ruta ruta = rutas.get(rs.getInt(3));
-                Vehiculo vehiculo = vehiculos.get(rs.getString(4));
-                String latitud = rs.getString(5);
-                String longitud = rs.getString(6);
-                ubicaciones.add(new Ubicacion(id, fechahora, ruta, vehiculo, latitud, longitud));
+                Asignacion asignacion = asignaciones.get(rs.getInt(3));
+                Ruta ruta = rutas.get(rs.getInt(4));
+                Vehiculo vehiculo = vehiculos.get(rs.getString(5));
+                String latitud = rs.getString(6);
+                String longitud = rs.getString(7);
+                ubicaciones.add(new Ubicacion(id, fechahora, asignacion, ruta, vehiculo, latitud, longitud));
             }
             conexion.close();
         } catch (Exception e)
@@ -126,7 +127,6 @@ public class Ubicaciones
                 recorridoDeLaFecha.add(ubicacion);
             }
         }
-        
         return recorridoDeLaFecha;
     }
     
@@ -156,7 +156,6 @@ public class Ubicaciones
                 ultimaFecha = ubicacion.getFechahora();
             }
         }
-        
         return ultimaFecha;
     }
     
@@ -179,7 +178,6 @@ public class Ubicaciones
         
         for(int i = inicio - 1; i < fin; i++)
             ubicacionesEnElRango.add(ubicaciones.get(i));
-        
         return ubicacionesEnElRango;
     }
     
@@ -201,7 +199,6 @@ public class Ubicaciones
         }
         
         System.out.printf("Promedios: %6.2fm\t%.2fs\t%6.2fkm/h%n", distanciaTotal / rango.size(), tiempoAcumulado / 1000 / rango.size(), (distanciaTotal / 1000) / (tiempoAcumulado / 1000 / 60 / 60));
-        
         return distanciaTotal;
     }
     
@@ -222,7 +219,6 @@ public class Ubicaciones
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         Double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         double distance = R * c * 1000; // convert to meters
-
         double height = el1 - el2;
 
         distance = Math.pow(distance, 2) + Math.pow(height, 2);

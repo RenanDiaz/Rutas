@@ -83,9 +83,9 @@
         <li><a href="vehiculos/buses">Buses<span id="buses" class="badge">${buses}</span></a></li>
         <li><a href="vehiculos/taxis">Taxis<span id="taxis" class="badge">${taxis}</span></a></li>
         <li><a href="vehiculos/particulares">Particulares<span id="particulares" class="badge">${particulares}</span></a></li>
-        <li><a href="rutas">Rutas<span id="rutas" class="badge" id="rutas">${rutas}</span></a></li>
-        <li><a href="asignacion">Rutas asignadas<span id="rutas-asignadas" class="badge" id="rutasAsignadas">${rutasAsignadas}</span></a></li>
-        <li><a href="ubicacion">Ubicaciones<span id="ubicaciones" class="badge" id="ubicaciones">${ubicaciones}</span></a></li>
+        <li><a href="rutas">Rutas<span id="rutas" class="badge">${rutas}</span></a></li>
+        <li><a href="asignacion">Asignaciones<span id="asignaciones" class="badge">${asignaciones}</span></a></li>
+        <li><a href="ubicacion">Ubicaciones<span id="ubicaciones" class="badge">${ubicaciones}</span></a></li>
       </ul>
     </div>
   </div>

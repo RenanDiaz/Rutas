@@ -7,7 +7,7 @@ import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Calendar;
 
-public class RutaAsignada
+public class Asignacion
 {
     private int id;
     private Vehiculo vehiculo;
@@ -15,7 +15,7 @@ public class RutaAsignada
     private Timestamp fechahoraDePartida;
     private Timestamp fechahoraDeLlegada;
     
-    public RutaAsignada(Vehiculo vehiculo, Ruta ruta, long partida, long llegada)
+    public Asignacion(Vehiculo vehiculo, Ruta ruta, long partida, long llegada)
     {
         Timestamp fechahoraDePartida = new Timestamp(partida);
         Timestamp fechahoraDeLlegada = new Timestamp(llegada);
@@ -26,14 +26,14 @@ public class RutaAsignada
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ruta_asignada (vehiculo, ruta, fechahora_de_partida, fechahora_de_llegada) VALUES (?, ?, ?, ?);");
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO asignacion (vehiculo, ruta, fechahora_de_partida, fechahora_de_llegada) VALUES (?, ?, ?, ?);");
             stmt.setString(1, vehiculo.getPlaca());
             stmt.setInt(2, ruta.getId());
             stmt.setTimestamp(3, fechahoraDePartida);
             stmt.setTimestamp(4, fechahoraDeLlegada);
             stmt.executeUpdate();
             
-            stmt = conexion.prepareStatement("SELECT @@IDENTITY FROM ruta_asignada;");
+            stmt = conexion.prepareStatement("SELECT @@IDENTITY FROM asignacion;");
             ResultSet rs = stmt.executeQuery();
             if(rs.last())
             {
@@ -46,7 +46,7 @@ public class RutaAsignada
         }
     }
     
-    public RutaAsignada(int id, Vehiculo vehiculo, Ruta ruta, Timestamp fechahoraDePartida, Timestamp fechahoraDeLlegada)
+    public Asignacion(int id, Vehiculo vehiculo, Ruta ruta, Timestamp fechahoraDePartida, Timestamp fechahoraDeLlegada)
     {
         setId(id);
         setVehiculo(vehiculo);
@@ -146,7 +146,7 @@ public class RutaAsignada
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("UPDATE ruta_asignada SET vehiculo = ?, ruta = ?, fechahora_de_partida = ?, fechahora_de_llegada = ? WHERE id = ?;");
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE asignacion SET vehiculo = ?, ruta = ?, fechahora_de_partida = ?, fechahora_de_llegada = ? WHERE id = ?;");
             stmt.setString(1, vehiculo.getPlaca());
             stmt.setInt(2, ruta.getId());
             stmt.setTimestamp(3, fechahoraDePartida);
@@ -172,7 +172,6 @@ public class RutaAsignada
         
         return String.format("%d-%02d-%02d", anno, mes, dia);
     }
-
     
     private String horaFormateada(Timestamp fechahora)
     {

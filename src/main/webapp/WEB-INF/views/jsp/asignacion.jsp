@@ -29,20 +29,20 @@
     <a href="/Rutas/asignacion" class="btn btn-info">
       <span class="glyphicon glyphicon-triangle-left"></span>
     </a>
-    <c:if test="${not empty rutaAsignada}">
-      ${rutaAsignada.getId()} ${rutaAsignada.getDescripcion()}
+    <c:if test="${not empty asignacion}">
+      ${asignacion.getId()} ${asignacion.getDescripcion()}
     </c:if>
-    <c:if test="${empty rutaAsignada}">
+    <c:if test="${empty asignacion}">
       No encontrada
     </c:if>
   </h2>
 </div>
 <br>
-<c:if test="${not empty rutaAsignada}">
+<c:if test="${not empty asignacion}">
   <div class="container">
     <div class="col-sm-1">
       <h2>
-        <a href="${pageContext.request.contextPath}/asignacion/${rutaAsignada.getId() - 1}" class="btn btn-info" ${rutaAsignada.getId() > 1 ? "" : "disabled"}><span class="glyphicon glyphicon-menu-left"></span></a>
+        <a href="${pageContext.request.contextPath}/asignacion/${asignacion.getId() - 1}" class="btn btn-info" ${asignacion.getId() > 1 ? "" : "disabled"}><span class="glyphicon glyphicon-menu-left"></span></a>
       </h2>
     </div>
     <div class="table-responsive col-sm-10">
@@ -58,18 +58,18 @@
         </thead>
         <tbody>
           <tr>
-            <td>${rutaAsignada.getId()}</td>
-            <td>${rutaAsignada.getVehiculo().getNombreCorto()}</td>
-            <td>${rutaAsignada.getRuta().getDescripcion()}</td>
-            <td>${rutaAsignada.getFechaDePartida()} ${rutaAsignada.getHoraDePartida()}</td>
-            <td>${rutaAsignada.getFechaDeLlegada()} ${rutaAsignada.getHoraDeLlegada()}</td>
+            <td>${asignacion.getId()}</td>
+            <td>${asignacion.getVehiculo().getNombreCorto()}</td>
+            <td>${asignacion.getRuta().getDescripcion()}</td>
+            <td>${asignacion.getFechaDePartida()} ${asignacion.getHoraDePartida()}</td>
+            <td>${asignacion.getFechaDeLlegada()} ${asignacion.getHoraDeLlegada()}</td>
           </tr>
         </tbody>
       </table>
     </div>
     <div class="col-sm-1">
       <h2>
-        <a href="${pageContext.request.contextPath}/asignacion/${rutaAsignada.getId() + 1}" class="btn btn-info" ${rutaAsignada.getId() < total ? "" : "disabled"}><span class="glyphicon glyphicon-menu-right"></span></a>
+        <a href="${pageContext.request.contextPath}/asignacion/${asignacion.getId() + 1}" class="btn btn-info" ${asignacion.getId() < total ? "" : "disabled"}><span class="glyphicon glyphicon-menu-right"></span></a>
       </h2>
     </div>
     <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeEditar">Editar <span class="glyphicon glyphicon-edit"></span></button>
@@ -88,10 +88,10 @@
           <div class="form-group">
             <label>Veh&iacute;culo</label> <select name="placa" id="placa" class="form-control" autofocus>
               <c:forEach items="${vehiculos}" var="vehiculo">
-                <c:if test="${vehiculo.getPlaca() == rutaAsignada.getVehiculo().getPlaca()}">
+                <c:if test="${vehiculo.getPlaca() == asignacion.getVehiculo().getPlaca()}">
                   <option value="${vehiculo.getPlaca()}" selected>${vehiculo.getNombreCorto()}</option>
                 </c:if>
-                <c:if test="${vehiculo.getPlaca() != rutaAsignada.getVehiculo().getPlaca()}">
+                <c:if test="${vehiculo.getPlaca() != asignacion.getVehiculo().getPlaca()}">
                   <option value="${vehiculo.getPlaca()}">${vehiculo.getNombreCorto()}</option>
                 </c:if>
               </c:forEach>
@@ -100,23 +100,23 @@
           <div class="form-group">
             <label>Ruta</label> <select name="ruta" id="ruta" class="form-control">
               <c:forEach items="${rutas}" var="ruta">
-                <c:if test="${ruta.getId() == rutaAsignada.getRuta().getId()}">
+                <c:if test="${ruta.getId() == asignacion.getRuta().getId()}">
                   <option value="${ruta.getId()}" selected>${ruta.getDescripcion()}</option>
                 </c:if>
-                <c:if test="${ruta.getId() != rutaAsignada.getRuta().getId()}">
+                <c:if test="${ruta.getId() != asignacion.getRuta().getId()}">
                   <option value="${ruta.getId()}">${ruta.getDescripcion()}</option>
                 </c:if>
               </c:forEach>
             </select>
           </div>
           <div class="form-group date" id="fecha">
-            <label>Fecha</label> <input id="fechaDePartida" class="form-control" type="date" value="${rutaAsignada.getFechaDePartida()}">
+            <label>Fecha</label> <input id="fechaDePartida" class="form-control" type="date" value="${asignacion.getFechaDePartida()}">
           </div>
           <div class="form-group date" id="horaPartida">
-            <label>Hora de partida</label><input id="horaDePartida" class="form-control" type="time" step="300" value="${rutaAsignada.getHoraDePartida()}">
+            <label>Hora de partida</label><input id="horaDePartida" class="form-control" type="time" step="300" value="${asignacion.getHoraDePartida()}">
           </div>
           <div class="form-group date" id="horaLlegada">
-            <label>Hora de llegada</label> <input id="horaDeLlegada" class="form-control" type="time" step="300" value="${rutaAsignada.getHoraDeLlegada()}">
+            <label>Hora de llegada</label> <input id="horaDeLlegada" class="form-control" type="time" step="300" value="${asignacion.getHoraDeLlegada()}">
           </div>
         </c:if>
       </div>
@@ -154,7 +154,7 @@ $("#guardar").click(function() {
     url: "${pageContext.request.contextPath}/asignacion/editar",
     method: "POST",
     data: {
-      id: "${rutaAsignada.getId()}",
+      id: "${asignacion.getId()}",
       placa: $("#placa").val(),
       ruta: $("#ruta").val(),
       partida: partida,

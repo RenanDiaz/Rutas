@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.rdiaz.model.Particular;
 import com.rdiaz.model.Rutas;
-import com.rdiaz.model.RutasAsignadas;
+import com.rdiaz.model.Asignaciones;
 import com.rdiaz.model.Taxi;
 import com.rdiaz.model.Ubicacion;
 import com.rdiaz.model.Ubicaciones;
@@ -100,9 +100,9 @@ public class RestAPIController extends BaseController
     
     @RequestMapping(value = "asignaciones")
     @ResponseBody
-    public RutasAsignadas asignaciones(@RequestParam(value = "ruta", required = true) int ruta)
+    public Asignaciones asignaciones(@RequestParam(value = "ruta", required = true) int ruta)
     {
-        return rutasAsignadas.getAsignacionesDeHoyDe(rutas.get(ruta));
+        return asignaciones.getAsignacionesDeLaRuta(rutas.get(ruta)).getAsignacionesDeHoy();
     }
     
     @RequestMapping(value = "ultimo-recorrido")

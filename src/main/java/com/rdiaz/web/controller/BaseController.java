@@ -10,7 +10,7 @@ import org.springframework.stereotype.Controller;
 
 import com.rdiaz.model.Marcas;
 import com.rdiaz.model.Rutas;
-import com.rdiaz.model.RutasAsignadas;
+import com.rdiaz.model.Asignaciones;
 import com.rdiaz.model.Ubicaciones;
 import com.rdiaz.model.Vehiculos;
 import com.rdiaz.websocket.Contadores;
@@ -21,8 +21,8 @@ public class BaseController
     static Rutas rutas = new Rutas();
     static Marcas marcas = new Marcas();
     static Vehiculos vehiculos = new Vehiculos(marcas);
-    static RutasAsignadas rutasAsignadas = new RutasAsignadas(vehiculos, rutas);
-    static Ubicaciones ubicaciones = new Ubicaciones(vehiculos, rutas);
+    static Asignaciones asignaciones = new Asignaciones(vehiculos, rutas);
+    static Ubicaciones ubicaciones = new Ubicaciones(asignaciones, vehiculos, rutas);
     static Contadores contadores = new Contadores();
     
     @Autowired
@@ -32,7 +32,7 @@ public class BaseController
     {
         contadores.add("rutas", rutas.size());
         contadores.add("marcas", marcas.size());
-        contadores.add("rutas-asignadas", rutasAsignadas.size());
+        contadores.add("asignaciones", asignaciones.size());
         contadores.add("ubicaciones", ubicaciones.size());
         contadores.add(vehiculos.sizes());
     }
@@ -42,7 +42,8 @@ public class BaseController
         try
         {
             return URLEncoder.encode(str, "UTF8");
-        } catch (UnsupportedEncodingException e)
+        }
+        catch (UnsupportedEncodingException e)
         {
             e.printStackTrace();
         }
@@ -54,7 +55,8 @@ public class BaseController
         try
         {
             return URLDecoder.decode(str, "UTF8");
-        } catch (UnsupportedEncodingException e)
+        }
+        catch (UnsupportedEncodingException e)
         {
             e.printStackTrace();
         }

@@ -83,12 +83,12 @@
           </tr>
         </thead>
         <tbody>
-          <c:if test="${not empty rutasAsignadas}">
-            <c:forEach items="${rutasAsignadas}" var="rutaAsignada">
-              <tr class="link" id="${rutaAsignada.getId()}" title="${rutaAsignada.getId()}">
-                <td>${rutaAsignada.getRuta().getDescripcion()}</td>
-                <td>${rutaAsignada.getFechaDePartida()} ${rutaAsignada.getHoraDePartida()}</td>
-                <td>${rutaAsignada.getFechaDeLlegada()} ${rutaAsignada.getHoraDeLlegada()}</td>
+          <c:if test="${not empty asignaciones}">
+            <c:forEach items="${asignaciones}" var="asignacion">
+              <tr class="link" id="${asignacion.getId()}" title="${asignacion.getId()}">
+                <td>${asignacion.getRuta().getDescripcion()}</td>
+                <td>${asignacion.getFechaDePartida()} ${asignacion.getHoraDePartida()}</td>
+                <td>${asignacion.getFechaDeLlegada()} ${asignacion.getHoraDeLlegada()}</td>
               </tr>
             </c:forEach>
           </c:if>

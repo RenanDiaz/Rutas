@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.rdiaz.model.Asignacion;
 import com.rdiaz.model.Ruta;
 import com.rdiaz.model.Ubicacion;
 import com.rdiaz.model.Vehiculo;
@@ -21,29 +22,31 @@ import com.rdiaz.utils.WriteXMLFile;
 
 @Controller
 @RequestMapping("/ubicacion")
-public class UbicacionController extends BaseController
+public class UbicacionesController extends BaseController
 {
     ArrayList<HttpSession> subscribers = new ArrayList<>();
     
-    @RequestMapping(value = "agregar/{placa}", method = RequestMethod.POST)
+    @RequestMapping(value = "agregar", method = RequestMethod.POST)
     @ResponseBody
-    public Ubicacion agregarUbicacion(@PathVariable String placa, @RequestParam(value = "fecha", required = true) long fecha, @RequestParam(value = "ruta", required = true) int idRuta, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
+    public Ubicacion agregarUbicacion(@RequestParam(value = "fecha", required = true) long fecha, @RequestParam(value = "asignacion", required = true) int idAsignacion, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
     {
-        Vehiculo vehiculo = vehiculos.get(placa);
-        Ruta ruta = rutas.get(idRuta);
-        Ubicacion ubicacion = new Ubicacion(fecha, ruta, vehiculo, latitud, longitud);
+        Asignacion asignacion = asignaciones.get(idAsignacion);
+        Vehiculo vehiculo = asignacion.getVehiculo();
+        Ruta ruta = asignacion.getRuta();
+        Ubicacion ubicacion = new Ubicacion(fecha, asignacion, ruta, vehiculo, latitud, longitud);
         ubicaciones.add(ubicacion);
         template.convertAndSend("/topic/ubicaciones", ubicacion);
         System.out.println(String.format("Nueva ubicacion: %s\t%s\t%s\t%s\t%s", new Date(fecha), ruta.getDescripcion(), vehiculo.getNombreCorto(), latitud, longitud));
         return ubicacion;
     }
     
-    @RequestMapping(value = "editar/{placa}", method = RequestMethod.POST)
+    @RequestMapping(value = "editar", method = RequestMethod.POST)
     @ResponseBody
-    public Ubicacion editarUbicacion(@PathVariable String placa, @RequestParam(value = "id", required = true) int id, @RequestParam(value = "ruta", required = true) int ruta, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
+    public Ubicacion editarUbicacion(@RequestParam(value = "id", required = true) int id, @RequestParam(value = "asignacion", required = true) int idAsignacion, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
     {
         Ubicacion ubicacion = ubicaciones.get(id);
-        ubicacion.editar(rutas.get(ruta), vehiculos.get(placa), latitud, longitud);
+        Asignacion asignacion = asignaciones.get(idAsignacion);
+        ubicacion.editar(asignacion, asignacion.getRuta(), asignacion.getVehiculo(), latitud, longitud);
         return ubicacion;
     }
     

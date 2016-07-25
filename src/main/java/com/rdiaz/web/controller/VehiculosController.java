@@ -55,7 +55,7 @@ public class VehiculosController extends BaseController
         model.addAttribute("vehiculo", vehiculo);
         model.addAttribute("tipo", tipo);
         model.addAttribute("marcas", marcas.getMarcas());
-        model.addAttribute("rutasAsignadas", rutasAsignadas.getRutasAsignadasA(vehiculo).getRutasAsignadas());
+        model.addAttribute("asignaciones", asignaciones.getAsignacionesDelVehiculo(vehiculo).getAsignaciones());
         model.addAttribute("ubicaciones", ubicaciones.getUbicacionesDelVehiculo(vehiculo).getUbicaciones());
         return "vehiculo";
     }

@@ -10,15 +10,17 @@ public class Ubicacion
 {
     private int id;
     private Timestamp fechahora;
+    private Asignacion asignacion;
     private Ruta ruta;
     private Vehiculo vehiculo;
     private String latitud;
     private String longitud;
     
-    public Ubicacion(long fecha, Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
+    public Ubicacion(long fecha, Asignacion asignacion, Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
     {
         Timestamp fechahora = new Timestamp(fecha);
         setFechahora(fechahora);
+        setAsignacion(asignacion);
         setRuta(ruta);
         setVehiculo(vehiculo);
         setLatitud(latitud);
@@ -26,12 +28,13 @@ public class Ubicacion
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ubicacion (fechahora, ruta, vehiculo, latitud, longitud) VALUES (?, ?, ?, ?, ?);");
+            PreparedStatement stmt = conexion.prepareStatement("INSERT INTO ubicacion (fechahora, asignacion, ruta, vehiculo, latitud, longitud) VALUES (?, ?, ?, ?, ?);");
             stmt.setTimestamp(1, fechahora);
-            stmt.setInt(2, ruta.getId());
-            stmt.setString(3, vehiculo.getPlaca());
-            stmt.setString(4, latitud);
-            stmt.setString(5, longitud);
+            stmt.setInt(2, asignacion.getId());
+            stmt.setInt(3, ruta.getId());
+            stmt.setString(4, vehiculo.getPlaca());
+            stmt.setString(5, latitud);
+            stmt.setString(6, longitud);
             stmt.executeUpdate();
             
             stmt = conexion.prepareStatement("SELECT @@IDENTITY FROM ubicacion;");
@@ -48,10 +51,11 @@ public class Ubicacion
         }
     }
     
-    public Ubicacion(int id, Timestamp fechahora, Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
+    public Ubicacion(int id, Timestamp fechahora, Asignacion asignacion, Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
     {
         setId(id);
         setFechahora(fechahora);
+        setAsignacion(asignacion);
         setRuta(ruta);
         setVehiculo(vehiculo);
         setLatitud(latitud);
@@ -75,6 +79,16 @@ public class Ubicacion
     public void setFechahora(Timestamp fechahora)
     {
         this.fechahora = fechahora;
+    }
+    
+    public Asignacion getAsignacion()
+    {
+        return this.asignacion;
+    }
+    
+    public void setAsignacion(Asignacion asignacion)
+    {
+        this.asignacion = asignacion;
     }
     
     public Ruta getRuta()
@@ -117,8 +131,9 @@ public class Ubicacion
         this.longitud = longitud;
     }
     
-    public void editar(Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
+    public void editar(Asignacion asignacion, Ruta ruta, Vehiculo vehiculo, String latitud, String longitud)
     {
+        setAsignacion(asignacion);
         setRuta(ruta);
         setVehiculo(vehiculo);
         setLatitud(latitud);
@@ -126,12 +141,13 @@ public class Ubicacion
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
-            PreparedStatement stmt = conexion.prepareStatement("UPDATE ubicacion SET ruta = ?, vehiculo = ?, latitud = ?, longitud = ? WHERE id = ?;");
-            stmt.setInt(1, ruta.getId());
-            stmt.setString(2, vehiculo.getPlaca());
-            stmt.setString(3, latitud);
-            stmt.setString(4, longitud);
-            stmt.setInt(5, getId());
+            PreparedStatement stmt = conexion.prepareStatement("UPDATE ubicacion SET asignacion = ?, ruta = ?, vehiculo = ?, latitud = ?, longitud = ? WHERE id = ?;");
+            stmt.setInt(1, asignacion.getId());
+            stmt.setInt(2, ruta.getId());
+            stmt.setString(3, vehiculo.getPlaca());
+            stmt.setString(4, latitud);
+            stmt.setString(5, longitud);
+            stmt.setInt(6, getId());
             stmt.executeUpdate();
             
             conexion.close();
