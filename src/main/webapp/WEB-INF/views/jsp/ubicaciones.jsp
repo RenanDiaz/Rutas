@@ -37,8 +37,7 @@
           <thead>
             <tr>
               <th>Fecha y hora</th>
-              <th>Ruta</th>
-              <th>Vehiculo</th>
+              <th>Asignaci&oacute;n</th>
               <th>Latitud</th>
               <th>Longitud</th>
             </tr>
@@ -47,8 +46,7 @@
             <c:forEach items="${ubicaciones}" var="ubicacion">
               <tr class="link" id="${ubicacion.getId()}" title="${ubicacion.getId()}">
                 <td>${ubicacion.getFechahora()}</td>
-                <td>${ubicacion.getRuta().getDescripcion()}</td>
-                <td>${ubicacion.getVehiculo().getNombreCorto()}</td>
+                <td>${ubicacion.getAsignacion().getDescripcion()}</td>
                 <td>${ubicacion.getLatitud()}</td>
                 <td>${ubicacion.getLongitud()}</td>
               </tr>
@@ -207,7 +205,7 @@
             <div class="form-group">
               <label>Inicio</label>
               <div class="input-group">
-                <span class="input-group-addon"> <input type="checkbox" class="checkbox" id="cb-inicio-mapa" title="Si no marca esta casilla se exportará desde el primer regristro" autofocus>
+                <span class="input-group-addon"> <input type="checkbox" class="checkbox" id="cb-inicio-mapa" title="Si no marca esta casilla se exportará desde el primer registro" autofocus>
                 </span> <input id="inicio-mapa" class="form-control disableable" type="number" min="${ubicaciones.get(0).getId()}" max="${ubicaciones.get(total - 1).getId()}" required disabled>
               </div>
             </div>

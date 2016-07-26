@@ -84,7 +84,7 @@
             <c:forEach items="${ubicaciones}" var="ubicacion">
               <tr class="link" id="${ubicacion.getId()}" title="${ubicacion.getId()}">
                 <td>${ubicacion.getFechahora()}</td>
-                <td>${ubicacion.getVehiculo().getNombreCorto()}</td>
+                <td>${ubicacion.getAsignacion().getVehiculo().getNombreCorto()}</td>
                 <td>${ubicacion.getLatitud()}</td>
                 <td>${ubicacion.getLongitud()}</td>
               </tr>
