@@ -100,9 +100,12 @@ public class RestAPIController extends BaseController
     
     @RequestMapping(value = "asignaciones")
     @ResponseBody
-    public Asignaciones asignaciones(@RequestParam(value = "ruta", required = true) int ruta)
+    public Asignaciones asignaciones(@RequestParam(value = "ruta", defaultValue = "0") int ruta)
     {
-        return asignaciones.getAsignacionesDeLaRuta(rutas.get(ruta)).getAsignacionesDeHoy();
+        if(ruta > 0)
+            return asignaciones.getAsignacionesDeLaRuta(rutas.get(ruta)).getAsignacionesDeHoy();
+        else
+            return asignaciones;
     }
     
     @RequestMapping(value = "ultimo-recorrido")
