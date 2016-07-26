@@ -83,7 +83,7 @@ public class Ubicaciones
         Ubicaciones ubicacionesDeLaRuta = new Ubicaciones();
         for(final Ubicacion ubicacion : ubicaciones)
         {
-            if(ubicacion.getAsignacion().getRuta().equals(ruta))
+            if(ubicacion.getAsignacion().getRuta().getId() == ruta.getId())
             {
                 ubicacionesDeLaRuta.add(ubicacion);
             }
@@ -96,12 +96,25 @@ public class Ubicaciones
         Ubicaciones ubicacionesDelVehiculo = new Ubicaciones();
         for(final Ubicacion ubicacion : ubicaciones)
         {
-            if(ubicacion.getAsignacion().getVehiculo().equals(vehiculo))
+            if(ubicacion.getAsignacion().getVehiculo().getPlaca().equals(vehiculo.getPlaca()))
             {
                 ubicacionesDelVehiculo.add(ubicacion);
             }
         }
         return ubicacionesDelVehiculo;
+    }
+    
+    public Ubicaciones getUbicacionesDeLaAsignacion(Asignacion asignacion)
+    {
+        Ubicaciones ubicacionesDeLaAsignacion = new Ubicaciones();
+        for(final Ubicacion ubicacion : ubicaciones)
+        {
+            if(ubicacion.getAsignacion().getId() == asignacion.getId())
+            {
+                ubicacionesDeLaAsignacion.add(ubicacion);
+            }
+        }
+        return ubicacionesDeLaAsignacion;
     }
     
     public Ubicaciones getUbicacionesDeLaFecha(Timestamp fechahora)
@@ -137,11 +150,11 @@ public class Ubicaciones
         return null;
     }
     
-    public Ubicaciones getUltimoRecorrido(Vehiculo vehiculo, Ruta ruta)
+    public Ubicaciones getUltimoRecorrido(Asignacion asignacion)
     {
-        Ubicaciones recorridosDelVehiculoYLaRuta = getUbicacionesDelVehiculo(vehiculo).getUbicacionesEnLaRuta(ruta);
-        Timestamp ultimaFecha = recorridosDelVehiculoYLaRuta.getUltimaFecha();
-        return recorridosDelVehiculoYLaRuta.getUbicacionesDeLaFecha(ultimaFecha);
+        Ubicaciones recorridosDeLaAsignacion = getUbicacionesDeLaAsignacion(asignacion);
+        Timestamp ultimaFecha = recorridosDeLaAsignacion.getUltimaFecha();
+        return recorridosDeLaAsignacion.getUbicacionesDeLaFecha(ultimaFecha);
     }
     
     private Timestamp getUltimaFecha()

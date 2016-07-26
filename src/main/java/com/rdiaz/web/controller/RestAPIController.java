@@ -103,15 +103,15 @@ public class RestAPIController extends BaseController
     public Asignaciones asignaciones(@RequestParam(value = "ruta", defaultValue = "0") int ruta)
     {
         if(ruta > 0)
-            return asignaciones.getAsignacionesDeLaRuta(rutas.get(ruta)).getAsignacionesDeHoy();
+            return asignaciones.getAsignacionesDeLaRuta(rutas.get(ruta)).asignacionesDeHoy();
         else
             return asignaciones;
     }
     
     @RequestMapping(value = "ultimo-recorrido")
     @ResponseBody
-    public Ubicaciones ultimoRecorrido(@RequestParam(value = "placa") String placa, @RequestParam(value = "ruta", required = true) int ruta)
+    public Ubicaciones ultimoRecorrido(@RequestParam(value = "asignacion", required = true) int idAsignacion)
     {
-        return ubicaciones.getUltimoRecorrido(vehiculos.get(placa), rutas.get(ruta));
+        return ubicaciones.getUltimoRecorrido(asignaciones.get(idAsignacion));
     }
 }

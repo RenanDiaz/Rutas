@@ -120,7 +120,7 @@ public class Asignaciones
         return asignacionesDeLaRuta;
     }
 
-    public Asignaciones getAsignacionesDeHoy()
+    public Asignaciones asignacionesDeHoy()
     {
         Asignaciones asignacionesDeHoy = new Asignaciones();
         for(final Asignacion asignacion : asignaciones)
