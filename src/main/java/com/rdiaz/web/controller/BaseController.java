@@ -22,7 +22,7 @@ public class BaseController
     static Marcas marcas = new Marcas();
     static Vehiculos vehiculos = new Vehiculos(marcas);
     static Asignaciones asignaciones = new Asignaciones(vehiculos, rutas);
-    static Ubicaciones ubicaciones = new Ubicaciones(asignaciones, vehiculos, rutas);
+    static Ubicaciones ubicaciones = new Ubicaciones(asignaciones);
     static Contadores contadores = new Contadores();
     
     @Autowired

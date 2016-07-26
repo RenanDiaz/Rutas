@@ -17,7 +17,7 @@ public class Ubicaciones
     @JsonProperty("ubicaciones")
     ArrayList<Ubicacion> ubicaciones = new ArrayList<>();
     
-    public Ubicaciones(Asignaciones asignaciones, Vehiculos vehiculos, Rutas rutas)
+    public Ubicaciones(Asignaciones asignaciones)
     {
         try
         {

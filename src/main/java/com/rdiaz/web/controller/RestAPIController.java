@@ -63,7 +63,7 @@ public class RestAPIController extends BaseController
     @ResponseBody
     public Ubicaciones ubicacionesDe(@RequestParam(value = "placa", required = true) String placa, @RequestParam(value = "inicio", defaultValue = "1") int inicio, @RequestParam(value = "fin", defaultValue = "0") int fin)
     {
-        if(fin == 0)
+        if (fin == 0)
         {
             fin = ubicaciones.size();
         }
@@ -100,12 +100,19 @@ public class RestAPIController extends BaseController
     
     @RequestMapping(value = "asignaciones")
     @ResponseBody
-    public Asignaciones asignaciones(@RequestParam(value = "ruta", defaultValue = "0") int ruta)
+    public Asignaciones asignaciones()
+    {
+        return asignaciones;
+    }
+    
+    @RequestMapping(value = "asignaciones/hoy")
+    @ResponseBody
+    public Asignaciones asignacionesDeHoy(@RequestParam(value = "ruta", defaultValue = "0") int ruta)
     {
         if(ruta > 0)
             return asignaciones.getAsignacionesDeLaRuta(rutas.get(ruta)).asignacionesDeHoy();
         else
-            return asignaciones;
+            return asignaciones.asignacionesDeHoy();
     }
     
     @RequestMapping(value = "ultimo-recorrido")
