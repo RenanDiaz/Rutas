@@ -47,8 +47,8 @@
             <tr class="link" id="${asignacion.getId()}" title="${asignacion.getId()}">
               <td>${asignacion.getVehiculo().getNombreCorto()}</td>
               <td>${asignacion.getRuta().getDescripcion()}</td>
-              <td>${asignacion.getFechaDePartida()} ${asignacion.getHoraDePartida()}</td>
-              <td>${asignacion.getFechaDeLlegada()} ${asignacion.getHoraDeLlegada()}</td>
+              <td>${asignacion.getFechaDePartida()}${asignacion.getHoraDePartida()}</td>
+              <td>${asignacion.getFechaDeLlegada()}${asignacion.getHoraDeLlegada()}</td>
             </tr>
           </c:forEach>
         </c:if>
@@ -56,7 +56,7 @@
     </table>
   </div>
   <div class="row">
-    <div class="col-xs-12 col-sm-2">
+    <div class="col-xs-6 col-sm-2">
       <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpAgregar">
         Agregar <span class="glyphicon glyphicon-plus-sign"></span>
       </button>
@@ -150,7 +150,7 @@ $("#agregar").click(function() {
   });
 });
 
-$('.modal').on('hidden.bs.modal', function () {
+$('.modal').on('shown.bs.modal', function () {
   resetearFechasHoras();
   $(".modal select option:first").prop("selected", true);
 })

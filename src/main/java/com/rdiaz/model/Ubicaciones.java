@@ -213,6 +213,26 @@ public class Ubicaciones
         return distanciaTotal;
     }
     
+    public double calcularDistanciaTotal()
+    {
+        double distanciaTotal = 0;
+        double tiempoAcumulado = 0;
+        for(int i = 0; i < ubicaciones.size() - 1; i++)
+        {
+            Ubicacion origen = ubicaciones.get(i);
+            Ubicacion destino = ubicaciones.get(i + 1);
+            double distancia = distanciaEntre(origen, destino);
+            distanciaTotal += distancia;
+            double tiempo = destino.getFechahora().getTime() - origen.getFechahora().getTime();
+            tiempoAcumulado += tiempo;
+            double velocidad = (distancia / 1000) / (tiempo / 1000 / 60 / 60);
+            System.out.printf("%d. %6.2fm\t%.2fms\t%6.2fkm/h\t%.2fm\t%.2fmin%n", destino.getId(), distancia, tiempo, velocidad, distanciaTotal, tiempoAcumulado / 1000 / 60);
+        }
+        
+        System.out.printf("Promedios: %6.2fm\t%.2fs\t%6.2fkm/h%n", distanciaTotal / ubicaciones.size(), tiempoAcumulado / 1000 / ubicaciones.size(), (distanciaTotal / 1000) / (tiempoAcumulado / 1000 / 60 / 60));
+        return distanciaTotal;
+    }
+    
     public double distanciaEntre(Ubicacion origen, Ubicacion destino)
     {
         double lat1 = Double.valueOf(origen.getLatitud());

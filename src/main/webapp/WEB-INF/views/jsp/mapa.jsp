@@ -5,7 +5,12 @@
   <head>
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
     <meta charset="utf-8">
-    <title>Rutas - Mapa de ${vehiculo.getNombreCorto()}</title>
+    <c:if test="${empty asignacion}">
+      <title>Rutas - Mapa de ${vehiculo.getNombreCorto()}</title>
+    </c:if>
+    <c:if test="${not empty asignacion}">
+      <title>Rutas - Mapa de ${asignacion.getDescripcion()}</title>
+    </c:if>
     <style>
       html, body {
         height: 100%;
@@ -30,12 +35,18 @@
     var vehiculo;
 
     function initMap() {
+      var url;
+      if("${empty asignacion}" == "true") {
+      	url = "${pageContext.request.contextPath}/rest/ubicaciones?placa=${vehiculo.getPlaca()}&inicio=${inicio}&fin=${fin}";
+      } else {
+    	url = "${pageContext.request.contextPath}/rest/recorrido?asignacion=${asignacion.getId()}";
+      }
       $.ajax({
-          url: "${pageContext.request.contextPath}/rest/ubicaciones?placa=${vehiculo.getPlaca()}&inicio=${inicio}&fin=${fin}",
+          url: url,
           method: "GET",
           success: function(data) {
           if(data.hasOwnProperty("ubicaciones")) {
-            vehiculo = data.ubicaciones[0].vehiculo;
+            vehiculo = data.ubicaciones[0].asignacion.vehiculo;
             $.each(data.ubicaciones, function(key, value) {
               var lat = Number(value.latitud);
               var lng = Number(value.longitud);

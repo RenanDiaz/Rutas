@@ -10,6 +10,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping(value = "/mapa")
 public class MapaController extends BaseController
 {
+    @RequestMapping(value = "asignacion/{idAsignacion}")
+    public String asignacionMapaView(ModelMap model, @PathVariable int idAsignacion)
+    {
+        model.addAttribute("asignacion", asignaciones.get(idAsignacion));
+        return "mapa";
+    }
+    
     @RequestMapping(value = "ruta/{placa}")
     public String rutaMapaView(ModelMap model, @PathVariable String placa, @RequestParam(value = "inicio", defaultValue = "1") int inicio, @RequestParam(value = "fin", defaultValue = "0") int fin)
     {

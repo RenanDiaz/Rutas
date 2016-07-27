@@ -31,6 +31,13 @@ public class AsignacionesController extends BaseController
         return asignacion;
     }
     
+    @RequestMapping(value = "calcular", method = RequestMethod.POST)
+    @ResponseBody
+    public String calcularDistancias(@RequestParam(value = "asignacion", required = true) int idAsignacion)
+    {
+        return String.valueOf(ubicaciones.getUbicacionesDeLaAsignacion(asignaciones.get(idAsignacion)).calcularDistanciaTotal());
+    }
+    
     @RequestMapping
     public String asignacionesView(ModelMap model)
     {

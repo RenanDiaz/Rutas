@@ -72,7 +72,33 @@
         <a href="${pageContext.request.contextPath}/asignacion/${asignacion.getId() + 1}" class="btn btn-info" ${asignacion.getId() < total ? "" : "disabled"}><span class="glyphicon glyphicon-menu-right"></span></a>
       </h2>
     </div>
-    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeEditar">Editar <span class="glyphicon glyphicon-edit"></span></button>
+    <div class="row">
+      <div class="col-xs-6 col-sm-2">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeEditar">
+          Editar <span class="glyphicon glyphicon-edit"></span>
+        </button>
+      </div>
+      <div class="col-xs-6 col-sm-2">
+        <button type="button" class="btn btn-info btn-lg" id="calcular">
+          Distancia <span class="glyphicon glyphicon-road"></span>
+        </button>
+      </div>
+      <div class="col-xs-6 col-sm-2">
+        <button type="button" class="btn btn-info btn-lg" id="verMapa">
+          Ver mapa <span class="glyphicon glyphicon-map-marker"></span>
+        </button>
+      </div>
+    </div>
+    <br> <br>
+    <div class="row" id="iframe-row" style="display: none;">
+      <div class="col-xs-12">
+        <iframe id="iframe-mapa" style="width: 100%; height: 300px;"></iframe>
+      </div>
+      <br>
+      <div class="col-xs-12">
+        <a href="#" target="_blank" id="link-mapa">Abrir en una ventana aparte</a>
+      </div>
+    </div>
   </div>
 </c:if>
 
@@ -162,6 +188,26 @@ $("#guardar").click(function() {
     },
     success: function() {
       location.reload();
+    }
+  });
+});
+
+$("#verMapa").click(function() {
+  var ruta = "${pageContext.request.contextPath}/mapa/asignacion/${asignacion.getId()}";
+  $("#iframe-mapa").attr("src", ruta);
+  $("#link-mapa").attr("href", ruta);
+  $("#iframe-row").show();
+});
+
+$("#calcular").click(function() {
+  $.ajax({
+    url: "${pageContext.request.contextPath}/asignacion/calcular",
+    method: "POST",
+    data: {
+      asignacion: "${asignacion.getId()}"
+    },
+    success: function(data) {
+      alert("Distancia recorrida: " + data + "m");
     }
   });
 });

@@ -121,4 +121,11 @@ public class RestAPIController extends BaseController
     {
         return ubicaciones.getUltimoRecorrido(asignaciones.get(idAsignacion));
     }
+    
+    @RequestMapping(value = "recorrido")
+    @ResponseBody
+    public Ubicaciones recorrido(@RequestParam(value = "asignacion", required = true) int idAsignacion)
+    {
+        return ubicaciones.getUbicacionesDeLaAsignacion(asignaciones.get(idAsignacion));
+    }
 }
