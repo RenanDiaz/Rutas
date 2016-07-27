@@ -1,5 +1,7 @@
 package com.rdiaz.web.controller;
 
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.rdiaz.model.Asignacion;
+import com.rdiaz.model.Movimiento;
+import com.rdiaz.model.Ubicacion;
 
 @Controller
 @RequestMapping(value = "/asignacion")
@@ -50,7 +54,23 @@ public class AsignacionesController extends BaseController
     @RequestMapping(value = "{id}")
     public String asignacionView(ModelMap model, @PathVariable int id)
     {
-        model.addAttribute("asignacion", asignaciones.get(id));
+        Asignacion asignacion = asignaciones.get(id);
+        ArrayList<Movimiento> movimientos = new ArrayList<>();
+        double distanciaTotal = 0, tiempoTotal = 0, sumaVelocidad = 0;
+        ArrayList<Ubicacion> ubicacionesDeLaAsignacion = ubicaciones.getUbicacionesDeLaAsignacion(asignacion).getUbicaciones();
+        for(int i = 0; i < ubicacionesDeLaAsignacion.size() - 1; i++)
+        {
+            Movimiento movimiento = new Movimiento(ubicacionesDeLaAsignacion.get(i), ubicacionesDeLaAsignacion.get(i + 1));
+            movimientos.add(movimiento);
+            distanciaTotal += movimiento.getDistanciaLinealEnMetros();
+            tiempoTotal += movimiento.getDiferenciaDeTiempoEnMilisegundos();
+            sumaVelocidad += movimiento.getVelocidad();
+        }
+        model.addAttribute("distanciaTotal", String.format("%.0f", distanciaTotal));
+        model.addAttribute("tiempoTotal", String.format("%.0f", tiempoTotal / 1000));
+        model.addAttribute("velocidadPromedio", String.format("%.0f", sumaVelocidad / movimientos.size()));
+        model.addAttribute("movimientos", movimientos);
+        model.addAttribute("asignacion", asignacion);
         model.addAttribute("vehiculos", vehiculos.getVehiculos());
         model.addAttribute("rutas", rutas.getRutas());
         model.addAttribute("total", asignaciones.size());

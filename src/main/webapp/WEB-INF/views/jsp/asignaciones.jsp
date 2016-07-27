@@ -5,12 +5,21 @@
 <head>
 <title>Rutas - Ubicaciones</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+<spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
 <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
+<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
 <spring:url value="/resources/core/css/common.css" var="commonCss" />
+<spring:url value="/resources/core/js/common.js" var="commonJs" />
 <spring:url value="/resources/core/DataTables/datatables.min.css" var="datatablesCss" />
+<spring:url value="/resources/core/DataTables/datatables.min.js" var="datatablesJs" />
+
+<script src="${jquery}"></script>
 <link href="${bootstrapCss}" rel="stylesheet" />
+<script src="${bootstrapJs}"></script>
 <link href="${commonCss}" rel="stylesheet" />
+<script src="${commonJs}"></script>
 <link href="${datatablesCss}" rel="stylesheet" />
+<script src="${datatablesJs}"></script>
 </head>
 
 <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -112,15 +121,6 @@
     <p>&copy; Ren&aacute;n D&iacute;az Reyes 2016</p>
   </footer>
 </div>
-<spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
-<spring:url value="/resources/core/js/common.js" var="coreJs" />
-<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
-<spring:url value="/resources/core/DataTables/datatables.min.js" var="datatablesJs" />
-
-<script src="${jquery}"></script>
-<script src="${coreJs}"></script>
-<script src="${bootstrapJs}"></script>
-<script src="${datatablesJs}"></script>
 <script type="text/javascript">
 resetearFechasHoras();
 

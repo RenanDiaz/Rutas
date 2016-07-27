@@ -5,10 +5,21 @@
 <head>
 <title>Rutas - Asignaci&oacute;n</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+<spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
 <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
+<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
 <spring:url value="/resources/core/css/common.css" var="commonCss" />
+<spring:url value="/resources/core/js/common.js" var="commonJs" />
+<spring:url value="/resources/core/DataTables/datatables.min.css" var="datatablesCss" />
+<spring:url value="/resources/core/DataTables/datatables.min.js" var="datatablesJs" />
+
+<script src="${jquery}"></script>
 <link href="${bootstrapCss}" rel="stylesheet" />
+<script src="${bootstrapJs}"></script>
 <link href="${commonCss}" rel="stylesheet" />
+<script src="${commonJs}"></script>
+<link href="${datatablesCss}" rel="stylesheet" />
+<script src="${datatablesJs}"></script>
 <style type="text/css">
 .hidden {
   display: none;
@@ -40,37 +51,72 @@
 <br>
 <c:if test="${not empty asignacion}">
   <div class="container">
-    <div class="col-sm-1">
-      <h2>
-        <a href="${pageContext.request.contextPath}/asignacion/${asignacion.getId() - 1}" class="btn btn-info" ${asignacion.getId() > 1 ? "" : "disabled"}><span class="glyphicon glyphicon-menu-left"></span></a>
-      </h2>
+    <div class="row">
+      <div class="col-sm-1">
+        <h2>
+          <a href="${pageContext.request.contextPath}/asignacion/${asignacion.getId() - 1}" class="btn btn-info" ${asignacion.getId() > 1 ? "" : "disabled"}><span class="glyphicon glyphicon-menu-left"></span></a>
+        </h2>
+      </div>
+      <div class="table-responsive col-sm-10">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Vehiculo</th>
+              <th>Ruta</th>
+              <th>Partida</th>
+              <th>Llegada</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>${asignacion.getId()}</td>
+              <td>${asignacion.getVehiculo().getNombreCorto()}</td>
+              <td>${asignacion.getRuta().getDescripcion()}</td>
+              <td>${asignacion.getFechaDePartida()}${asignacion.getHoraDePartida()}</td>
+              <td>${asignacion.getFechaDeLlegada()}${asignacion.getHoraDeLlegada()}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="col-sm-1">
+        <h2>
+          <a href="${pageContext.request.contextPath}/asignacion/${asignacion.getId() + 1}" class="btn btn-info" ${asignacion.getId() < total ? "" : "disabled"}><span class="glyphicon glyphicon-menu-right"></span></a>
+        </h2>
+      </div>
     </div>
-    <div class="table-responsive col-sm-10">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Vehiculo</th>
-            <th>Ruta</th>
-            <th>Partida</th>
-            <th>Llegada</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>${asignacion.getId()}</td>
-            <td>${asignacion.getVehiculo().getNombreCorto()}</td>
-            <td>${asignacion.getRuta().getDescripcion()}</td>
-            <td>${asignacion.getFechaDePartida()} ${asignacion.getHoraDePartida()}</td>
-            <td>${asignacion.getFechaDeLlegada()} ${asignacion.getHoraDeLlegada()}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="col-sm-1">
-      <h2>
-        <a href="${pageContext.request.contextPath}/asignacion/${asignacion.getId() + 1}" class="btn btn-info" ${asignacion.getId() < total ? "" : "disabled"}><span class="glyphicon glyphicon-menu-right"></span></a>
-      </h2>
+    <hr>
+    <div class="row">
+      <div class="table-responsive">
+        <table id="movimientos" class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Distancia (m)</th>
+              <th>Tiempo (s)</th>
+              <th>Velocidad (km/h)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <c:forEach items="${movimientos}" var="movimiento" varStatus="loop">
+              <tr>
+                <td>${loop.index + 1}</td>
+                <td>${movimiento.getDistanciaLinealEnMetros()}</td>
+                <td>${movimiento.getDiferenciaDeTiempoEnMilisegundos() / 1000}</td>
+                <td>${movimiento.getVelocidad()}</td>
+              </tr>
+            </c:forEach>
+          </tbody>
+          <tfoot>
+            <tr>
+              <th></th>
+              <th>${distanciaTotal}</th>
+              <th>${tiempoTotal}</th>
+              <th>${velocidadPromedio}</th>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
     <div class="row">
       <div class="col-xs-6 col-sm-2">
@@ -161,14 +207,9 @@
   </footer>
 </div>
 
-<spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
-<spring:url value="/resources/core/js/common.js" var="coreJs" />
-<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
-
-<script src="${jquery}"></script>
-<script src="${coreJs}"></script>
-<script src="${bootstrapJs}"></script>
 <script type="text/javascript">
+$("#movimientos").DataTable();
+
 $("#guardar").click(function() {
   var fechahoraDePartida = getFechahora($("#horaDePartida").val());
   var fechahoraDeLlegada = getFechahora($("#horaDeLlegada").val());

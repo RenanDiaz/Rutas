@@ -2,7 +2,7 @@
   cursor: pointer;
 }
 
-th {
+thead tr th {
   text-align: center;
 }
 
