@@ -14,6 +14,7 @@ public abstract class Vehiculo
     
     public Vehiculo(String placa, Marca marca, String modelo, int anno, TipoDeVehiculo tipo)
     {
+        super();
         setPlaca(placa);
         setMarca(marca);
         setModelo(modelo);

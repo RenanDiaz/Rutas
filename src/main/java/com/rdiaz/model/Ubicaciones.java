@@ -19,6 +19,7 @@ public class Ubicaciones
     
     public Ubicaciones(Asignaciones asignaciones)
     {
+        super();
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
@@ -31,7 +32,8 @@ public class Ubicaciones
                 Asignacion asignacion = asignaciones.get(rs.getInt(3));
                 String latitud = rs.getString(4);
                 String longitud = rs.getString(5);
-                ubicaciones.add(new Ubicacion(id, fechahora, asignacion, latitud, longitud));
+                String altitud = rs.getString(6);
+                ubicaciones.add(new Ubicacion(id, fechahora, asignacion, latitud, longitud, altitud));
             }
             conexion.close();
         } catch (Exception e)
@@ -42,7 +44,7 @@ public class Ubicaciones
     
     private Ubicaciones()
     {
-        
+        super();
     }
     
     public void add(Ubicacion ubicacion)
@@ -239,8 +241,8 @@ public class Ubicaciones
         double lat2 = Double.valueOf(destino.getLatitud());
         double lon1 = Double.valueOf(origen.getLongitud());
         double lon2 = Double.valueOf(destino.getLongitud());
-        double el1 = 0;
-        double el2 = 0;
+        double el1 = Double.valueOf(origen.getAltitud());
+        double el2 = Double.valueOf(destino.getAltitud());
         final int R = 6371; // Radius of the earth
 
         Double latDistance = Math.toRadians(lat2 - lat1);

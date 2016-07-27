@@ -13,6 +13,7 @@ public class Ruta
     
     public Ruta(String origen, String destino)
     {
+        super();
         setOrigen(origen);
         setDestino(destino);
         try
@@ -38,6 +39,7 @@ public class Ruta
     
     public Ruta(int id, String origen, String destino)
     {
+        super();
         setId(id);
         setOrigen(origen);
         setDestino(destino);
@@ -45,7 +47,7 @@ public class Ruta
     
     public Ruta()
     {
-        
+        super();
     }
     
     public int getId()

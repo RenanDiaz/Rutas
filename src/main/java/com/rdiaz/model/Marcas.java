@@ -16,6 +16,7 @@ public class Marcas
     
     public Marcas()
     {
+        super();
         try
         {
             Class.forName("com.mysql.jdbc.Driver");

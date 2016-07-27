@@ -40,6 +40,7 @@
               <th>Asignaci&oacute;n</th>
               <th>Latitud</th>
               <th>Longitud</th>
+              <th>Altitud</th>
             </tr>
           </thead>
           <tbody>
@@ -49,6 +50,7 @@
                 <td>${ubicacion.getAsignacion().getDescripcion()}</td>
                 <td>${ubicacion.getLatitud()}</td>
                 <td>${ubicacion.getLongitud()}</td>
+                <td>${ubicacion.getAltitud()}</td>
               </tr>
             </c:forEach>
           </tbody>
@@ -101,26 +103,22 @@
           <h4 class="modal-title">Agregar ubicaci&oacute;n</h4>
         </div>
         <div class="modal-body">
-          <c:if test="${not empty vehiculos}">
-            <div class="form-group">
-              <label>Veh&iacute;culo</label> <select name="placa" id="placa" class="form-control" autofocus>
-                <c:forEach items="${vehiculos}" var="vehiculo">
-                  <option value="${vehiculo.getPlaca()}">${vehiculo.getNombreCorto()}</option>
-                </c:forEach>
-              </select>
-            </div>
-            <div class="form-group">
-              <label>Ruta</label> <select name="ruta" id="ruta" class="form-control">
-                <c:forEach items="${rutas}" var="ruta">
-                  <option value="${ruta.getId()}">${ruta.getDescripcion()}</option>
-                </c:forEach>
-              </select>
-            </div>
+        <c:if test="${not empty asignaciones}">
+          <div class="form-group">
+            <label>Asignacion</label> <select name="asignacion" id="asignacion" class="form-control">
+              <c:forEach items="${asignaciones}" var="asignacion">
+                <option value="${asignacion.getId()}">${asignacion.getDescripcion()}</option>
+              </c:forEach>
+            </select>
+          </div>
             <div class="form-group">
               <label>Latitud</label> <input id="latitud" class="form-control" type="text" required>
             </div>
             <div class="form-group">
               <label>Longitud</label> <input id="longitud" class="form-control" type="text" required>
+            </div>
+            <div class="form-group">
+              <label>Altitud</label> <input id="altitud" class="form-control" type="text" required>
             </div>
           </c:if>
         </div>
@@ -252,13 +250,14 @@ $("#agregar").click(function() {
   var d = new Date();
   var fecha = d.getTime();
   $.ajax({
-    url: "${pageContext.request.contextPath}/ubicacion/agregar/" + $("#placa").val(),
+    url: "${pageContext.request.contextPath}/ubicacion/agregar",
     method: "POST",
     data: {
       fecha: fecha,
-      ruta: $("#ruta").val(),
+      asignacion: $("#asignacion").val(),
       latitud: $("#latitud").val(),
-      longitud: $("#longitud").val()
+      longitud: $("#longitud").val(),
+      altitud: $("#altitud").val()
     },
     success: function() {
       location.reload();

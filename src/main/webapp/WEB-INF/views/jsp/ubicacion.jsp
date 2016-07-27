@@ -25,10 +25,10 @@
   <h2>
     <a href="${pageContext.request.contextPath}/ubicacion" class="btn btn-info"> <span class="glyphicon glyphicon-triangle-left"></span>
     </a>
-    <c:if test="${not empty ubicacion.getVehiculo()}">
-      ${ubicacion.getId()} - ${ubicacion.getVehiculo().getNombreCorto()}
+    <c:if test="${not empty ubicacion.getAsignacion().getVehiculo()}">
+      ${ubicacion.getId()} - ${ubicacion.getAsignacion().getVehiculo().getNombreCorto()}
     </c:if>
-    <c:if test="${empty ubicacion.getVehiculo()}">
+    <c:if test="${empty ubicacion.getAsignacion().getVehiculo()}">
       No encontrado
     </c:if>
   </h2>
@@ -49,17 +49,19 @@
           <thead>
             <tr>
               <th>Fecha y hora</th>
-              <th>Ruta</th>
+              <th>Asignaci&oacute;n</th>
               <th>Latitud</th>
               <th>Longitud</th>
+              <th>Altitud</th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>${ubicacion.getFechahora()}</td>
-              <td>${ubicacion.getRuta().getDescripcion()}</td>
+              <td>${ubicacion.getAsignacion().getDescripcion()}</td>
               <td>${ubicacion.getLatitud()}</td>
               <td>${ubicacion.getLongitud()}</td>
+              <td>${ubicacion.getAltitud()}</td>
             </tr>
           </tbody>
         </table>
@@ -117,36 +119,22 @@
         <h4 class="modal-title">Editar ubicaci&oacute;n</h4>
       </div>
       <div class="modal-body" id="mensaje">
-        <c:if test="${not empty vehiculos}">
+        <c:if test="${not empty asignaciones}">
           <div class="form-group">
-            <label>Veh&iacute;culo</label> <select name="placa" id="placa" class="form-control">
-              <c:forEach items="${vehiculos}" var="vehiculo">
-                <c:if test="${vehiculo.getPlaca() == ubicacion.getVehiculo().getPlaca()}">
-                  <option value="${vehiculo.getPlaca()}" selected>${vehiculo.getNombreCorto()}</option>
-                </c:if>
-                <c:if test="${vehiculo.getPlaca() != ubicacion.getVehiculo().getPlaca()}">
-                  <option value="${vehiculo.getPlaca()}">${vehiculo.getNombreCorto()}</option>
-                </c:if>
+            <label>Asignacion</label> <select name="asignacion" id="asignacion" class="form-control">
+              <c:forEach items="${asignaciones}" var="asignacion">
+                <option value="${asignacion.getId()}" ${asignacion.getId() == ubicacion.getAsignacion().getId() ? "selected" : ""}>${asignacion.getDescripcion()}</option>
               </c:forEach>
             </select>
           </div>
           <div class="form-group">
-            <label>Ruta</label> <select name="ruta" id="ruta" class="form-control">
-              <c:forEach items="${rutas}" var="ruta">
-                <c:if test="${ruta.getId() == ubicacion.getRuta().getId()}">
-                  <option value="${ruta.getId()}" selected>${ruta.getDescripcion()}</option>
-                </c:if>
-                <c:if test="${ruta.getId() != ubicacion.getRuta().getId()}">
-                  <option value="${ruta.getId()}">${ruta.getDescripcion()}</option>
-                </c:if>
-              </c:forEach>
-            </select>
+            <label>Latitud</label> <input id="latitud" class="form-control" type="text" required value="${ubicacion.getLatitud()}">
           </div>
           <div class="form-group">
-            <label>Latitud</label> <input name="latitud" id="latitud" class="form-control" type="text" required value="${ubicacion.getLatitud()}">
+            <label>Longitud</label> <input id="longitud" class="form-control" type="text" required value="${ubicacion.getLongitud()}">
           </div>
           <div class="form-group">
-            <label>Longitud</label> <input name="longitud" id="longitud" class="form-control" type="text" required value="${ubicacion.getLongitud()}">
+            <label>Altitud</label> <input id="altitud" class="form-control" type="text" required value="${ubicacion.getAltitud()}">
           </div>
         </c:if>
       </div>
@@ -175,13 +163,14 @@
 <script type="text/javascript">
 $("#guardar").click(function() {
   $.ajax({
-    url: "${pageContext.request.contextPath}/ubicacion/editar/" + $("#placa").val(),
+    url: "${pageContext.request.contextPath}/ubicacion/editar",
     method: "POST",
     data: {
       id: "${ubicacion.getId()}",
-      ruta: $("#ruta").val(),
+      asignacion: $("#asignacion").val(),
       latitud: $("#latitud").val(),
-      longitud: $("#longitud").val()
+      longitud: $("#longitud").val(),
+      altitud: $("#altitud").val()
     },
     success: function() {
       location.reload();

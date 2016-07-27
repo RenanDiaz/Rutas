@@ -19,6 +19,7 @@ public class Asignaciones
     
     public Asignaciones(Vehiculos vehiculos, Rutas rutas)
     {
+        super();
         try
         {
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");
@@ -42,7 +43,7 @@ public class Asignaciones
     
     public Asignaciones()
     {
-        
+        super();
     }
     
     public void add(Asignacion asignacion)

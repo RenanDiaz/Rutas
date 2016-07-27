@@ -16,6 +16,7 @@ public class Rutas
     
     public Rutas()
     {
+        super();
         try
         {
             Class.forName("com.mysql.jdbc.Driver");
@@ -39,6 +40,7 @@ public class Rutas
     
     public Rutas(String busqueda)
     {
+        super();
         busqueda = "%" + busqueda + "%";
         try
         {

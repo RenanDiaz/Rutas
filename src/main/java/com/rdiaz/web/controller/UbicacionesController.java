@@ -28,25 +28,25 @@ public class UbicacionesController extends BaseController
     
     @RequestMapping(value = "agregar", method = RequestMethod.POST)
     @ResponseBody
-    public Ubicacion agregarUbicacion(@RequestParam(value = "fecha", required = true) long fecha, @RequestParam(value = "asignacion", required = true) int idAsignacion, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
+    public Ubicacion agregarUbicacion(@RequestParam(value = "fecha", required = true) long fecha, @RequestParam(value = "asignacion", required = true) int idAsignacion, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud, @RequestParam(value = "altitud", required = true) String altitud)
     {
         Asignacion asignacion = asignaciones.get(idAsignacion);
         Vehiculo vehiculo = asignacion.getVehiculo();
         Ruta ruta = asignacion.getRuta();
-        Ubicacion ubicacion = new Ubicacion(fecha, asignacion, latitud, longitud);
+        Ubicacion ubicacion = new Ubicacion(fecha, asignacion, latitud, longitud, altitud);
         ubicaciones.add(ubicacion);
         template.convertAndSend("/topic/ubicaciones", ubicacion);
-        System.out.println(String.format("Nueva ubicacion: %s\t%s\t%s\t%s\t%s", new Date(fecha), ruta.getDescripcion(), vehiculo.getNombreCorto(), latitud, longitud));
+        System.out.println(String.format("Nueva ubicacion: %s\t%s\t%s\t%s\t%s\t%s", new Date(fecha), ruta.getDescripcion(), vehiculo.getNombreCorto(), latitud, longitud, altitud));
         return ubicacion;
     }
     
     @RequestMapping(value = "editar", method = RequestMethod.POST)
     @ResponseBody
-    public Ubicacion editarUbicacion(@RequestParam(value = "id", required = true) int id, @RequestParam(value = "asignacion", required = true) int idAsignacion, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud)
+    public Ubicacion editarUbicacion(@RequestParam(value = "id", required = true) int id, @RequestParam(value = "asignacion", required = true) int idAsignacion, @RequestParam(value = "latitud", required = true) String latitud, @RequestParam(value = "longitud", required = true) String longitud, @RequestParam(value = "altitud", required = true) String altitud)
     {
         Ubicacion ubicacion = ubicaciones.get(id);
         Asignacion asignacion = asignaciones.get(idAsignacion);
-        ubicacion.editar(asignacion, latitud, longitud);
+        ubicacion.editar(asignacion, latitud, longitud, altitud);
         return ubicacion;
     }
     
@@ -68,8 +68,8 @@ public class UbicacionesController extends BaseController
     public String ubicacionesView(ModelMap model)
     {
         model.addAttribute("ubicaciones", ubicaciones.getUbicaciones());
+        model.addAttribute("asignaciones", asignaciones.getAsignaciones());
         model.addAttribute("vehiculos", vehiculos.getVehiculos());
-        model.addAttribute("rutas", rutas.getRutas());
         model.addAttribute("total", ubicaciones.size());
         return "ubicaciones";
     }
@@ -78,8 +78,7 @@ public class UbicacionesController extends BaseController
     public String ubicacionView(ModelMap model, @PathVariable("id") int id)
     {
         model.addAttribute("ubicacion", ubicaciones.get(id));
-        model.addAttribute("vehiculos", vehiculos.getVehiculos());
-        model.addAttribute("rutas", rutas.getRutas());
+        model.addAttribute("asignaciones", asignaciones.getAsignaciones());
         model.addAttribute("total", ubicaciones.size());
         return "ubicacion";
     }

@@ -14,6 +14,7 @@ public class Vehiculos
     
     public Vehiculos(Marcas marcas)
     {
+        super();
         try
         {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/rutas", "root", "");

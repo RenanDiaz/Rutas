@@ -17,6 +17,7 @@ public class Asignacion
     
     public Asignacion(Vehiculo vehiculo, Ruta ruta, long partida, long llegada)
     {
+        super();
         Timestamp fechahoraDePartida = new Timestamp(partida);
         Timestamp fechahoraDeLlegada = new Timestamp(llegada);
         setVehiculo(vehiculo);
@@ -48,6 +49,7 @@ public class Asignacion
     
     public Asignacion(int id, Vehiculo vehiculo, Ruta ruta, Timestamp fechahoraDePartida, Timestamp fechahoraDeLlegada)
     {
+        super();
         setId(id);
         setVehiculo(vehiculo);
         setRuta(ruta);

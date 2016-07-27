@@ -13,6 +13,7 @@ public class Marca
     
     public Marca(String nombre)
     {
+        super();
         setNombre(nombre);
         try
         {
@@ -37,6 +38,7 @@ public class Marca
     
     Marca(int id, String nombre)
     {
+        super();
         setId(id);
         setNombre(nombre);
     }
