@@ -1,5 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -73,8 +74,8 @@
               <td>${asignacion.getId()}</td>
               <td>${asignacion.getVehiculo().getNombreCorto()}</td>
               <td>${asignacion.getRuta().getDescripcion()}</td>
-              <td>${asignacion.getFechaDePartida()} ${asignacion.getHoraDePartida()}</td>
-              <td>${asignacion.getFechaDeLlegada()} ${asignacion.getHoraDeLlegada()}</td>
+              <td><fmt:formatDate value="${asignacion.getFechahoraDePartida()}" pattern="yyyy-MM-dd HH:mm"/></td>
+              <td><fmt:formatDate value="${asignacion.getFechahoraDeLlegada()}" pattern="yyyy-MM-dd HH:mm"/></td>
             </tr>
           </tbody>
         </table>
@@ -99,20 +100,20 @@
           </thead>
           <tbody>
             <c:forEach items="${movimientos}" var="movimiento" varStatus="loop">
-              <tr>
-                <td>${loop.index + 1}</td>
-                <td>${movimiento.getDistanciaLinealEnMetros()}</td>
-                <td>${movimiento.getDiferenciaDeTiempoEnMilisegundos() / 1000}</td>
-                <td>${movimiento.getVelocidad()}</td>
+              <tr class="text-right">
+                <td class="text-center">${loop.index + 1}</td>
+                <td><fmt:formatNumber value="${movimiento.getDistanciaLinealEnMetros()}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td><fmt:formatNumber value="${movimiento.getDiferenciaDeTiempoEnMilisegundos() / 1000}" maxFractionDigits="2" minFractionDigits="2"/></td>
+                <td><fmt:formatNumber value="${movimiento.getVelocidad()}" maxFractionDigits="2" minFractionDigits="2"/></td>
               </tr>
             </c:forEach>
           </tbody>
           <tfoot>
             <tr>
               <th></th>
-              <th>${distanciaTotal}</th>
-              <th>${tiempoTotal}</th>
-              <th>${velocidadPromedio}</th>
+              <th class="text-right"><fmt:formatNumber value="${distanciaTotal}" maxFractionDigits="2" minFractionDigits="2"/></th>
+              <th class="text-right"><fmt:formatNumber value="${tiempoTotal}" maxFractionDigits="2" minFractionDigits="2"/></th>
+              <th class="text-right"><fmt:formatNumber value="${velocidadPromedio}" maxFractionDigits="2" minFractionDigits="2"/></th>
             </tr>
           </tfoot>
         </table>
@@ -160,24 +161,14 @@
           <div class="form-group">
             <label>Veh&iacute;culo</label> <select name="placa" id="placa" class="form-control" autofocus>
               <c:forEach items="${vehiculos}" var="vehiculo">
-                <c:if test="${vehiculo.getPlaca() == asignacion.getVehiculo().getPlaca()}">
-                  <option value="${vehiculo.getPlaca()}" selected>${vehiculo.getNombreCorto()}</option>
-                </c:if>
-                <c:if test="${vehiculo.getPlaca() != asignacion.getVehiculo().getPlaca()}">
-                  <option value="${vehiculo.getPlaca()}">${vehiculo.getNombreCorto()}</option>
-                </c:if>
+                <option value="${vehiculo.getPlaca()}" ${vehiculo.getPlaca() == asignacion.getVehiculo().getPlaca() ? "selected" : ""}>${vehiculo.getNombreCorto()}</option>
               </c:forEach>
             </select>
           </div>
           <div class="form-group">
             <label>Ruta</label> <select name="ruta" id="ruta" class="form-control">
               <c:forEach items="${rutas}" var="ruta">
-                <c:if test="${ruta.getId() == asignacion.getRuta().getId()}">
-                  <option value="${ruta.getId()}" selected>${ruta.getDescripcion()}</option>
-                </c:if>
-                <c:if test="${ruta.getId() != asignacion.getRuta().getId()}">
-                  <option value="${ruta.getId()}">${ruta.getDescripcion()}</option>
-                </c:if>
+                <option value="${ruta.getId()}" ${ruta.getId() == asignacion.getRuta().getId() ? "selected" : ""}>${ruta.getDescripcion()}</option>
               </c:forEach>
             </select>
           </div>

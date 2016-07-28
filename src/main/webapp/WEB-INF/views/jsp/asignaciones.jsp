@@ -1,5 +1,6 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -56,8 +57,8 @@
             <tr class="link" id="${asignacion.getId()}" title="${asignacion.getId()}">
               <td>${asignacion.getVehiculo().getNombreCorto()}</td>
               <td>${asignacion.getRuta().getDescripcion()}</td>
-              <td>${asignacion.getFechaDePartida()}${asignacion.getHoraDePartida()}</td>
-              <td>${asignacion.getFechaDeLlegada()}${asignacion.getHoraDeLlegada()}</td>
+              <td><fmt:formatDate value="${asignacion.getFechahoraDePartida()}" pattern="yyyy-MM-dd HH:mm"/></td>
+              <td><fmt:formatDate value="${asignacion.getFechahoraDeLlegada()}" pattern="yyyy-MM-dd HH:mm"/></td>
             </tr>
           </c:forEach>
         </c:if>

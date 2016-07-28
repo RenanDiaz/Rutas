@@ -1,16 +1,26 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <title>Rutas - Ruta</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+<spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
 <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
+<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
 <spring:url value="/resources/core/css/common.css" var="commonCss" />
+<spring:url value="/resources/core/js/common.js" var="commonJs" />
 <spring:url value="/resources/core/DataTables/datatables.min.css" var="datatablesCss" />
+<spring:url value="/resources/core/DataTables/datatables.min.js" var="datatablesJs" />
+
+<script src="${jquery}"></script>
 <link href="${bootstrapCss}" rel="stylesheet" />
+<script src="${bootstrapJs}"></script>
 <link href="${commonCss}" rel="stylesheet" />
+<script src="${commonJs}"></script>
 <link href="${datatablesCss}" rel="stylesheet" />
+<script src="${datatablesJs}"></script>
 <style type="text/css">
 .hidden {
   display: none;
@@ -55,8 +65,8 @@
           <c:forEach items="${asignaciones}" var="asignacion">
             <tr class="link" id="${asignacion.getId()}">
               <td>${asignacion.getVehiculo().getNombreCorto()}</td>
-              <td>${asignacion.getFechaDePartida()} ${asignacion.getHoraDePartida()}</td>
-              <td>${asignacion.getFechaDeLlegada()} ${asignacion.getHoraDeLlegada()}</td>
+              <td><fmt:formatDate value="${asignacion.getFechahoraDePartida()}" pattern="yyyy-MM-dd HH:mm"/></td>
+              <td><fmt:formatDate value="${asignacion.getFechahoraDeLlegada()}" pattern="yyyy-MM-dd HH:mm"/></td>
             </tr>
           </c:forEach>
         </tbody>
@@ -80,16 +90,14 @@
           </tr>
         </thead>
         <tbody>
-          <c:if test="${not empty ubicaciones}">
-            <c:forEach items="${ubicaciones}" var="ubicacion">
-              <tr class="link" id="${ubicacion.getId()}" title="${ubicacion.getId()}">
-                <td>${ubicacion.getFechahora()}</td>
-                <td>${ubicacion.getAsignacion().getVehiculo().getNombreCorto()}</td>
-                <td>${ubicacion.getLatitud()}</td>
-                <td>${ubicacion.getLongitud()}</td>
-              </tr>
-            </c:forEach>
-          </c:if>
+          <c:forEach items="${ubicaciones}" var="ubicacion">
+            <tr class="link" id="${ubicacion.getId()}" title="${ubicacion.getId()}">
+              <td><fmt:formatDate value="${ubicacion.getFechahora()}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
+              <td>${ubicacion.getAsignacion().getVehiculo().getNombreCorto()}</td>
+              <td>${ubicacion.getLatitud()}</td>
+              <td>${ubicacion.getLongitud()}</td>
+            </tr>
+          </c:forEach>
         </tbody>
       </table>
     </div>
@@ -130,15 +138,6 @@
     <p>&copy; Ren&aacute;n D&iacute;az Reyes 2016</p>
   </footer>
 </div>
-<spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
-<spring:url value="/resources/core/js/common.js" var="coreJs" />
-<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
-<spring:url value="/resources/core/DataTables/datatables.min.js" var="datatablesJs" />
-
-<script src="${jquery}"></script>
-<script src="${coreJs}"></script>
-<script src="${bootstrapJs}"></script>
-<script src="${datatablesJs}"></script>
 <script type="text/javascript">
 $("#asignaciones").DataTable({
 	"order": [[ 1, "desc" ]]

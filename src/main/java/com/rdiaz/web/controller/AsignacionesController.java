@@ -65,9 +65,9 @@ public class AsignacionesController extends BaseController
             distanciaTotal += movimiento.getDistanciaLinealEnMetros();
             tiempoTotal += movimiento.getDiferenciaDeTiempoEnMilisegundos();
         }
-        model.addAttribute("distanciaTotal", String.format("%.0f", distanciaTotal));
-        model.addAttribute("tiempoTotal", String.format("%.0f", tiempoTotal / 1000));
-        model.addAttribute("velocidadPromedio", String.format("%.0f", (distanciaTotal / 1000) / (tiempoTotal / 1000 / 60 / 60)));
+        model.addAttribute("distanciaTotal", distanciaTotal);
+        model.addAttribute("tiempoTotal", tiempoTotal / 1000);
+        model.addAttribute("velocidadPromedio", (distanciaTotal / 1000) / (tiempoTotal / 1000 / 60 / 60));
         model.addAttribute("movimientos", movimientos);
         model.addAttribute("asignacion", asignacion);
         model.addAttribute("vehiculos", vehiculos.getVehiculos());

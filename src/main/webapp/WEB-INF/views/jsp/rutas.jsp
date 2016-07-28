@@ -106,7 +106,7 @@
         <tbody>
           <c:forEach items="${rutas}" var="ruta">
             <tr class="link" id="${ruta.getId()}">
-              <td>${ruta.getId()}</td>
+              <td class="text-center">${ruta.getId()}</td>
               <td>${ruta.getOrigen()}</td>
               <td>${ruta.getDestino()}</td>
             </tr>

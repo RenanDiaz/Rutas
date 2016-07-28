@@ -1,16 +1,26 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <title>Rutas - Ubicaciones</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=0">
+<spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
 <spring:url value="/resources/core/css/bootstrap.min.css" var="bootstrapCss" />
+<spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
 <spring:url value="/resources/core/css/common.css" var="commonCss" />
+<spring:url value="/resources/core/js/common.js" var="commonJs" />
 <spring:url value="/resources/core/DataTables/datatables.min.css" var="datatablesCss" />
+<spring:url value="/resources/core/DataTables/datatables.min.js" var="datatablesJs" />
+
+<script src="${jquery}"></script>
 <link href="${bootstrapCss}" rel="stylesheet" />
+<script src="${bootstrapJs}"></script>
 <link href="${commonCss}" rel="stylesheet" />
+<script src="${commonJs}"></script>
 <link href="${datatablesCss}" rel="stylesheet" />
+<script src="${datatablesJs}"></script>
 </head>
 <body>
   <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -46,7 +56,7 @@
           <tbody>
             <c:forEach items="${ubicaciones}" var="ubicacion">
               <tr class="link" id="${ubicacion.getId()}" title="${ubicacion.getId()}">
-                <td>${ubicacion.getFechahora()}</td>
+                <td><fmt:formatDate value="${ubicacion.getFechahora()}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
                 <td>${ubicacion.getAsignacion().getDescripcion()}</td>
                 <td>${ubicacion.getLatitud()}</td>
                 <td>${ubicacion.getLongitud()}</td>
@@ -230,15 +240,6 @@
       <p>&copy; Ren&aacute;n D&iacute;az Reyes 2016</p>
     </footer>
   </div>
-  <spring:url value="/resources/core/js/jquery-3.0.0.js" var="jquery" />
-  <spring:url value="/resources/core/js/common.js" var="coreJs" />
-  <spring:url value="/resources/core/js/bootstrap.min.js" var="bootstrapJs" />
-  <spring:url value="/resources/core/DataTables/datatables.min.js" var="datatablesJs" />
-
-  <script src="${jquery}"></script>
-  <script src="${coreJs}"></script>
-  <script src="${bootstrapJs}"></script>
-  <script src="${datatablesJs}"></script>
   <script type="text/javascript">
 $("table").DataTable({
 	"order": [[ 0, "desc" ]]
