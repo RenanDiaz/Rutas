@@ -41,12 +41,7 @@
     <a href="/Rutas/rutas" class="btn btn-info">
       <span class="glyphicon glyphicon-triangle-left"></span>
     </a>
-    <c:if test="${not empty ruta}">
-      <span id="descripcion">(${ruta.getId()}) ${ruta.getDescripcion()}</span>
-    </c:if>
-    <c:if test="${empty ruta}">
-      No encontrado
-    </c:if>
+    ${ruta.getId()}${empty ruta ? "No encontrado" : " "}${ruta.getDescripcion()}
   </h2>
 </div>
 <br>

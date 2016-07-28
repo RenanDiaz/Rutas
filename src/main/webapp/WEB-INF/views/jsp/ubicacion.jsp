@@ -75,9 +75,16 @@
         </div>
       </div>
       <div class="row">
-        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeEditar">
-          Editar <span class="glyphicon glyphicon-edit"></span>
-        </button>
+        <div class="col-xs-6 col-sm-2">
+          <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#popUpDeEditar">
+            Editar <span class="glyphicon glyphicon-edit"></span>
+          </button>
+        </div>
+        <div class="col-xs-6 col-sm-2">
+          <button type="button" class="btn btn-info btn-lg" id="verMapa">
+            Ver mapa <span class="glyphicon glyphicon-map-marker"></span>
+          </button>
+        </div>
       </div>
       <br>
       <div class="row">
@@ -110,6 +117,16 @@
           </button>
         </div>
       </div>
+    <br> <br>
+    <div class="row" id="iframe-row" style="display: none;">
+      <div class="col-xs-12">
+        <iframe id="iframe-mapa" style="width: 100%; height: 300px;"></iframe>
+      </div>
+      <br>
+      <div class="col-xs-12">
+        <a href="#" target="_blank" id="link-mapa">Abrir en una ventana aparte</a>
+      </div>
+    </div>
     </div>
   </c:if>
 
@@ -171,6 +188,13 @@
         location.reload();
       }
     });
+  });
+
+  $("#verMapa").click(function() {
+    var ruta = "${pageContext.request.contextPath}/mapa/punto/${ubicacion.getId()}";
+    $("#iframe-mapa").attr("src", ruta);
+    $("#link-mapa").attr("href", ruta);
+    $("#iframe-row").show();
   });
   
   $(".btn-copy").click(function() {
