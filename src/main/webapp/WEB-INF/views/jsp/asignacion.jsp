@@ -73,8 +73,8 @@
               <td>${asignacion.getId()}</td>
               <td>${asignacion.getVehiculo().getNombreCorto()}</td>
               <td>${asignacion.getRuta().getDescripcion()}</td>
-              <td>${asignacion.getFechaDePartida()}${asignacion.getHoraDePartida()}</td>
-              <td>${asignacion.getFechaDeLlegada()}${asignacion.getHoraDeLlegada()}</td>
+              <td>${asignacion.getFechaDePartida()} ${asignacion.getHoraDePartida()}</td>
+              <td>${asignacion.getFechaDeLlegada()} ${asignacion.getHoraDeLlegada()}</td>
             </tr>
           </tbody>
         </table>

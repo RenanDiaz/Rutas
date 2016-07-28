@@ -63,6 +63,9 @@ public class Movimiento
     
     public double getVelocidad()
     {
-        return (getDistanciaLinealEnMetros() / 1000) / (getDiferenciaDeTiempoEnMilisegundos() / 1000 / 60 / 60);
+        if(getDiferenciaDeTiempoEnMilisegundos() > 0)
+            return (getDistanciaLinealEnMetros() / 1000) / (getDiferenciaDeTiempoEnMilisegundos() / 1000 / 60 / 60);
+        else
+            return 0;
     }
 }

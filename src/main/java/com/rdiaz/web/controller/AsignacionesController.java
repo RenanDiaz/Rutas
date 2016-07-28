@@ -56,7 +56,7 @@ public class AsignacionesController extends BaseController
     {
         Asignacion asignacion = asignaciones.get(id);
         ArrayList<Movimiento> movimientos = new ArrayList<>();
-        double distanciaTotal = 0, tiempoTotal = 0, sumaVelocidad = 0;
+        float distanciaTotal = 0, tiempoTotal = 0;
         ArrayList<Ubicacion> ubicacionesDeLaAsignacion = ubicaciones.getUbicacionesDeLaAsignacion(asignacion).getUbicaciones();
         for(int i = 0; i < ubicacionesDeLaAsignacion.size() - 1; i++)
         {
@@ -64,11 +64,10 @@ public class AsignacionesController extends BaseController
             movimientos.add(movimiento);
             distanciaTotal += movimiento.getDistanciaLinealEnMetros();
             tiempoTotal += movimiento.getDiferenciaDeTiempoEnMilisegundos();
-            sumaVelocidad += movimiento.getVelocidad();
         }
         model.addAttribute("distanciaTotal", String.format("%.0f", distanciaTotal));
         model.addAttribute("tiempoTotal", String.format("%.0f", tiempoTotal / 1000));
-        model.addAttribute("velocidadPromedio", String.format("%.0f", sumaVelocidad / movimientos.size()));
+        model.addAttribute("velocidadPromedio", String.format("%.0f", (distanciaTotal / 1000) / (tiempoTotal / 1000 / 60 / 60)));
         model.addAttribute("movimientos", movimientos);
         model.addAttribute("asignacion", asignacion);
         model.addAttribute("vehiculos", vehiculos.getVehiculos());
